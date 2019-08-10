@@ -92,4 +92,4 @@ start_place.lat=31.760254#仮設定　スタート：都城高専　ゴール：
 start_place.lon=131.080396
 goal_place.lat=31.7643
 goal_place.lon=131.088242
-Search_route(APIKEY,start_place,goal_place)
+#Search_route(APIKEY,start_place,goal_place)
