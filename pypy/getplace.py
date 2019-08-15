@@ -1,0 +1,93 @@
+import requests
+import json
+import urllib.request
+
+def get_Coordinates(lat,lon):
+    #この関数は緯度,経度を投げればいい感じのを返してくれる
+    sta = {
+        "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
+        "output":"&output=json"
+        }
+    redata=[]
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+lat+"&lon="+lon+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
+    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+lat+"&lon="+lon+"&dist=2"+sta["output"]+"&gc=0423007&sort=geo"
+    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+lat+"&lon="+lon+"&dist=2"+sta["output"]+"&gc=0305007&sort=geo"
+    res=urllib.request.urlopen(url)
+    res2=urllib.request.urlopen(url2)
+    res3=urllib.request.urlopen(url3)
+    data=json.loads(res.read().decode())
+    data2=json.loads(res2.read().decode())
+    data3=json.loads(res3.read().decode())
+    #この下の処理で座標をリストにまとめてreturn
+    if(data["ResultInfo"]["Count"]!=0):
+        for i in data["Feature"]:
+            redata.append(i["Geometry"]["Coordinates"].split(','))
+    if(data2["ResultInfo"]["Count"]!=0):
+        for i in data2["Feature"]:
+            redata.append(i["Geometry"]["Coordinates"].split(','))
+    if(data3["ResultInfo"]["Count"]!=0):
+        for i in data3["Feature"]:
+            redata.append(i["Geometry"]["Coordinates"].split(','))
+
+
+    for i in range(len(redata)):
+        redata[i][0],redata[i][1]=redata[i][1],redata[i][0]
+    return redata
+
+def Reray(lat1,lon1,lat2,lon2):
+    sta = {
+        "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
+        "output":"&output=json"
+        }
+    redata={}
+    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+lon1+","+lat1+"%20"+lon1+","+lat1+"%20"+lon2+","+lat2+"&mode=line"+sta["output"]
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read().decode())
+    #print(data)
+    for i in data["Feature"]:
+        foo=i["Geometry"]["Coordinates"].split(",")
+        foo[0],foo[1]=foo[1],foo[0]
+        redata[i["Name"]]=foo
+        suburl="https://map.yahooapis.jp/inner/V1/building?lat="+foo[0]+"&lon="+foo[1]+"&appid="+sta["appid"]+sta["output"]
+        subres=urllib.request.urlopen(suburl)
+        subdata=json.loads(subres.read().decode())
+        if(subdata["ResultInfo"]["Count"]!=0):
+            redata[i["Name"]].append(int(subdata["Dictionary"]["Building"][0][0]["Floor"]))
+        else:
+            redata[i["Name"]].append(1)
+    return redata
+
+def stepsort(redata):
+    n=len(redata)
+    carrent=0
+    for i in range(n-1):
+        carrent=i
+        for k in range(i,n):
+            if redata[i]["step"]>redata[k]["step"]:
+                carrent=k
+        redata[i],redata[carrent]=redata[carrent],redata[i]
+    return 0;
+
+
+if __name__=="__main__":
+    data=get_Coordinates("31.760044","131.080675")
+    hoge={}
+    #print(len(data))
+    sumstep=[]
+    for i in range(len(data)):
+        sumstep.append(0)
+    for i in range(len(data)):
+        hoge[i]=Reray("31.760044","131.080675",data[i][0],data[i][1])
+        for k in hoge[i]:
+            sumstep[i]+=hoge[i][k][2]
+        hoge[i]["step"]=sumstep[i]
+        hoge[i]["coordinates"]=data[i]
+
+
+    for i in range(len(hoge)):
+        print(hoge[i]["step"],hoge[i]["coordinates"])
+    stepsort(hoge)
+
+    print("sorted")
+    for i in range(len(hoge)):
+        print(hoge[i]["step"],hoge[i]["coordinates"])
