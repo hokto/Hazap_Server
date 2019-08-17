@@ -68,8 +68,7 @@ def stepsort(redata):
         redata[i],redata[carrent]=redata[carrent],redata[i]
     return 0;
 
-
-if __name__=="__main__":
+def searchplace(lat,lon):
     data=get_Coordinates("31.760044","131.080675")
     hoge={}
     #print(len(data))
@@ -83,11 +82,5 @@ if __name__=="__main__":
         hoge[i]["step"]=sumstep[i]
         hoge[i]["coordinates"]=data[i]
 
-
-    for i in range(len(hoge)):
-        print(hoge[i]["step"],hoge[i]["coordinates"])
     stepsort(hoge)
-
-    print("sorted")
-    for i in range(len(hoge)):
-        print(hoge[i]["step"],hoge[i]["coordinates"])
+    return hoge
