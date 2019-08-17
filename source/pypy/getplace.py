@@ -69,14 +69,13 @@ def stepsort(redata):
     return 0;
 
 def searchplace(lat,lon):
-    data=get_Coordinates("31.760044","131.080675")
+    data=get_Coordinates(lat,lon)
     hoge={}
-    #print(len(data))
     sumstep=[]
     for i in range(len(data)):
         sumstep.append(0)
     for i in range(len(data)):
-        hoge[i]=Reray("31.760044","131.080675",data[i][0],data[i][1])
+        hoge[i]=Reray(lat,lon,data[i][0],data[i][1])
         for k in hoge[i]:
             sumstep[i]+=hoge[i][k][2]
         hoge[i]["step"]=sumstep[i]
