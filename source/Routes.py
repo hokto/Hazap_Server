@@ -1,10 +1,7 @@
 import requests
 import json
 import urllib
-
-class Pos:#緯度、経度格納クラス。
-    lat=0.0
-    lon=0.0
+import HazapModules
 
 def Search_route(start,goal):#最適ルートを取得する関数。
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
@@ -72,13 +69,13 @@ def Sort_places(list_places,list_ARV,left,right):#ARVが小さい順に場所と
         Sort_places(list_places,list_ARV,k+1,right)
 
 
-def Making_route(APIKEY,start,list_via,goal,list_realRoute):#最適ルートと、実際に通ったルートの作成関数。
+def Making_route(APIKEY,start,list_via,optimal_goal,list_realRoute):#最適ルートと、実際に通ったルートの作成関数。
     if(list_via==None):#経由地点なしの場合
-        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}&route={start_place},{goal_place}|color:ff000099"
-        access_url=url.format(apikey=APIKEY,start_place=start,goal_place=goal,RealRoute=",".join(list_realRoute))
+        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}|start:on|goal:on|&route={start_place},{optimal_goal}|color:ff000099|start:off|goal:on"
+        access_url=url.format(apikey=APIKEY,start_place=start,optimal_goal=optimal_goal,RealRoute=",".join(list_realRoute))
     else:
-        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}&route={start_place},{via_places},{goal_place}|color:ff000099"
-        access_url=url.format(apikey=APIKEY,start_place=start,via_places=",".join(list_via),goal_place=goal,RealRoute=",".join(list_realRoute))
+        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}|start:on|goal:on&route={start_place},{via_places},{optimal_goal}|color:ff000099|start:off|goal:on"
+        access_url=url.format(apikey=APIKEY,start_place=start,via_places=",".join(list_via),optimal_goal=optimal_goal,RealRoute=",".join(list_realRoute))
     Download_route(access_url,"../img/route.png")
 
 

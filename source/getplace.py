@@ -1,17 +1,18 @@
 import requests
 import json
 import urllib.request
+import HazapModules
 
-def get_Coordinates(lat,lon):
+def get_Coordinates(pos):
     #この関数は緯度,経度を投げればいい感じのを返してくれる
     sta = {
         "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
         "output":"&output=json"
         }
     redata=[]
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+lat+"&lon="+lon+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
-    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+lat+"&lon="+lon+"&dist=2"+sta["output"]+"&gc=0423007&sort=geo"
-    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+lat+"&lon="+lon+"&dist=2"+sta["output"]+"&gc=0305007&sort=geo"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+pos.lat+"&lon="+pos.lon+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
+    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+pos.lat+"&lon="+pos.lon+"&dist=2"+sta["output"]+"&gc=0423007&sort=geo"
+    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+pos.lat+"&lon="+pos.lon+"&dist=2"+sta["output"]+"&gc=0305007&sort=geo"
     res=urllib.request.urlopen(url)
     res2=urllib.request.urlopen(url2)
     res3=urllib.request.urlopen(url3)
@@ -34,13 +35,13 @@ def get_Coordinates(lat,lon):
         redata[i][0],redata[i][1]=redata[i][1],redata[i][0]
     return redata
 
-def Reray(lat1,lon1,lat2,lon2):
+def Reray(pos1,pos2):
     sta = {
         "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
         "output":"&output=json"
         }
     redata={}
-    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+lon1+","+lat1+"%20"+lon1+","+lat1+"%20"+lon2+","+lat2+"&mode=line"+sta["output"]
+    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+pos1.lon+","+pos1.lat+"%20"+pos1.lon+","+pos1.lat+"%20"+pos2.lon+","+pos2.lat+"&mode=line"+sta["output"]
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     #print(data)
@@ -68,14 +69,17 @@ def stepsort(redata):
         redata[i],redata[carrent]=redata[carrent],redata[i]
     return 0;
 
-def searchplace(lat,lon):
-    data=get_Coordinates(lat,lon)
+def searchplace(pos):
+    data=get_Coordinates(pos)
     hoge={}
     sumstep=[]
     for i in range(len(data)):
         sumstep.append(0)
     for i in range(len(data)):
-        hoge[i]=Reray(lat,lon,data[i][0],data[i][1])
+        pos2=HazapModules.Coordinates()
+        pos2.lat=data[i][0]
+        pos2.lon=data[i][1]
+        hoge[i]=Reray(pos,pos2)
         for k in hoge[i]:
             sumstep[i]+=hoge[i][k][2]
         hoge[i]["step"]=sumstep[i]
