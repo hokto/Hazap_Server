@@ -6,8 +6,8 @@ class Pos:#緯度、経度格納クラス。
     lat=0.0
     lon=0.0
 
-APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
-def Search_route(APIKEY,start,goal):#最適ルートを取得する関数。
+def Search_route(start,goal):#最適ルートを取得する関数。
+    APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
     access_url=url.format(key=APIKEY,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
     result=requests.get(access_url)#データをjsonで取得し、連想配列に変換
@@ -30,6 +30,8 @@ def Search_safty(list_places):#安全な場所を探索する関数。
         list_ARV.append(result["features"][0]["properties"]["ARV"])#ARVを格納
         place=list_places[i].split(",")
         list_places[i]=place[1]+","+place[0]
+    if(len(list_places)==0):#例外処理（スタートからゴールまでの距離が近いとき）
+        return None
     Sort_places(list_places,list_ARV,0,len(list_places)-1)#ARVが小さい順に取得した場所をソート
     min_val=list_ARV[0]
     safty_places=[]#ARVが小さい場所の緯度、経度を格納
@@ -71,8 +73,12 @@ def Sort_places(list_places,list_ARV,left,right):#ARVが小さい順に場所と
 
 
 def Making_route(APIKEY,start,list_via,goal,list_realRoute):#最適ルートと、実際に通ったルートの作成関数。
-    url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}&route={start_place},{via_places},{goal_place}|color:ff000099"
-    access_url=url.format(apikey=APIKEY,start_place=start,via_places=",".join(list_via),goal_place=goal,RealRoute=",".join(list_realRoute))
+    if(list_via==None):#経由地点なしの場合
+        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}&route={start_place},{goal_place}|color:ff000099"
+        access_url=url.format(apikey=APIKEY,start_place=start,goal_place=goal,RealRoute=",".join(list_realRoute))
+    else:
+        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}&route={start_place},{via_places},{goal_place}|color:ff000099"
+        access_url=url.format(apikey=APIKEY,start_place=start,via_places=",".join(list_via),goal_place=goal,RealRoute=",".join(list_realRoute))
     Download_route(access_url,"../img/route.png")
 
 
@@ -85,11 +91,3 @@ def Download_route(url,file_path):#探索したルートの画像を取得して
     except urllib.error.URLError as e:
         print(e)
 
-
-start_place=Pos()
-goal_place=Pos()
-start_place.lat=31.760254#仮設定　スタート：都城高専　ゴール：沖水小
-start_place.lon=131.080396
-goal_place.lat=31.7643
-goal_place.lon=131.088242
-#Search_route(APIKEY,start_place,goal_place)
