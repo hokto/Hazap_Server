@@ -22,5 +22,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     conn.sendall(b"Hello,world!!")
                     break
                 print(data.decode())
-                # クライアントにデータを返す(b -> byte でないといけない)
                 conn.sendall(b'Hello')
