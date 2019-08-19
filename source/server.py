@@ -1,10 +1,13 @@
 import socket
+import getplace
 
 # AF = IPv4 という意味
 # TCP/IP の場合は、SOCK_STREAM を使う
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     # IPアドレスとポートを指定
-    s.bind(('10.10.54.102', 4000))
+    n=0
+    Coordinates=[]
+    s.bind(('192.168.11.2', 4000))
     # 1 接続
     s.listen(1)
     # connection するまで待つ
@@ -14,12 +17,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with conn:
             while True:
                 # データを受け取る
-                data = conn.recv(1024)
+                data = conn.recv(2048)
                 if not data:
                     break
-                if data.decode()=="Hello,world!!":
-                    print("received Hello,world!!")
-                    conn.sendall(b"Hello,world!!")
-                    break
-                print(data.decode())
+                rec=data.decode()
+                hoge=rec.split(":")
+                if(hoge[0]=="Coordinates"):
+                    Coordinates.append(hoge[1].split(","))
+                elif hoge[0]=="Start":
+                    n=len(Coordinates)
+                    getplace.Calcudens(n,Coordinates)
+                print(Coordinates)
                 conn.sendall(b'Hello')

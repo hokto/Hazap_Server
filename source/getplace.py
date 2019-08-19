@@ -117,9 +117,15 @@ def CarcuEva(Coordinates):
 
     return value
 
-
-
-now=HazapModules.Coordinates()
-now.lat="31.760254"
-now.lon="131.080396"
-print(CarcuEva(now))
+def Calcudens(n,Coordinates):
+    sumx=0
+    sumy=0
+    for i in range(n):
+        sumx+=int(Coordinates[i][0])
+        sumy+=int(Coordinates[i][1])
+    avex=sumx/n
+    avey=sumy/n
+    redata=[]
+    for i in range(n):
+        d
+    return 0
