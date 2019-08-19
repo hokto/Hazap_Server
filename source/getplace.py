@@ -95,7 +95,7 @@ def CarcuEva(Coordinates):
         "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
         "output":"&output=json"
         }
-    url1="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat="+Coordinates.lat+"&lon="+Coordinates.lon+"&appid="+sta["appid"]+sta["output"]
+    url1="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat="+str(Coordinates.lat)+"&lon="+str(Coordinates.lon)+"&appid="+sta["appid"]+sta["output"]
     res1=urllib.request.urlopen(url1)
     data1=json.loads(res1.read().decode())
 
@@ -117,9 +117,3 @@ def CarcuEva(Coordinates):
 
     return value
 
-
-
-now=HazapModules.Coordinates()
-now.lat="31.760254"
-now.lon="131.080396"
-print(CarcuEva(now))

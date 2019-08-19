@@ -18,11 +18,13 @@ def Result(start_pos,realRoute):#リザルト画面に必要な処理を行う�
     real_goal=HazapModules.Coordinates()
     real_goal.lat,real_goal.lon=list(map(float,realRoute[len(realRoute)-1].split(",")))#実際の避難場所の座標
     routesPercentage=Aliverate.Compare_route(start_pos,optimal_goal,real_goal)#ルート比較の割合
-    print(routesPercentage)
+    print("Route:"+str(routesPercentage))
+    placePercentage=getplace.CarcuEva(real_goal)
+    print("Place:"+str(placePercentage))
 start=HazapModules.Coordinates()
-start.lat=31.760254#仮設定:都城高専からの避難
-start.lon=131.080396
+start.lat=31.7536429#仮設定
+start.lon=131.0504333
 realRoute=[]
-realRoute.append("31.760254,131.080396")
-realRoute.append("31.7619512,131.0828761")
+realRoute.append("31.7536429,131.0504333")
+realRoute.append("31.7534066,131.051341")
 Result(start,realRoute)
