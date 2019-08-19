@@ -90,6 +90,7 @@ def searchplace(pos):
 
 #lat=緯度　lon=経度
 def CarcuEva(Coordinates):
+    #座標を投げたらその座標の建物の種類の評価値を返します
     sta = {
         "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
         "output":"&output=json"
