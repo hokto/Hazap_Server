@@ -2,7 +2,6 @@ import requests
 import json
 import urllib
 import math
-import Routes
 
 def Cal_Arclength(a,b,c,r):#余弦定理を用いて角度を出し、l=rθより弧の長さを求める
     if(a==0 or b==0):#実際のゴール-スタート間、もしくは最適ゴール-スタート間が0であれば角度が存在せず、孤の長さは0となる。
@@ -76,18 +75,3 @@ def Compare_route(start_pos,optimal_goal,real_goal):#ルート比較用関数
         arcLength=Cal_Arclength(realDistance,optimalDistance,OptimalRealdiff,r)#弧の長さ
         totaldiff+=50-(arcLength/circumference)*100#最大割合が50%
     return (totaldiff/100*2)#割合の平均値を返す
-start_pos=Routes.Pos()
-optimal_goal=Routes.Pos()
-real_goal=Routes.Pos()
-
-start_pos.lat=31.760254
-start_pos.lon=131.080396
-
-optimal_goal.lat=30.438514
-optimal_goal.lon=132.049496
-
-real_goal.lat=32.493454
-real_goal.lon=132.039456
-
-print(Compare_route(start_pos,optimal_goal,real_goal))
-

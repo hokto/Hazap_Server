@@ -2,8 +2,8 @@ import requests
 import json
 import urllib
 import HazapModules
-
-def Search_route(start,goal):#最適ルートを取得する関数。
+from itertools import chain
+def Search_route(start,goal,realRoute):#最適ルートを取得する関数。
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
     access_url=url.format(key=APIKEY,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
@@ -14,7 +14,7 @@ def Search_route(start,goal):#最適ルートを取得する関数。
         place=result["Feature"][i]["Geometry"]["Coordinates"]
         list_places.append(place)
     safty_places=Search_safty(list_places)#取得した場所の中から安全な場所を取得
-    Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),{"31.760254,131.080396","31.7619512,131.0828761"})
+    Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),realRoute)
 
 
 def Search_safty(list_places):#安全な場所を探索する関数。

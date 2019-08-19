@@ -10,9 +10,9 @@ def get_Coordinates(pos):
         "output":"&output=json"
         }
     redata=[]
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+pos.lat+"&lon="+pos.lon+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
-    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+pos.lat+"&lon="+pos.lon+"&dist=2"+sta["output"]+"&gc=0423007&sort=geo"
-    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+pos.lat+"&lon="+pos.lon+"&dist=2"+sta["output"]+"&gc=0305007&sort=geo"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
+    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=2"+sta["output"]+"&gc=0423007&sort=geo"
+    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=2"+sta["output"]+"&gc=0305007&sort=geo"
     res=urllib.request.urlopen(url)
     res2=urllib.request.urlopen(url2)
     res3=urllib.request.urlopen(url3)
@@ -41,7 +41,7 @@ def Reray(pos1,pos2):
         "output":"&output=json"
         }
     redata={}
-    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+pos1.lon+","+pos1.lat+"%20"+pos1.lon+","+pos1.lat+"%20"+pos2.lon+","+pos2.lat+"&mode=line"+sta["output"]
+    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos2.lon)+","+str(pos2.lat)+"&mode=line"+sta["output"]
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     #print(data)
