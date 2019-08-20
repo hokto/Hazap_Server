@@ -2,6 +2,7 @@ import requests
 import json
 import urllib.request
 import HazapModules
+import math
 
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればいい感じのを返してくれる
@@ -117,15 +118,19 @@ def CarcuEva(Coordinates):
 
     return value
 
-def Calcudens(n,Coordinates):
-    sumx=0
-    sumy=0
+def Calcudens(Coordinates):
+    pi=math.pi
+    r=6378100#これは地球の半径で、単位はメートル
+    n=len(Coordinates)
+    data=[]
     for i in range(n):
-        sumx+=int(Coordinates[i][0])
-        sumy+=int(Coordinates[i][1])
-    avex=sumx/n
-    avey=sumy/n
-    redata=[]
+        data.append(0)
+
     for i in range(n):
-        d
+        for k in range(n-i-1):
+            d=math.sqrt((r*math.radians(abs(float(Coordinates[i][1])-float(Coordinates[k+i+1][1]))))**2+(r*math.radians(abs(float(Coordinates[i][0])-float(Coordinates[k+i+1][0]))))**2)
+            if(d<=150):
+                data[i]+=1
+                data[i+k+1]+=1
+    print("data=",data)
     return 0
