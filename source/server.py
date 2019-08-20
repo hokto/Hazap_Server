@@ -3,6 +3,8 @@ import getplace
 
 
 def server():
+    startflg=0
+    count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         # IPアドレスとポートを指定
         n=0
@@ -22,14 +24,22 @@ def server():
                         break
                     rec=data.decode()
                     splited=rec.split(":")
-                    if(splited[0]=="Coordinates"):
+                    if(splited[0]=="Coordinates" and startflg==0):
                         Coordinates[len(Coordinates)]=splited[1].split(",")
+                        send="your number is"+str(len(Coordinates)-1)
+                    elif splited[0]=="Coordinates" and startflg==1:
+                        send="started"
                     elif splited[0]=="Start":
-                        getplace.Calcudens(Coordinates)
-                    elif splited[0]=="exit":
+                        startflg += 1
+                        send="start!"
+                    elif splited[0]=="Number":
+                        send=str(count[int(splited[1])])
+                    elif splited[0]=="End":
+                        send="OK"
+                        conn.sendall(send.encode())
                         return 0
-                    print(Coordinates)
-                    send="your number is"+str(len(Coordinates)-1)
+                    if(startflg==1):
+                        count=getplace.Calcudens(Coordinates)
                     conn.sendall(send.encode())
 
 if __name__=="__main__":

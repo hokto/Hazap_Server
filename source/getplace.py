@@ -122,9 +122,9 @@ def Calcudens(Coordinates):
     pi=math.pi
     r=6378100#これは地球の半径で、単位はメートル
     n=len(Coordinates)
-    data=[]
+    data={}
     for i in range(n):
-        data.append(0)
+        data[i]=0
 
     for i in range(n):
         for k in range(n-i-1):
@@ -133,4 +133,4 @@ def Calcudens(Coordinates):
                 data[i]+=1
                 data[i+k+1]+=1
     print("data=",data)
-    return 0
+    return data
