@@ -119,4 +119,5 @@ def Calcudens(Coordinates):
             if(distance<=150):
                 data[i]+=1
                 data[i+k+1]+=1
+
     return data
