@@ -2,22 +2,23 @@ import requests
 import json
 import urllib
 import HazapModules
+from itertools import chain
 
-def Search_route(start,goal):#最適ルートを取得する関数。
+def Search_route(start,goal,realRoute):#最適ルートを取得する関数。
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
     access_url=url.format(key=APIKEY,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
-    result=requests.get(access_url)#データをjsonで取得し、連想配列に変換
+    result=request.get(access_url)#データをjsonで取得し、連想配列に変換
     result=result.json()
     list_places=[]#取得した場所の緯度、経度を格納
     for i in range(result["ResultInfo"]["Total"]):#取得できた数だけ格納する
         place=result["Feature"][i]["Geometry"]["Coordinates"]
         list_places.append(place)
-    safty_places=Search_safty(list_places)#取得した場所の中から安全な場所を取得
-    Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),{"31.760254,131.080396","31.7619512,131.0828761"})
+    safty_places=Search_safty(list_places,start,goal)#取得した場所の中から安全な場所を取得
+    Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),realRoute)
 
 
-def Search_safty(list_places):#安全な場所を探索する関数。
+def Search_safty(list_places,start,goal):#安全な場所を探索する関数。
     list_ARV=[]#ARV（最大増振率）を格納
     for i in range(len(list_places)):
         url="http://www.j-shis.bosai.go.jp/map/api/sstrct/V3/meshinfo.geojson?position={current_pos}&epsg=4301"
@@ -32,13 +33,35 @@ def Search_safty(list_places):#安全な場所を探索する関数。
     Sort_places(list_places,list_ARV,0,len(list_places)-1)#ARVが小さい順に取得した場所をソート
     min_val=list_ARV[0]
     safty_places=[]#ARVが小さい場所の緯度、経度を格納
-    for i in range(5):#修正する可能性あり
+    for i in range(len(list_ARV)):#修正する可能性あり
         if(not(min_val==list_ARV[i] or i<len(list_ARV)/2)):#最低でも半分の場所を格納
             break
-        safty_places.append(list_places[i])
+        if(not(list_places[i] in safty_places)):
+            safty_places.append(list_places[i])
+    safty_places=list(map(lambda data:data.split(","),safty_places))
+    safty_places=HazapModules.TwoDimensionsSort(safty_places,1,0,len(safty_places)-1)
+    if(goal.lat>start.lat):#ゴール地点のほうがスタート地点よりも上の方にある
+        safty_places=Cut_places(safty_places,1)
+    else:
+        safty_places=Cut_places(safty_places,-1)
+    safty_places=list(map(lambda data:",".join(data),safty_places))#安全な場所が入ったリストを、経度の小さい順にソートし、ある地点の緯度が前の地点の緯度と比べてゴール地点と逆方向の場所にあるときその地点を削除
+    print(safty_places)
     return safty_places
 
-
+def Cut_places(list_places,direction):
+    i=0
+    while(i<len(list_places)-1):
+        if(direction==1):
+            if(list_places[i][0]>list_places[i+1][0]):
+                list_places.pop(i+1)
+            else:
+                i+=1
+        elif(direction==-1):
+            if(list_places[i][0]<list_places[i+1][0]):
+                list_places.pop(i+1)
+            else:
+                i+=1
+    return list_places
 def Sort_places(list_places,list_ARV,left,right):#ARVが小さい順に場所とARVをソート（クイックソート）
     i=left+1
     k=right
