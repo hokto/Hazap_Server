@@ -58,17 +58,6 @@ def Reray(pos1,pos2):
             redata[i["Name"]].append(1)
     return redata
 
-def stepsort(redata):
-    n=len(redata)
-    carrent=0
-    for i in range(n-1):
-        carrent=i
-        for k in range(i,n):
-            if redata[i]["step"]>redata[k]["step"]:
-                carrent=k
-        redata[i],redata[carrent]=redata[carrent],redata[i]
-    return 0;
-
 def searchplace(pos):
     data=get_Coordinates(pos)
     hoge={}
@@ -85,7 +74,7 @@ def searchplace(pos):
         hoge[i]["step"]=sumstep[i]
         hoge[i]["coordinates"]=data[i]
 
-    stepsort(hoge)
+    hoge=HazapModules.TwoDimensionsSort(hoge,"step",0,len(hoge)-1)#stepsort
     return hoge
 
 #lat=緯度　lon=経度
