@@ -107,7 +107,6 @@ def CarcuEva(Coordinates):
 
     return value
 def Calcudens(Coordinates):
-    pi=math.pi
     r=6378100#これは地球の半径で、単位はメートル
     n=len(Coordinates)
     data={}
@@ -116,9 +115,8 @@ def Calcudens(Coordinates):
 
     for i in range(n):
         for k in range(n-i-1):
-            d=math.sqrt((r*math.radians(abs(float(Coordinates[i][1])-float(Coordinates[k+i+1][1]))))**2+(r*math.radians(abs(float(Coordinates[i][0])-float(Coordinates[k+i+1][0]))))**2)
-            if(d<=150):
+            distance=math.sqrt((r*math.radians(abs(float(Coordinates[i][1])-float(Coordinates[k+i+1][1]))))**2+(r*math.radians(abs(float(Coordinates[i][0])-float(Coordinates[k+i+1][0]))))**2)
+            if(distance<=150):
                 data[i]+=1
                 data[i+k+1]+=1
-    print("data=",data)
     return data
