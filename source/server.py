@@ -4,7 +4,7 @@ import socket
 # TCP/IP の場合は、SOCK_STREAM を使う
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     # IPアドレスとポートを指定
-    s.bind(('10.10.54.102', 4000))
+    s.bind(('192.168.11.133', 4000))
     # 1 接続
     s.listen(1)
     # connection するまで待つ
@@ -14,12 +14,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with conn:
             while True:
                 # データを受け取る
-                data = conn.recv(1024)
+                data = conn.recv(4096)
+                print(type(data))
                 if not data:
+                    print("Test02")
                     break
                 if data.decode()=="Hello,world!!":
+                    print("Test03")
                     print("received Hello,world!!")
                     conn.sendall(b"Hello,world!!")
                     break
                 print(data.decode())
                 conn.sendall(b'Hello')
+                break
