@@ -3,6 +3,7 @@ import json
 import urllib.request
 import HazapModules
 import math
+import Routes
 
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればいい感じのを返してくれる
@@ -106,6 +107,7 @@ def CarcuEva(Coordinates):
 
 
     return value
+
 def Calcudens(Coordinates):
     r=6378100#これは地球の半径で、単位はメートル
     n=len(Coordinates)
@@ -119,5 +121,29 @@ def Calcudens(Coordinates):
             if(distance<=150):
                 data[i]+=1
                 data[i+k+1]+=1
-
     return data
+
+def GenerateHazard(Coordinates):
+    url="http://www.j-shis.bosai.go.jp/map/api/pshm/Y2010/AVR/TTL_MTTL/meshinfo.geojson?position="+str(Coordinates.lon)+","+str(Coordinates.lat)+"&epsg=4301"
+    res=urllib.request.urlopen(url)
+    data=json.loads(res.read().decode())
+    img=""
+    mark=""
+    hoge=searchplace(Coordinates)
+    n=len(hoge)
+    for i in range(n):
+        mark+="&pin"+str(i+1)+"="+hoge[i]["coordinates"][0]+","+hoge[i]["coordinates"][1]
+    print(mark)
+    for i in range(len(data["features"][0]["geometry"]["coordinates"][0])):
+        img+=","+str(data["features"][0]["geometry"]["coordinates"][0][i][1])+","+str(data["features"][0]["geometry"]["coordinates"][0][i][0])
+    print(img)
+    yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&"+mark+"p=0,0,255,0,3,0,0,255,60"+img+"&z=15&width=1500&height=1500&output=png32&autoscale=on"
+    Routes.Download_route(yhurl,"../img/test.png")
+
+    return 0
+
+if __name__=="__main__":
+    pos=HazapModules.Coordinates()
+    pos.lat=31.760254
+    pos.lon=131.080396
+    GenerateHazard(pos)

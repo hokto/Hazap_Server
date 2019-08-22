@@ -10,7 +10,7 @@ def server():
         n=0
         Coordinates={}
         CoordinateLogs={}
-        s.bind(('192.168.11.133', 4000))
+        s.bind(('192.168.11.2', 4000))
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -22,6 +22,7 @@ def server():
                 while True:
                     # データを受け取る
                     data = conn.recv(4096)
+                    send="Invalid"
                     if not data:
                         break
                     rec=data.decode()
@@ -32,12 +33,15 @@ def server():
                         pl=splited[1].split(",")
                         CoordinateLogs[n].append(pl)
                         Coordinates[n]=splited[1].split(",")
+                        send="number:"+str(n)
                         n+=1
-                        print(CoordinateLogs)
                     elif splited[0]=="Recruit" and startflg==1:
                         send="started"
                     elif splited[0]=="Cancel":
-                        CoordinateLogs.pop(int(splited[1]))
+                        if len(splited)>1:
+                            if (int(splited[1]) in CoordinateLogs):
+                                CoordinateLogs.pop(int(splited[1]))
+                                send="Canceled"
                     elif splited[0]=="Start":
                         startflg = 1
                         send="start!"
@@ -45,9 +49,11 @@ def server():
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
                             CoordinateLogs[int(splited[1])].append(splited[2].split(","))
-                            send="Around:"+str(count[int(splited[1])])+"N="+str(n)
+                            send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
                         else:
                             send="Failed"
+                    elif splited[0]=="Number" and startflg==0:
+                        send="Waiting..."
                     elif splited[0]=="End":
                         send="OK"
                         conn.sendall(send.encode())
