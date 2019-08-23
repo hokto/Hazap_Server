@@ -131,6 +131,7 @@ def Calcudens(Coordinates):
     for i in range(n):
         data[i]=0
 
+
     for i in range(n):
         for k in range(n-i-1):
             distance=math.sqrt((r*math.radians(abs(float(Coordinates[i][1])-float(Coordinates[k+i+1][1]))))**2+(r*math.radians(abs(float(Coordinates[i][0])-float(Coordinates[k+i+1][0]))))**2)
