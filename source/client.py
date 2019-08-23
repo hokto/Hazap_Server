@@ -9,4 +9,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.sendall(input().encode())
     # ネットワークのバッファサイズは1024。サーバからの文字列を取得する
     data = s.recv(1024)
-    
+    print("receved:"+data.decode())
