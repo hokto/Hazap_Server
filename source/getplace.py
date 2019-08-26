@@ -160,8 +160,8 @@ def GenerateHazard(Coordinates):
 
     return 0
 
-if __name__=="__main__":
-    pos=HazapModules.Coordinates()
-    pos.lat=31.760254
-    pos.lon=131.080396
-    GenerateHazard(pos)
+#if __name__=="__main__":
+#    pos=HazapModules.Coordinates()
+#    pos.lat=31.760254
+#    pos.lon=131.080396
+#    GenerateHazard(pos)
