@@ -1,8 +1,10 @@
 import io
 from PIL import Image
 import socket
+import numpy
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+
     s.connect(('192.168.11.2', 4000))
     # サーバにメッセージを送る
     print("Connected!")
@@ -12,3 +14,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     tmpimg2 = Image.open(io.BytesIO(data))#バイナリから画像に変換
     tmpimg2.save('../img/convrted.png')
 
+
+    data=numpy.fromstring(data,dtype=numpy.unit8)
+    print("receved:"+data.decode())

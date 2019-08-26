@@ -3,6 +3,10 @@ import getplace
 import io
 from PIL import Image
 
+import Earthquake
+import HazapModules
+import main
+import numpy
 def server():
     contents=None
     tmpimg = Image.open("../img/test.png").convert("P")
@@ -16,10 +20,11 @@ def server():
         n=0
         Coordinates={}
         CoordinateLogs={}
-        s.bind(('192.168.11.2', 4000))
+        s.bind(('192.168.0.11', 4000))
         # 1 接続
         s.listen(1)
         # connection するまで待つ
+        startPos=HazapModules.Coordinates()
         while True:
             send="Invalid"
             # 誰かがアクセスしてきたら、コネクションとアドレスを入れる
@@ -51,6 +56,9 @@ def server():
                     elif splited[0]=="Start":
                         startflg = 1
                         send="start!"
+                        #(主催者からStartが送られれば開始場所からのシミュレーションを開始
+                        startPos.lat,startPos.lon=map(float,splited[1].split(","))
+                        Earthquake.get_Dangerplaces(startPos)
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -58,11 +66,14 @@ def server():
                             send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
                         else:
                             send="Failed"
-                    elif splited[0]=="Number" and startflg==0:
+                    elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:
                         send="Waiting..."
+                    elif splited[0]=="Wait" and startflag==1:
+                       pass#jsonファイル送信する処理 
                     elif splited[0]=="End":
                         send="OK"
-                        conn.sendall(send.encode())
+                        print(list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         return 0
                     elif splited[0]=="Image":
                         print(len(contents))
