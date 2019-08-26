@@ -1,5 +1,5 @@
-# クライアントを作成
-
+import io
+from PIL import Image
 import socket
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -8,5 +8,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("Connected!")
     s.sendall(input().encode())
     # ネットワークのバッファサイズは1024。サーバからの文字列を取得する
-    data = s.recv(1024)
-    print("receved:"+data.decode())
+    data = s.recv(262144)
+    tmpimg2 = Image.open(io.BytesIO(data))#バイナリから画像に変換
+    tmpimg2.save('../img/convrted.png')
+

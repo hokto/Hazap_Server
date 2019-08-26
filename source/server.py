@@ -1,8 +1,14 @@
 import socket
 import getplace
-
+import io
+from PIL import Image
 
 def server():
+    contents=None
+    tmpimg = Image.open("../img/test.png").convert("P")
+    with io.BytesIO() as output:
+        tmpimg.save(output,format="PNG")
+        contents = output.getvalue()#バイナリ取得
     startflg=0
     count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -58,6 +64,10 @@ def server():
                         send="OK"
                         conn.sendall(send.encode())
                         return 0
+                    elif splited[0]=="Image":
+                        print(len(contents))
+                        conn.sendall(contents)
+                        continue
                     if(startflg==1):
                         count=getplace.Calcudens(Coordinates)
                     conn.sendall(send.encode())
