@@ -2,25 +2,21 @@ import socket
 import getplace
 import io
 from PIL import Image
-
 import Earthquake
 import HazapModules
 import main
 import numpy
+import os
 def server():
     contents=None
-    tmpimg = Image.open("../img/test.png").convert("P")
-    with io.BytesIO() as output:
-        tmpimg.save(output,format="PNG")
-        contents = output.getvalue()#バイナリ取得
     startflg=0
     count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         # IPアドレスとポートを指定
         n=0
-        Coordinates={}
-        CoordinateLogs={}
-        s.bind(('192.168.0.11', 4000))
+        Coordinates={}#最新の位置情報を格納している辞書
+        CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
+        s.bind(('192.168.11.2', 4000))
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -55,6 +51,7 @@ def server():
                                 send="Canceled"
                     elif splited[0]=="Start":
                         startflg = 1
+                        print("serverstart")
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
@@ -72,11 +69,22 @@ def server():
                        pass#jsonファイル送信する処理 
                     elif splited[0]=="End":
                         send="OK"
+                        #print(type(Coordinates[int(splited[1])]))
                         print(list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
-                        main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        #main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        hoge=HazapModules.Coordinates()
+                        print(Coordinates[int(splited[1])])
+                        hoge.lat=float(Coordinates[int(splited[1])][0])
+                        hoge.lon=float(Coordinates[int(splited[1])][1])
+                        getplace.GenerateHazard(hoge)
+                        tmpimg = Image.open("../img/Generate.png").convert("P")
+                        with io.BytesIO() as output:
+                            tmpimg.save(output,format="PNG")
+                            contents = output.getvalue()#バイナリ取得
+                        conn.sendall(contents)
+                        os.remove("../img/Generate.png")
                         return 0
                     elif splited[0]=="Image":
-                        print(len(contents))
                         conn.sendall(contents)
                         continue
                     if(startflg==1):
