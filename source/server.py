@@ -81,7 +81,15 @@ def server():
                         with io.BytesIO() as output:
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
-                        conn.sendall(contents)
+                        length=len(contents)
+                        left=0
+                        right=65536
+                        while True:
+                            if left>length:
+                                break
+                            conn.sendall(contents[left:right])
+                            left+=65536
+                            right+=65536
                         os.remove("../img/Generate.png")
                         return 0
                     elif splited[0]=="Image":
