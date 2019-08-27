@@ -16,7 +16,7 @@ def server():
         n=0
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
-        s.bind(('192.168.11.2', 4000))
+        s.bind(('192.168.10.104', 4000))
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -83,13 +83,17 @@ def server():
                             contents = output.getvalue()#バイナリ取得
                         length=len(contents)
                         left=0
-                        right=65536
+                        right=1024
+                        print("length=",length)
+                        conn.sendall(str(length).encode())
                         while True:
                             if left>length:
                                 break
                             conn.sendall(contents[left:right])
-                            left+=65536
-                            right+=65536
+                            for i in range(len(contents[left:right])):
+                                print(contents[left+i],end=" ")
+                            left+=1024
+                            right+=1024
                         os.remove("../img/Generate.png")
                         return 0
                     elif splited[0]=="Image":
