@@ -7,6 +7,8 @@ import HazapModules
 import main
 import numpy
 import os
+import  time
+
 def server():
     contents=None
     startflg=0
@@ -88,6 +90,7 @@ def server():
 
                         print("length=",length)
                         conn.sendall(str(length).encode())
+                        time.sleep(1)
                         while True:
                             if left>length:
                                 break
