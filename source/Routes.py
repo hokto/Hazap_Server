@@ -2,21 +2,36 @@ import requests
 import json
 import urllib
 import HazapModules
+import os
 from itertools import chain
 
-def Search_route(start,goal,realRoute):#最適ルートを取得する関数。
+def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得する関数。
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
-    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
-    access_url=url.format(key=APIKEY,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
-    result=request.get(access_url)#データをjsonで取得し、連想配列に変換
-    result=result.json()
-    list_places=[]#取得した場所の緯度、経度を格納
-    for i in range(result["ResultInfo"]["Total"]):#取得できた数だけ格納する
-        place=result["Feature"][i]["Geometry"]["Coordinates"]
-        list_places.append(place)
-    safty_places=Search_safty(list_places,start,goal)#取得した場所の中から安全な場所を取得
+    if(resultFlag):
+        #これから取得
+        with open("../data/result.json") as f:
+            resultJson=json.load(f)
+        safty_places=resultJson["SaftyPlaces"]
+    else:
+        url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
+        access_url=url.format(key=APIKEY,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
+        result=requests.get(access_url)#データをjsonで取得し、連想配列に変換
+        result=result.json()
+        list_places=[]#取得した場所の緯度、経度を格納
+        for i in range(result["ResultInfo"]["Total"]):#取得できた数だけ格納する
+            place=result["Feature"][i]["Geometry"]["Coordinates"]
+            list_places.append(place)
+        safty_places=Search_safty(list_places,start,goal)#取得した場所の中から安全な場所を取得
+        with open("../data/result.json") as f:
+            resultJson=json.load(f)
+        if(safty_places==None):
+            resultJson["SaftyPlaces"]=None
+        else:
+            for i in len(safty_places):
+                resultJson["SaftyPlaces"][i]=safty_places[i]
+        with open("../data/result.json","w") as f:
+             json.dump(resultJson,f,ensure_ascii=False,indent=4)
     Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),realRoute)
-
 
 def Search_safty(list_places,start,goal):#安全な場所を探索する関数。
     list_ARV=[]#ARV（最大増振率）を格納
@@ -45,7 +60,6 @@ def Search_safty(list_places,start,goal):#安全な場所を探索する関数�
     else:
         safty_places=Cut_places(safty_places,-1)
     safty_places=list(map(lambda data:",".join(data),safty_places))#安全な場所が入ったリストを、経度の小さい順にソートし、ある地点の緯度が前の地点の緯度と比べてゴール地点と逆方向の場所にあるときその地点を削除
-    print(safty_places)
     return safty_places
 
 def Cut_places(list_places,direction):
