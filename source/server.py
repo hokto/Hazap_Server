@@ -16,7 +16,7 @@ def server():
         n=0
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
-        s.bind(('192.168.10.104', 4000))
+        s.bind(('192.168.11.2', 4000))
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -82,8 +82,10 @@ def server():
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
                         length=len(contents)
+                        sendsize=8192
                         left=0
-                        right=1024
+                        right=sendsize
+
                         print("length=",length)
                         conn.sendall(str(length).encode())
                         while True:
@@ -92,8 +94,8 @@ def server():
                             conn.sendall(contents[left:right])
                             for i in range(len(contents[left:right])):
                                 print(contents[left+i],end=" ")
-                            left+=1024
-                            right+=1024
+                            left+=sendsize
+                            right+=sendsize
                         os.remove("../img/Generate.png")
                         return 0
                     elif splited[0]=="Image":
