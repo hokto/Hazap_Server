@@ -27,6 +27,7 @@ def server():
             send="Invalid"
             # 誰かがアクセスしてきたら、コネクションとアドレスを入れる
             conn, addr = s.accept()
+            print("connected from:",addr)
             with conn:
                 while True:
                     # データを受け取る
@@ -67,7 +68,7 @@ def server():
                             send="Failed"
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:
                         send="Waiting..."
-                    elif splited[0]=="Wait" and startflag==1:
+                    elif splited[0]=="Wait" and startflg==1:
                        pass#jsonファイル送信する処理 
                     elif splited[0]=="End":
                         send="OK"
@@ -90,8 +91,8 @@ def server():
 
                         print("length=",length)
                         conn.sendall(str(length).encode())
-                        time.sleep(1)
                         while True:
+                            time.sleep(1)
                             if left>length:
                                 break
                             conn.sendall(contents[left:right])

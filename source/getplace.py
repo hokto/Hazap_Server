@@ -5,6 +5,7 @@ import HazapModules
 import math
 import Routes
 import time
+import Earthquake
 
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
@@ -53,7 +54,6 @@ def Reray(pos1,pos2,name):
     url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos2.lon)+","+str(pos2.lat)+"&mode=line"+sta["output"]
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
-
     for i in data["Feature"]:
         foo=i["Geometry"]["Coordinates"].split(",")
         foo[0],foo[1]=foo[1],foo[0]
@@ -147,26 +147,23 @@ def Calcudens(Coordinates):
 
 def GenerateHazard(Coordinates):
     #指定した座標のハザードマップを生成するやつ
-    f=open("../data/result.json",encoding="utf-8_sig")
+    #Earthquake.get_Dangerplaces(Coordinates)
+    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
     resultJson=json.load(f)
-    img=""
     mark=""
     hoge=searchplace(Coordinates)
     n=len(hoge)
     for i in range(n):
         mark+="&pin"+str(i+1)+"="+hoge[i]["coordinates"][0]+","+hoge[i]["coordinates"][1]
-    count=0
     e="0,255,0,0,1,0,255,0,127,"+str(Coordinates.lat)+","+str(Coordinates.lon)+",2000"
-    resultJson=searchplace(Coordinates)
-    for i in resultJson["EvacuationPlaces"]:
-        for k in resultJson["EvacuationPlaces"][i]:
-            if k=="step" or k=="coordinates":
-                continue
-                stre=":0,0,0,127,1,255,0,0,100,"+resultJson["EvacuationPlaces"][i][k][0]+","+resultJson["EvacuationPlaces"][i][k][1]+",100"
-                e+=stre
+
+    for i in resultJson:
+        foo=resultJson[i]["Coordinates"].split(",")
+        foo[0],foo[1]=foo[1],foo[0]
+        stre=":0,0,0,127,1,255,0,0,100,"+foo[0]+","+foo[1]+","+str(15*int(resultJson[i]["Step"]))
+        e+=stre
 
     yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&z=16&width=1000&height=1000&output=png"
-    print(yhurl)
     Routes.Download_route(yhurl,"../img/Generate.png")
 
     return 0
