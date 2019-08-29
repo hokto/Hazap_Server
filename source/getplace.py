@@ -41,6 +41,7 @@ def get_Coordinates(pos):
                 redata.append(i["Geometry"]["Coordinates"].split(','))
     for i in range(len(redata)):
         redata[i][0],redata[i][1]=redata[i][1],redata[i][0]
+
     return redata
 
 def Reray(pos1,pos2,name):
@@ -55,9 +56,10 @@ def Reray(pos1,pos2,name):
 
     for i in data["Feature"]:
         foo=i["Geometry"]["Coordinates"].split(",")
+        foo[0],foo[1]=foo[1],foo[0]
         if i["Geometry"]["Coordinates"] not in name:
-            foo[0],foo[1]=foo[1],foo[0]
             redata[i["Name"]]=foo
+
             suburl="https://map.yahooapis.jp/inner/V1/building?lat="+foo[0]+"&lon="+foo[1]+"&appid="+sta["appid"]+sta["output"]
             subres=urllib.request.urlopen(suburl)
             subdata=json.loads(subres.read().decode())
@@ -69,6 +71,7 @@ def Reray(pos1,pos2,name):
                 name[i["Geometry"]["Coordinates"]]=1
                 redata[i["Name"]].append(1)
         else:
+
             redata[i["Name"]]=foo
             redata[i["Name"]].append(name[i["Geometry"]["Coordinates"]])
     return redata
@@ -87,10 +90,12 @@ def searchplace(pos):
         pos2.lat=data[i][0]
         pos2.lon=data[i][1]
         hoge[i]=Reray(pos,pos2,name)
+        hoge[i]
         for k in hoge[i]:
             sumstep[i]+=hoge[i][k][2]
         hoge[i]["step"]=sumstep[i]
         hoge[i]["coordinates"]=data[i]
+
 
     hoge=HazapModules.TwoDimensionsSort(hoge,"step",0,len(hoge)-1)#stepsort
     return hoge
@@ -142,27 +147,34 @@ def Calcudens(Coordinates):
 
 def GenerateHazard(Coordinates):
     #指定した座標のハザードマップを生成するやつ
-    url="http://www.j-shis.bosai.go.jp/map/api/pshm/Y2010/AVR/TTL_MTTL/meshinfo.geojson?position="+str(Coordinates.lon)+","+str(Coordinates.lat)+"&epsg=4301"
-    res=urllib.request.urlopen(url)
-    data=json.loads(res.read().decode())
+    f=open("../data/result.json",encoding="utf-8_sig")
+    resultJson=json.load(f)
     img=""
     mark=""
     hoge=searchplace(Coordinates)
     n=len(hoge)
     for i in range(n):
         mark+="&pin"+str(i+1)+"="+hoge[i]["coordinates"][0]+","+hoge[i]["coordinates"][1]
-    print(mark)
+    count=0
+    e="0,255,0,0,1,0,255,0,127,"+str(Coordinates.lat)+","+str(Coordinates.lon)+",2000"
+    resultJson=searchplace(Coordinates)
+    for i in resultJson["EvacuationPlaces"]:
+        for k in resultJson["EvacuationPlaces"][i]:
+            if k=="step" or k=="coordinates":
+                continue
+                stre=":0,0,0,127,1,255,0,0,100,"+resultJson["EvacuationPlaces"][i][k][0]+","+resultJson["EvacuationPlaces"][i][k][1]+",100"
+                e+=stre
 
-    for i in range(len(data["features"][0]["geometry"]["coordinates"][0])):
-        img+=","+str(data["features"][0]["geometry"]["coordinates"][0][i][1])+","+str(data["features"][0]["geometry"]["coordinates"][0][i][0])
-    print(img)
-    yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&"+mark+"&p=0,0,255,0,3,0,0,255,60"+img+"&e=0,255,0,0,5,0,255,0,127,"+str(Coordinates.lat)+","+str(Coordinates.lon)+",2000&z=16&width=1000&height=1000&output=png32"
+    yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&z=16&width=1000&height=1000&output=png"
+    print(yhurl)
     Routes.Download_route(yhurl,"../img/Generate.png")
 
     return 0
 
-#if __name__=="__main__":
-#    pos=HazapModules.Coordinates()
-#    pos.lat=31.760254
-#    pos.lon=131.080396
-#    GenerateHazard(pos)
+if __name__=="__main__":
+    pos=HazapModules.Coordinates()
+    pos.lat=31.760254
+    pos.lon=131.080396
+
+    count=0
+    GenerateHazard(pos)
