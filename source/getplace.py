@@ -141,6 +141,7 @@ def Calcudens(Coordinates):
     return data
 
 def GenerateHazard(Coordinates):
+    #指定した座標のハザードマップを生成するやつ
     url="http://www.j-shis.bosai.go.jp/map/api/pshm/Y2010/AVR/TTL_MTTL/meshinfo.geojson?position="+str(Coordinates.lon)+","+str(Coordinates.lat)+"&epsg=4301"
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
@@ -156,7 +157,7 @@ def GenerateHazard(Coordinates):
         img+=","+str(data["features"][0]["geometry"]["coordinates"][0][i][1])+","+str(data["features"][0]["geometry"]["coordinates"][0][i][0])
     print(img)
     yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&"+mark+"&p=0,0,255,0,3,0,0,255,60"+img+"&e=0,255,0,0,5,0,255,0,127,"+str(Coordinates.lat)+","+str(Coordinates.lon)+",2000&z=16&width=1000&height=1000&output=png32"
-    Routes.Download_route(yhurl,"../img/test.png")
+    Routes.Download_route(yhurl,"../img/Generate.png")
 
     return 0
 

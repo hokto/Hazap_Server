@@ -1,19 +1,24 @@
 import socket
 import getplace
+import io
+from PIL import Image
 import Earthquake
 import HazapModules
 import main
 import json
+import numpy
+import os
 def server():
+    contents=None
     startflg=0
     count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
         n=0
-        Coordinates={}
-        CoordinateLogs={}
         s.bind(('192.168.11.133', 4000))
+        Coordinates={}#最新の位置情報を格納している辞書
+        CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -25,7 +30,7 @@ def server():
             with conn:
                 while True:
                     # データを受け取る
-                    data = conn.recv(10240)
+                    data = conn.recv(1024*(2**5))
                     send="Invalid"
                     if not data:
                         break
@@ -49,10 +54,13 @@ def server():
                                 send="Canceled"
                     elif splited[0]=="Start":
                         startflg = 1
+                        print("serverstart")
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
+                        print("Hello,world!!")
                         Earthquake.get_Dangerplaces(startPos)
+                        print("Debug")
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -64,19 +72,34 @@ def server():
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:
                         send="Waiting..."
                     elif splited[0]=="Wait" and startflg==1:
-                        send="Wait:True"
-                        f=open("../data/dangerplaces.json","r")
-                        data=json.load(f)
-                        print(data)
-                        #conn.sendall(send.encode())
-                        conn.sendall(json.dumps(data).encode())
-                        print("ReturnJson")#jsonファイル送信する処理 
-                    
+                        send="Start:"
+                        with open("../data/dangerplaces.json") as f:
+                            jsonData=json.load(f)
+                            send+=json.dumps(jsonData)
+                        #conn.sendall((send+json.dumps(jsonData)).encode())
+                        print("Sended") 
                     elif splited[0]=="End":
                         send="OK"
-                        conn.sendall(send.encode())
+                        #conn.sendall(send.encode())
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        #print(type(Coordinates[int(splited[1])]))
+                        #main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        hoge=HazapModules.Coordinates()
+                        print(Coordinates[int(splited[1])])
+                        hoge.lat=float(Coordinates[int(splited[1])][0])
+                        hoge.lon=float(Coordinates[int(splited[1])][1])
+                        getplace.GenerateHazard(hoge)
+                        tmpimg = Image.open("../img/route.png").convert("P")
+                        with io.BytesIO() as output:
+                            tmpimg.save(output,format="PNG")
+                            contents = output.getvalue()#バイナリ取得
+                            print(contents)
+                        conn.sendall(contents)
+                        os.remove("../img/route.png")
                         return 0
+                    elif splited[0]=="Image":
+                        conn.sendall(contents)
+                        continue
                     if(startflg==1):
                         count=getplace.Calcudens(Coordinates)
                     conn.sendall(send.encode())
