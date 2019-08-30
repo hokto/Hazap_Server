@@ -74,7 +74,7 @@ def server():
                         send="OK"
                         #print(type(Coordinates[int(splited[1])]))
                         print(list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
-                        #main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         hoge=HazapModules.Coordinates()
                         print(Coordinates[int(splited[1])])
                         hoge.lat=float(Coordinates[int(splited[1])][0])
@@ -92,12 +92,10 @@ def server():
                         print("length=",length)
                         conn.sendall(str(length).encode())
                         while True:
-                            time.sleep(1)
+                            time.sleep(0.5)
                             if left>length:
                                 break
                             conn.sendall(contents[left:right])
-                            for i in range(len(contents[left:right])):
-                                print(contents[left+i],end=" ")
                             left+=sendsize
                             right+=sendsize
                         os.remove("../img/Generate.png")

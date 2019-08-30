@@ -6,6 +6,7 @@ import math
 import Routes
 import time
 import Earthquake
+from PIL import Image
 
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
@@ -111,10 +112,14 @@ def CarcuEva(Coordinates):
     res1=urllib.request.urlopen(url1)
     data1=json.loads(res1.read().decode())
 
+
     hoge=data1["Feature"][0]["Geometry"]["Coordinates"].split(',')
     url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+hoge[1]+"&lon="+hoge[0]+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
+    if data["ResultInfo"]["Count"]==0:
+        return 0
+    print(data)
     st=data["Feature"][0]["Property"]["Genre"][0]["Name"]
     value=0
     if st.find("避難")!=-1:
@@ -151,27 +156,21 @@ def GenerateHazard(Coordinates):
     f=open("../data/dangerplaces.json",encoding="utf-8_sig")
     resultJson=json.load(f)
     mark=""
-    hoge=searchplace(Coordinates)
-    n=len(hoge)
-    for i in range(n):
-        mark+="&pin"+str(i+1)+"="+hoge[i]["coordinates"][0]+","+hoge[i]["coordinates"][1]
+    hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
+
+    for i in hoge["EvacuationPlaces"]:
+        mark+="&pin"+str(int(i)+1)+"="+hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
+
     e="0,255,0,0,1,0,255,0,127,"+str(Coordinates.lat)+","+str(Coordinates.lon)+",2000"
 
     for i in resultJson:
         foo=resultJson[i]["Coordinates"].split(",")
         foo[0],foo[1]=foo[1],foo[0]
-        stre=":0,0,0,127,1,255,0,0,100,"+foo[0]+","+foo[1]+","+str(15*int(resultJson[i]["Step"]))
+        stre=":0,0,0,127,1,255,0,0,120,"+foo[0]+","+foo[1]+","+str(45*int(resultJson[i]["Step"]))
         e+=stre
 
     yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&z=16&width=1000&height=1000&output=png"
     Routes.Download_route(yhurl,"../img/Generate.png")
+    
 
     return 0
-
-if __name__=="__main__":
-    pos=HazapModules.Coordinates()
-    pos.lat=31.760254
-    pos.lon=131.080396
-
-    count=0
-    GenerateHazard(pos)

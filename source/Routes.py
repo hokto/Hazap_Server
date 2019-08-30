@@ -9,7 +9,7 @@ def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得す�
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     if(resultFlag):
         #これから取得
-        with open("../data/result.json") as f:
+        with open("../data/result.json",encoding="utf-8_sig") as f:
             resultJson=json.load(f)
         safty_places=resultJson["SaftyPlaces"]
     else:

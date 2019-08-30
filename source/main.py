@@ -8,7 +8,7 @@ import json
 def OptimalEvacuation(start_pos,realRoute,resultFlag):#最適な避難場所の探索、及び最適な避難経路の探索、実際に避難した経路と最適な避難場所を同じ画像に出力
     if(resultFlag):
         #そこから取得
-        with open("../data/result.json") as f:
+        with open("../data/result.json",encoding="utf-8_sig") as f:
             resultJson=json.load(f)
         places=resultJson["EvacuationPlaces"]
         goal_pos=places["0"]["coordinates"]
