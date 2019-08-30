@@ -8,6 +8,8 @@ import main
 import json
 import numpy
 import os
+import  time
+
 def server():
     contents=None
     startflg=0
@@ -58,9 +60,7 @@ def server():
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
-                        print("Hello,world!!")
                         Earthquake.get_Dangerplaces(startPos)
-                        print("Debug")
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -73,10 +73,22 @@ def server():
                         send="Waiting..."
                     elif splited[0]=="Wait" and startflg==1:
                         send="Start:"
-                        with open("../data/dangerplaces.json") as f:
+                        with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
                             jsonData=json.load(f)
-                            send+=json.dumps(jsonData)
-                        #conn.sendall((send+json.dumps(jsonData)).encode())
+                            sendData=json.dumps(jsonData,ensure_ascii=False).encode()
+                        length=len(sendData)
+                        sendSize=1024
+                        left=0
+                        right=sendSize
+                        conn.sendall(("Start:"+str(length)).encode())
+                        time.sleep(1)
+                        while True:
+                            time.sleep(1)
+                            if(left>length):
+                                break
+                            conn.sendall(sendData[left:right])
+                            left+=sendSize
+                            right+=sendSize
                         print("Sended") 
                     elif splited[0]=="End":
                         send="OK"
@@ -93,9 +105,23 @@ def server():
                         with io.BytesIO() as output:
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
-                            print(contents)
-                        conn.sendall(contents)
-                        os.remove("../img/route.png")
+                        length=len(contents)
+                        sendsize=8192
+                        left=0
+                        right=sendsize
+
+                        print("length=",length)
+                        conn.sendall(str(length).encode())
+                        time.sleep(1)
+                        while True:
+                            if left>length:
+                                break
+                            conn.sendall(contents[left:right])
+                            for i in range(len(contents[left:right])):
+                                print(contents[left+i],end=" ")
+                            left+=sendsize
+                            right+=sendsize
+                        os.remove("../img/Generate.png")
                         return 0
                     elif splited[0]=="Image":
                         conn.sendall(contents)

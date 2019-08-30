@@ -7,7 +7,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect(('192.168.11.133', 4000))
     # サーバにメッセージを送る
     print("Connected!")
-    i=input()
+    #i=input()
+    i="Start:31.760254,131.080396"
     if i=="End":
         s.sendall(i.encode())
         s.close()
