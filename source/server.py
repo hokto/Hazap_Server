@@ -1,19 +1,26 @@
 import socket
 import getplace
+import io
+from PIL import Image
 import Earthquake
 import HazapModules
 import main
-from PIL import Image
+import json
 import numpy
+import os
+import  time
+
 def server():
+    contents=None
     startflg=0
     count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
         n=0
-        Coordinates={}
-        CoordinateLogs={}
-        s.bind(('192.168.0.11', 4000))
+        s.bind(('192.168.11.133', 4000))
+        Coordinates={}#最新の位置情報を格納している辞書
+        CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -25,7 +32,7 @@ def server():
             with conn:
                 while True:
                     # データを受け取る
-                    data = conn.recv(4096)
+                    data = conn.recv(1024*(2**5))
                     send="Invalid"
                     if not data:
                         break
@@ -39,6 +46,7 @@ def server():
                         Coordinates[n]=splited[1].split(",")
                         send="number:"+str(n)
                         n+=1
+                        print(splited)
                     elif splited[0]=="Recruit" and startflg==1:
                         send="started"
                     elif splited[0]=="Cancel":
@@ -48,6 +56,7 @@ def server():
                                 send="Canceled"
                     elif splited[0]=="Start":
                         startflg = 1
+                        print("serverstart")
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
@@ -57,17 +66,66 @@ def server():
                             Coordinates[int(splited[1])]=splited[2].split(",")
                             CoordinateLogs[int(splited[1])].append(splited[2].split(","))
                             send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
+                            print(splited)
                         else:
                             send="Failed"
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:
                         send="Waiting..."
-                    elif splited[0]=="Wait" and startflag==1:
-                       pass#jsonファイル送信する処理 
+                    elif splited[0]=="Wait" and startflg==1:
+                        send="Start:"
+                        with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
+                            jsonData=json.load(f)
+                            sendData=json.dumps(jsonData,ensure_ascii=False).encode()
+                        length=len(sendData)
+                        sendSize=1024
+                        left=0
+                        right=sendSize
+                        conn.sendall(("Start:"+str(length)).encode())
+                        time.sleep(1)
+                        while True:
+                            time.sleep(1)
+                            if(left>length):
+                                break
+                            conn.sendall(sendData[left:right])
+                            left+=sendSize
+                            right+=sendSize
+                        print("Sended") 
                     elif splited[0]=="End":
                         send="OK"
-                        print(list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        #conn.sendall(send.encode())
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        #print(type(Coordinates[int(splited[1])]))
+                        #main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        hoge=HazapModules.Coordinates()
+                        print(Coordinates[int(splited[1])])
+                        hoge.lat=float(Coordinates[int(splited[1])][0])
+                        hoge.lon=float(Coordinates[int(splited[1])][1])
+                        getplace.GenerateHazard(hoge)
+                        tmpimg = Image.open("../img/route.png").convert("P")
+                        with io.BytesIO() as output:
+                            tmpimg.save(output,format="PNG")
+                            contents = output.getvalue()#バイナリ取得
+                        length=len(contents)
+                        sendsize=8192
+                        left=0
+                        right=sendsize
+
+                        print("length=",length)
+                        conn.sendall(str(length).encode())
+                        time.sleep(1)
+                        while True:
+                            if left>length:
+                                break
+                            conn.sendall(contents[left:right])
+                            for i in range(len(contents[left:right])):
+                                print(contents[left+i],end=" ")
+                            left+=sendsize
+                            right+=sendsize
+                        os.remove("../img/Generate.png")
                         return 0
+                    elif splited[0]=="Image":
+                        conn.sendall(contents)
+                        continue
                     if(startflg==1):
                         count=getplace.Calcudens(Coordinates)
                     conn.sendall(send.encode())
