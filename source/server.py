@@ -7,7 +7,7 @@ import HazapModules
 import main
 import numpy
 import os
-import  time
+import time
 
 def server():
     contents=None
@@ -58,7 +58,7 @@ def server():
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
-                        Earthquake.get_Dangerplaces(startPos)
+                        #Earthquake.get_Dangerplaces(startPos)
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -71,15 +71,19 @@ def server():
                     elif splited[0]=="Wait" and startflg==1:
                        pass#jsonファイル送信する処理 
                     elif splited[0]=="End":
+                        #スタート地点とゴール地点の座標を抽出して直線距離計算
+                        startpoint=HazapModules.Coordinates()
+                        startpoint.lat=float(CoordinateLogs[int(splited[1])][0][0])
+                        startpoint.lon=float(CoordinateLogs[int(splited[1])][0][1])
+                        endpoint=HazapModules.Coordinates()
+                        endpoint.lat=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][0])
+                        endpoint.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][1])
+                        
                         send="OK"
-                        #print(type(Coordinates[int(splited[1])]))
                         print(list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
-                        main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+               #後で解除すること!!#main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         hoge=HazapModules.Coordinates()
-                        print(Coordinates[int(splited[1])])
-                        hoge.lat=float(Coordinates[int(splited[1])][0])
-                        hoge.lon=float(Coordinates[int(splited[1])][1])
-                        getplace.GenerateHazard(hoge)
+                        getplace.GenerateHazard(startpoint,endpoint)
                         tmpimg = Image.open("../img/Generate.png").convert("P")
                         with io.BytesIO() as output:
                             tmpimg.save(output,format="PNG")

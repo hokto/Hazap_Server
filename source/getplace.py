@@ -150,9 +150,15 @@ def Calcudens(Coordinates):
                 data[i+k+1]+=1
     return data
 
-def GenerateHazard(Coordinates):
+def GenerateHazard(sta,end):
     #指定した座標のハザードマップを生成するやつ
     #Earthquake.get_Dangerplaces(Coordinates)
+    dis=HazapModules.Calculatedistance(sta,end)
+    radius=0
+    for i in range(2,100):
+        if(dis<i*1000):
+            radius=i
+            break
     f=open("../data/dangerplaces.json",encoding="utf-8_sig")
     resultJson=json.load(f)
     mark=""
@@ -161,16 +167,16 @@ def GenerateHazard(Coordinates):
     for i in hoge["EvacuationPlaces"]:
         mark+="&pin"+str(int(i)+1)+"="+hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
 
-    e="0,255,0,0,1,0,255,0,127,"+str(Coordinates.lat)+","+str(Coordinates.lon)+",2000"
+    e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"2000"
 
     for i in resultJson:
         foo=resultJson[i]["Coordinates"].split(",")
         foo[0],foo[1]=foo[1],foo[0]
-        stre=":0,0,0,127,1,255,0,0,120,"+foo[0]+","+foo[1]+","+str(45*int(resultJson[i]["Step"]))
+        stre=":0,0,0,127,1,255,0,0,"+str(125*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(45*int(resultJson[i]["Step"]))
         e+=stre
 
-    yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&z=16&width=1000&height=1000&output=png"
+    yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
     Routes.Download_route(yhurl,"../img/Generate.png")
-    
-
     return 0
+
+

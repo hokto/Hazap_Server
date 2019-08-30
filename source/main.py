@@ -18,7 +18,7 @@ def OptimalEvacuation(start_pos,realRoute,resultFlag):#最適な避難場所の�
         places=getplace.searchplace(start_pos)#最適な避難場所を取得
         resultJson={}
         resultJson["EvacuationPlaces"]=places
-        with open("../data/result.json","w") as f:
+        with open("../data/result.json","w",encoding="utf-8_sig") as f:
             json.dump(resultJson,f,ensure_ascii=False,indent=4)
         goal_pos=places[0]["coordinates"]
         optimal_goal=HazapModules.Coordinates()
