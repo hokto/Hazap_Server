@@ -21,6 +21,8 @@ def server():
         s.bind(('192.168.11.133', 4000))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
+        disaster=""#災害の種類
+        disasterScale=""#災害の規模
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -56,11 +58,15 @@ def server():
                                 send="Canceled"
                     elif splited[0]=="Start":
                         startflg = 1
+                        disaster=splited[2]
+                        disasterScale=splited[3]
                         print("serverstart")
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
                         Earthquake.get_Dangerplaces(startPos)
+                    elif splited[0]=="Allpeople":
+                        conn.sendall(("Allpeople:"+n).encode())
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -80,7 +86,7 @@ def server():
                         sendSize=1024
                         left=0
                         right=sendSize
-                        conn.sendall(("Start:"+str(length)).encode())
+                        conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
                         while True:
                             time.sleep(1)
