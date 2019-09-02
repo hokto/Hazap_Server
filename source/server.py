@@ -60,7 +60,7 @@ def server():
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
-                        Earthquake.get_Dangerplaces(startPos)
+                        #Earthquake.get_Dangerplaces(startPos)
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
