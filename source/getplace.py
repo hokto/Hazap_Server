@@ -168,7 +168,7 @@ def GenerateHazard(sta,end):
         mark+="&pin"+str(int(i)+1)+"="+hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
 
     e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"2000"
-
+    print(resultJson)
     for i in resultJson:
         foo=resultJson[i]["Coordinates"].split(",")
         foo[0],foo[1]=foo[1],foo[0]
@@ -180,3 +180,11 @@ def GenerateHazard(sta,end):
     return 0
 
 
+if __name__=="__main__":
+    print("hofe")
+    pos1,pos2=HazapModules.Coordinates(),HazapModules.Coordinates()
+    pos1.lat=31.760254
+    pos1.lon=131.080396
+    pos2.lat=31.728616
+    pos2.lon=131.1218533
+    GenerateHazard(pos1,pos2)

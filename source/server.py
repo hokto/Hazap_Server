@@ -9,6 +9,8 @@ import json
 import numpy
 import os
 import time
+from websocket import create_connection
+
 
 def server():
     contents=None
@@ -18,7 +20,7 @@ def server():
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
         n=0
-        s.bind(('192.168.11.133', 4000))
+        s.bind(('192.168.11.2', 4000))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         disaster=""#災害の種類
@@ -50,6 +52,7 @@ def server():
                         send="number:"+str(n)
                         n+=1
                         print(splited)
+
                     elif splited[0]=="Recruit" and startflg==1:
                         send="started"
                     elif splited[0]=="Cancel":
@@ -65,13 +68,9 @@ def server():
                         send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
-<<<<<<< HEAD
-                        #Earthquake.get_Dangerplaces(startPos)
-=======
                         Earthquake.get_Dangerplaces(startPos)
                     elif splited[0]=="Allpeople":
                         conn.sendall(("Allpeople:"+n).encode())
->>>>>>> 0b5eebeda3691db8843155f6f6b028c7ba804e15
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -83,9 +82,6 @@ def server():
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:
                         send="Waiting..."
                     elif splited[0]=="Wait" and startflg==1:
-<<<<<<< HEAD
-                       pass#jsonファイル送信する処理 
-=======
                         send="Start:"
                         with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
                             jsonData=json.load(f)
@@ -104,9 +100,7 @@ def server():
                             left+=sendSize
                             right+=sendSize
                         print("Sended") 
->>>>>>> 0b5eebeda3691db8843155f6f6b028c7ba804e15
                     elif splited[0]=="End":
-                        #スタート地点とゴール地点の座標を抽出して直線距離計算
                         startpoint=HazapModules.Coordinates()
                         startpoint.lat=float(CoordinateLogs[int(splited[1])][0][0])
                         startpoint.lon=float(CoordinateLogs[int(splited[1])][0][1])
@@ -114,42 +108,57 @@ def server():
                         endpoint.lat=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][0])
                         endpoint.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][1])
                         
-                        send="OK"
-<<<<<<< HEAD
                         print(list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
-               #後で解除すること!!#main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         hoge=HazapModules.Coordinates()
                         getplace.GenerateHazard(startpoint,endpoint)
                         tmpimg = Image.open("../img/Generate.png").convert("P")
-=======
-                        #conn.sendall(send.encode())
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
-                        #print(type(Coordinates[int(splited[1])]))
-                        #main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         hoge=HazapModules.Coordinates()
-                        print(Coordinates[int(splited[1])])
                         hoge.lat=float(Coordinates[int(splited[1])][0])
                         hoge.lon=float(Coordinates[int(splited[1])][1])
-                        getplace.GenerateHazard(hoge)
-                        tmpimg = Image.open("../img/route.png").convert("P")
->>>>>>> 0b5eebeda3691db8843155f6f6b028c7ba804e15
                         with io.BytesIO() as output:
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
                         length=len(contents)
+                        print("hogehogehoge",length)
                         sendsize=8192
                         left=0
                         right=sendsize
+                        wes = create_connection("ws://192.168.11.2:5000")
+                        time.sleep(0.5)
+                        dist=0
+                        #スタート地点とゴール地点の座標をなげて、正しい反応が返ってくるまでまつ。
+                        webserversend="long:"+str(startpoint.lat)+","+str(startpoint.lon)+":"+str(endpoint.lat)+","+str(endpoint.lon)
+                        print(webserversend)
+                        wes.send(webserversend)
 
+                        while True:
+                            result =  wes.recv()
+                            print("result=",result)
+                            ravel=result.split(":")
+
+                            print("ravel=",ravel)
+                            if ravel[0] == "value":
+                                print(ravel[1])
+                                dist=float(ravel[1])
+                                break
+                        survival=str(dist).encode()
+                        contents+=survival
                         print("length=",length)
-                        conn.sendall(str(length).encode())
+                        conn.sendall((str(length)+":"+str(len(survival))).encode())
                         while True:
                             time.sleep(0.5)
-                            if left>length:
+                            if left>length+len(survival):
+
+                                send=conn.sendall(contents[left:right])
                                 break
                             conn.sendall(contents[left:right])
                             left+=sendsize
                             right+=sendsize
+
+
+                        wes.close()
                         os.remove("../img/Generate.png")
                         return 0
                     elif splited[0]=="Image":
