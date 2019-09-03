@@ -24,10 +24,12 @@ def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得す�
         safty_places=Search_safty(list_places,start,goal)#取得した場所の中から安全な場所を取得
         with open("../data/result.json",encoding="utf-8_sig") as f:
             resultJson=json.load(f)
+        resultJson["SaftyPlaces"]={}
         if(safty_places==None):
             resultJson["SaftyPlaces"]=None
         else:
-            for i in len(safty_places):
+            print("SaftyPlaces:",safty_places)
+            for i in range(len(safty_places)):
                 resultJson["SaftyPlaces"][i]=safty_places[i]
         with open("../data/result.json","w",encoding="utf-8_sig") as f:
              json.dump(resultJson,f,ensure_ascii=False,indent=4)

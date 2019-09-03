@@ -7,7 +7,11 @@ def new_client(client, server):
 def send_msg_allclient(client, server,message):
   print(client)
   if message.split(":")[0] == "long":
-    server.send_message_to_all("requested value:"+message.split(":")[1]+":"+message.split(":")[2])
+  	size=len(message.split(":"))-1
+  	data=""
+  	for i in range(size):
+  		data+=(":"+message.split(":")[i+1])
+  	server.send_message_to_all("requested value"+data)
   elif message.split(":")[0]=="value":
     server.send_message_to_all("value:"+message.split(":")[1])
 

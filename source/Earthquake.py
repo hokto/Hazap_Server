@@ -40,3 +40,10 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
         idx+=1
     with open("../data/dangerplaces.json","w") as f:
         json.dump(dangerPlaces,f,ensure_ascii=False,indent=4)
+
+if __name__=="__main__":
+    print("hofe")
+    pos1=HazapModules.Coordinates()
+    pos1.lat=31.760254
+    pos1.lon=131.080396
+    GenerateHazard(pos1,pos2)

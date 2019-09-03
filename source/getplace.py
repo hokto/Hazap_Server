@@ -7,6 +7,7 @@ import Routes
 import time
 import Earthquake
 from PIL import Image
+from websocket import create_connection
 
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
@@ -16,9 +17,9 @@ def get_Coordinates(pos):
         }
     redata=[]
     tellist=[]
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
-    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=2"+sta["output"]+"&gc=0423007&sort=geo"
-    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=2"+sta["output"]+"&gc=0305007&sort=geo"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1"+sta["output"]+"&gc=0425&sort=geo"
+    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1"+sta["output"]+"&gc=0423007&sort=geo"
+    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1"+sta["output"]+"&gc=0305007&sort=geo"
     res=urllib.request.urlopen(url)
     res2=urllib.request.urlopen(url2)
     res3=urllib.request.urlopen(url3)
@@ -80,7 +81,7 @@ def Reray(pos1,pos2,name):
 def searchplace(pos):
     #この関数は座標を投げるとその地点からいい避難場所への道のりにある建物の階数、つまり高さを足していって低い順にソートして返す
     data=get_Coordinates(pos)
-    hoge={}
+    jsondata={}
     name={}
     sumstep=[]
     for i in range(len(data)):
@@ -90,16 +91,31 @@ def searchplace(pos):
         pos2=HazapModules.Coordinates()
         pos2.lat=data[i][0]
         pos2.lon=data[i][1]
-        hoge[i]=Reray(pos,pos2,name)
-        hoge[i]
-        for k in hoge[i]:
-            sumstep[i]+=hoge[i][k][2]
-        hoge[i]["step"]=sumstep[i]
-        hoge[i]["coordinates"]=data[i]
+        jsondata[i]=Reray(pos,pos2,name)
+        jsondata[i]
+        for k in jsondata[i]:
+            sumstep[i]+=jsondata[i][k][2]
+        jsondata[i]["step"]=sumstep[i]
+        jsondata[i]["coordinates"]=data[i]
+        wes = create_connection("ws://192.168.11.2:5000")
+        wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
+        dist=0
+        while True:
+            result =  wes.recv()
+            ravel=result.split(":")
+            if ravel[0] == "value":
+                print(ravel[1])
+                dist=float(ravel[1])
+                break
+        wes.close()
+        jsondata[i]["range"]=dist
+        if dist==0:
+            jsondata[i]["value"]=0
+        else:
+            jsondata[i]["value"]=sumstep[i]/dist
 
-
-    hoge=HazapModules.TwoDimensionsSort(hoge,"step",0,len(hoge)-1)#stepsort
-    return hoge
+    jsondata=HazapModules.TwoDimensionsSort(jsondata,"value",0,len(jsondata)-1)#stepsort
+    return jsondata
 
 #lat=緯度　lon=経度
 def CarcuEva(Coordinates):
@@ -152,27 +168,35 @@ def Calcudens(Coordinates):
 
 def GenerateHazard(sta,end):
     #指定した座標のハザードマップを生成するやつ
-    #Earthquake.get_Dangerplaces(Coordinates)
+    Earthquake.get_Dangerplaces(sta)
     dis=HazapModules.Calculatedistance(sta,end)
     radius=0
+    print("d")
     for i in range(2,100):
         if(dis<i*1000):
             radius=i
             break
+
+    print("dd")
     f=open("../data/dangerplaces.json",encoding="utf-8_sig")
     resultJson=json.load(f)
     mark=""
     hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
 
+
+    print("ddd")
     for i in hoge["EvacuationPlaces"]:
         mark+="&pin"+str(int(i)+1)+"="+hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
 
-    e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"2000"
+    e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"1000"
     print(resultJson)
     for i in resultJson:
         foo=resultJson[i]["Coordinates"].split(",")
         foo[0],foo[1]=foo[1],foo[0]
-        stre=":0,0,0,127,1,255,0,0,"+str(125*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(45*int(resultJson[i]["Step"]))
+        concen=110*(1/float(resultJson[i]["ARV"]))
+        if 126<concen:
+            concen=126
+        stre=":0,0,0,127,1,255,0,0,"+str(100*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(10*int(resultJson[i]["Step"]))
         e+=stre
 
     yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
@@ -180,11 +204,3 @@ def GenerateHazard(sta,end):
     return 0
 
 
-if __name__=="__main__":
-    print("hofe")
-    pos1,pos2=HazapModules.Coordinates(),HazapModules.Coordinates()
-    pos1.lat=31.760254
-    pos1.lon=131.080396
-    pos2.lat=31.728616
-    pos2.lon=131.1218533
-    GenerateHazard(pos1,pos2)

@@ -63,101 +63,50 @@ function sleep(waitMsec) {
   while (new Date() - startMsec < waitMsec);
 }
 
-function generate(){
-    lat1=31.760254;
-    lon1=131.080396;
-    lat2=31.728616;
-    lon2=131.1218533;
-    var map = new Y.Map('map', {
-       configure : {
-           scrollWheelZoom : true,
-       }
-   });
-   map.drawMap(new Y.LatLng(lat1, lon1), 15, Y.LayerSetId.NORMAL);
-   //始点は Geolocation API を使って現在地を取得
-   var end; // 終点
-   // 終点は地図をタップして設定
-   end = new Y.LatLng(lat2,lon2);
-   // 現在地を取得
-   start = new Y.LatLng(lat1, lon1);
-   // ルートを表示するためのレイヤーを設定する
-   var routeSearchLayer = new Y.RouteSearchLayer();
-   routeSearchLayer.bind('drawend', function(result) {
-
-       $('#summary').val(hoge=result.TotalDistance)
-   });
-   map.addLayer(routeSearchLayer);
-   // ルートを表示する
-       if (start && end) {
-           routeSearchLayer.clearRoute();
-           var config = {
-               enableRestrict: true, // 交通規制を考慮する
-               useCar: true,         // 自動車を使う
-               useFerry: true        // フェリーを使用する
-           };
-           routeSearchLayer.execute([start, end], config);
-       }
-}
 
 window.onload = function() {
 
-    const sock = new WebSocket("ws://192.168.11.2:5000");
+  const sock = new WebSocket("ws://192.168.11.2:5000");
+  sock.addEventListener("open", e => {
+    console.log("connected");
+  });
+  sock.addEventListener("message", e => {
+    if(e.data.split(":")[0]=="requested value"){
+      var size=e.data.split(":").length-1;
+      print(size);
+      var data=new Array();
+      for (var i = 0; i<size; i++) {
+        data.push(new Y.LatLng(e.data.split(":")[i+1].split(",")[0], e.data.split(":")[i+1].split(",")[1]))
+      }
+      var map = new Y.Map('map', {
+        configure : {
+          scrollWheelZoom : true,
+        }
+      });
+      map.drawMap(data[0], 15, Y.LayerSetId.NORMAL);
 
-        sock.addEventListener("open", e => {
-            console.log("connected");
-        });
 
-        sock.addEventListener("message", e => {
+      var routeSearchLayer = new Y.RouteSearchLayer();
+      routeSearchLayer.bind('drawend', function(result) {
+        $('#summary').val(sock.send(String("value:"+result.TotalDistance)))
+      });
 
-            if(e.data.split(":")[0]=="requested value"){
-                print(e.data.split(":")[0]);
-                lat1=e.data.split(":")[1].split(",")[0];
-                lon1=e.data.split(":")[1].split(",")[1];
-                lat2=e.data.split(":")[2].split(",")[0];
-                lon2=e.data.split(":")[2].split(",")[1];
-                
-                var map = new Y.Map('map', {
-       configure : {
-           scrollWheelZoom : true,
-       }
-   });
-   map.drawMap(new Y.LatLng(lat1, lon1), 15, Y.LayerSetId.NORMAL);
-   //始点は Geolocation API を使って現在地を取得
-   var end; // 終点
-   // 終点は地図をタップして設定
-   end = new Y.LatLng(lat2,lon2);
-   // 現在地を取得
-   start = new Y.LatLng(lat1, lon1);
-   // ルートを表示するためのレイヤーを設定する
-   var routeSearchLayer = new Y.RouteSearchLayer();
-   routeSearchLayer.bind('drawend', function(result) {
-    
-       $('#summary').val(sock.send(String("value:"+result.TotalDistance)))
-   });
-   map.addLayer(routeSearchLayer);
-   // ルートを表示する
-       if (start && end) {
-           routeSearchLayer.clearRoute();
-           var config = {
-               enableRestrict: true, // 交通規制を考慮する
-               useCar: true,         // 自動車を使う
-               useFerry: true        // フェリーを使用する
-           };
-           routeSearchLayer.execute([start, end], config);
-       }
-            }
-        });
+      map.addLayer(routeSearchLayer);
+      routeSearchLayer.clearRoute();
+      routeSearchLayer.execute(data, {
+        enableRestrict: true,
+        useCar: false
+      });
 
-        sock.addEventListener("close", e => {
-            console.log("closed");
-        });
+  }
+});
+  sock.addEventListener("close", e => {
+    console.log("closed");
+  });
+  sock.addEventListener("error", e => {
+    console.log("error!!");
+  });
 
-        sock.addEventListener("error", e => {
-            console.log("error!!");
-
-        });
-
-    //generate(31.760254,131.080396,31.728616,131.1218533);
 }
 </script>
 </head>
