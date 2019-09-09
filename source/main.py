@@ -43,3 +43,8 @@ def Result(start_pos,realRoute):#リザルト画面に必要な処理を行う�
     print("Route:"+str(routesPercentage))
     placePercentage=getplace.CarcuEva(real_goal)
     print("Place:"+str(placePercentage))
+#start=HazapModules.Coordinates()
+#start.lat=31.761254
+#start.lon=131.081396
+#route=["31.761254,131.081396","31.760254,131.080396"]
+#Result(start,route)
