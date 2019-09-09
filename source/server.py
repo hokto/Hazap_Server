@@ -21,6 +21,8 @@ def server():
         s.bind(('192.168.11.133', 4000))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
+        disaster=""#災害の種類
+        disasterScale=""#災害の規模
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -33,7 +35,7 @@ def server():
                 while True:
                     # データを受け取る
                     data = conn.recv(1024*(2**5))
-                    send="Invalid"
+                    #send="Invalid"
                     if not data:
                         break
                     rec=data.decode()
@@ -56,11 +58,15 @@ def server():
                                 send="Canceled"
                     elif splited[0]=="Start":
                         startflg = 1
+                        disaster=splited[2]
+                        disasterScale=splited[3]
                         print("serverstart")
-                        send="start!"
+                        send="DisasterStart:"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
                         #Earthquake.get_Dangerplaces(startPos)
+                    elif splited[0]=="Allpeople":
+                        conn.sendall(("Allpeople:"+str(n)).encode())
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -80,7 +86,7 @@ def server():
                         sendSize=1024
                         left=0
                         right=sendSize
-                        conn.sendall(("Start:"+str(length)).encode())
+                        conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
                         while True:
                             time.sleep(1)
@@ -91,7 +97,7 @@ def server():
                             right+=sendSize
                         print("Sended") 
                     elif splited[0]=="End":
-                        send="OK"
+                        send="Result:"
                         #conn.sendall(send.encode())
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         #print(type(Coordinates[int(splited[1])]))
@@ -106,23 +112,24 @@ def server():
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
                         length=len(contents)
-                        sendsize=8192
+                        sendsize=4096
                         left=0
                         right=sendsize
-
                         print("length=",length)
-                        conn.sendall(str(length).encode())
+                        conn.sendall((send+"80:"+str(length)).encode())#Result:Aliverate:ImageSize
                         time.sleep(1)
                         while True:
+                            time.sleep(1)
                             if left>length:
                                 break
+                            #for i in range(len(contents[left:right])):
+                            #    print(contents[left+i],end="")
                             conn.sendall(contents[left:right])
-                            for i in range(len(contents[left:right])):
-                                print(contents[left+i],end=" ")
                             left+=sendsize
                             right+=sendsize
-                        os.remove("../img/Generate.png")
-                        return 0
+                        os.remove("../img/route.png")
+                        #return 0
+                        print("ImageSended")
                     elif splited[0]=="Image":
                         conn.sendall(contents)
                         continue

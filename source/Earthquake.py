@@ -16,17 +16,21 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
         if(before_place==places["Feature"][i]["Geometry"]["Coordinates"]):
             continue
         dangerPlaces[idx]={}
+        if(places["Feature"][i]["Property"]["Genre"]==[]):
+            dangerPlaces[idx]["Code"]="Null"
+        else:
+            dangerPlaces[idx]["Code"]=places["Feature"][i]["Property"]["Genre"][0]["Code"]
         arv_url="http://www.j-shis.bosai.go.jp/map/api/sstrct/V3/meshinfo.geojson?position={pos}&epsg=4301"
         arv_url=arv_url.format(pos=places["Feature"][i]["Geometry"]["Coordinates"])
         list_ARV=requests.get(arv_url)
         list_ARV=list_ARV.json()
         
         placesHeight_url="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat={lat}&lon={lon}&appid={key}&output=json"
-        lon,lat=places["Feature"][idx]["Geometry"]["Coordinates"].split(",")
+        lon,lat=places["Feature"][i]["Geometry"]["Coordinates"].split(",")
         placesHeight_url=placesHeight_url.format(lat=lat,lon=lon,key=APIKEY)
         placesHeight=requests.get(placesHeight_url)
         placesHeight=placesHeight.json()
-        before_place=places["Feature"][idx]["Geometry"]["Coordinates"]
+        before_place=places["Feature"][i]["Geometry"]["Coordinates"]
         dangerPlaces[idx]["Coordinates"]=before_place
         if(len(placesHeight["Feature"][0]["Property"])!=4):
             dangerPlaces[idx]["Step"]=0
