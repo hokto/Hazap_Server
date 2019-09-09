@@ -11,10 +11,15 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
     places=places.json()
     before_place=""
     dangerPlaces={}
+    idx=0
     for i in range(places["ResultInfo"]["Count"]):
         if(before_place==places["Feature"][i]["Geometry"]["Coordinates"]):
             continue
-        dangerPlaces[i]={}
+        dangerPlaces[idx]={}
+        if(places["Feature"][i]["Property"]["Genre"]==[]):
+            dangerPlaces[idx]["Code"]="Null"
+        else:
+            dangerPlaces[idx]["Code"]=places["Feature"][i]["Property"]["Genre"][0]["Code"]
         arv_url="http://www.j-shis.bosai.go.jp/map/api/sstrct/V3/meshinfo.geojson?position={pos}&epsg=4301"
         arv_url=arv_url.format(pos=places["Feature"][i]["Geometry"]["Coordinates"])
         list_ARV=requests.get(arv_url)
@@ -26,11 +31,12 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
         placesHeight=requests.get(placesHeight_url)
         placesHeight=placesHeight.json()
         before_place=places["Feature"][i]["Geometry"]["Coordinates"]
-        dangerPlaces[i]["Coordinates"]=before_place
+        dangerPlaces[idx]["Coordinates"]=before_place
         if(len(placesHeight["Feature"][0]["Property"])!=4):
-            dangerPlaces[i]["Step"]=0
+            dangerPlaces[idx]["Step"]=0
         else:
-            dangerPlaces[i]["Step"]=placesHeight["Feature"][0]["Property"]["Building"][0]["Floor"]
-        dangerPlaces[i]["ARV"]=list_ARV["features"][0]["properties"]["ARV"]
+            dangerPlaces[idx]["Step"]=placesHeight["Feature"][0]["Property"]["Building"][0]["Floor"]
+        dangerPlaces[idx]["ARV"]=list_ARV["features"][0]["properties"]["ARV"]
+        idx+=1
     with open("../data/dangerplaces.json","w") as f:
         json.dump(dangerPlaces,f,ensure_ascii=False,indent=4)
