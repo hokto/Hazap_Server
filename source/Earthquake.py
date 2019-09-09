@@ -4,15 +4,41 @@ import requests
 import json
 
 def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)を取得
-    APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
-    places_url="https://map.yahooapis.jp/search/local/V1/localSearch?appid={key}&lat={lat}&lon={lon}&sort=dist&results=100&output=json&dist=2&distinct=false"
+    APIKEY="dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-"
+    places_url="https://map.yahooapis.jp/search/local/V1/localSearch?appid={key}&lat={lat}&lon={lon}&sort=-dist&results=100&output=json&dist=1&distinct=false"
     places_url=places_url.format(key=APIKEY,lat=centerPos.lat,lon=centerPos.lon)
     places=requests.get(places_url)
     places=places.json()
+    count=places["ResultInfo"]["Count"]
+    subcount=places["ResultInfo"]["Count"]
+    minplace=HazapModules.Coordinates()
+    minplace.lat=float(places["Feature"][99]["Geometry"]["Coordinates"].split(",")[1])
+    minplace.lon=float(places["Feature"][99]["Geometry"]["Coordinates"].split(",")[0])
+    debugcount=0
+    while True:
+        if subcount>0:
+            distance=HazapModules.Calculatedistance(centerPos,minplace)
+            print(distance,subcount)
+            subplaces_url="https://map.yahooapis.jp/search/local/V1/localSearch?appid={key}&lat={lat}&lon={lon}&sort=-dist&results=100&output=json&dist="+str(distance/1000)+"&distinct=false"
+            subplaces_url=subplaces_url.format(key=APIKEY,lat=centerPos.lat,lon=centerPos.lon)
+            subplaces=requests.get(subplaces_url)
+            subplaces=subplaces.json()
+            count+=subplaces["ResultInfo"]["Count"]
+            subcount=subplaces["ResultInfo"]["Count"]
+            for i in range(subplaces["ResultInfo"]["Count"]):
+                places["Feature"].append(subplaces["Feature"][i])
+            minplace.lat=float(subplaces["Feature"][subplaces["ResultInfo"]["Count"]-1]["Geometry"]["Coordinates"].split(",")[1])
+            minplace.lon=float(subplaces["Feature"][subplaces["ResultInfo"]["Count"]-1]["Geometry"]["Coordinates"].split(",")[0])
+            if subcount<100:
+                break;
+        else:
+            break
+        
+    print("success")
     before_place=""
     dangerPlaces={}
     idx=0
-    for i in range(places["ResultInfo"]["Count"]):
+    for i in range(count):
         if(before_place==places["Feature"][i]["Geometry"]["Coordinates"]):
             continue
         dangerPlaces[idx]={}
@@ -41,9 +67,3 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
     with open("../data/dangerplaces.json","w") as f:
         json.dump(dangerPlaces,f,ensure_ascii=False,indent=4)
 
-if __name__=="__main__":
-    print("hofe")
-    pos1=HazapModules.Coordinates()
-    pos1.lat=31.760254
-    pos1.lon=131.080396
-    GenerateHazard(pos1,pos2)

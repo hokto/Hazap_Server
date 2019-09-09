@@ -5,6 +5,7 @@ import HazapModules
 import os
 from itertools import chain
 
+
 def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得する関数。
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     if(resultFlag):

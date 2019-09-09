@@ -186,6 +186,8 @@ def server():
 
                         
                         #os.remove("../img/Generate.png")
+                        #os.remove("../data/result.json")
+                        #os.remove("../data/dangerplaces.json")
                         return 0
                     elif splited[0]=="Image":
                         conn.sendall(contents)

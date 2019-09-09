@@ -8,6 +8,7 @@ import time
 import Earthquake
 from PIL import Image
 from websocket import create_connection
+import shutil
 
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
@@ -168,28 +169,15 @@ def Calcudens(Coordinates):
 
 def GenerateHazard(sta,end):
     #指定した座標のハザードマップを生成するやつ
-    Earthquake.get_Dangerplaces(sta)
     dis=HazapModules.Calculatedistance(sta,end)
     radius=0
-    print("d")
     for i in range(2,100):
         if(dis<i*1000):
             radius=i
             break
-
-    print("dd")
     f=open("../data/dangerplaces.json",encoding="utf-8_sig")
     resultJson=json.load(f)
-    mark=""
-    hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
-
-
-    print("ddd")
-    for i in hoge["EvacuationPlaces"]:
-        mark+="&pin"+str(int(i)+1)+"="+hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
-
     e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"1000"
-    print(resultJson)
     for i in resultJson:
         foo=resultJson[i]["Coordinates"].split(",")
         foo[0],foo[1]=foo[1],foo[0]
@@ -199,8 +187,41 @@ def GenerateHazard(sta,end):
         stre=":0,0,0,127,1,255,0,0,"+str(100*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(10*int(resultJson[i]["Step"]))
         e+=stre
 
-    yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
+    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
+    resultJson=json.load(f)
+    mark=""
+    hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
+    postdata={
+    "output":"png",
+    "lat":str(sta.lat),
+    "lon":str(sta.lon),
+    "e":e,
+    "autoscale":"on",
+    "width":"1000",
+    "height":"1000"
+    }
+
+#    for i in hoge["EvacuationPlaces"]:
+#        postdata["pin"+str(int(i)+1)]=hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
+
+    
+    
+
+    #yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
+
+    with requests.post(url, data=postdata) as web_file:
+        data=web_file.text.encode()
+        with open("../img/test.html",mode="wb")as local_file:
+            local_file.write(data)
     Routes.Download_route(yhurl,"../img/Generate.png")
     return 0
 
 
+if __name__=="__main__":
+    hh=HazapModules.Coordinates()
+    hh.lat=31.732794
+    hh.lon=131.073456
+    hh1=HazapModules.Coordinates()
+    hh1.lat=31.732794
+    hh1.lon=131.073456
+    GenerateHazard(hh,hh1)
