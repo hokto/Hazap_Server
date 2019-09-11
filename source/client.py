@@ -4,7 +4,7 @@ import socket
 import numpy
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect(('192.168.11.133', 4000))
+    s.connect(('192.168.11.7', 4000))
     # サーバにメッセージを送る
     print("Connected!")
     i=input()
