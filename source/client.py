@@ -1,10 +1,13 @@
 import io
-from PIL import Image
+#from PIL import Image
 import socket
 import numpy
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+
     s.connect(('192.168.11.7', 4000))
+
+
     # サーバにメッセージを送る
     print("Connected!")
     i=input()
@@ -13,7 +16,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.sendall(i.encode())
         s.close()
     else:
-        s.sendall(i.encode())
+        s.sendall(i.encode("utf-8"))
     # ネットワークのバッファサイズは1024。サーバからの文字列を取得する
         data = s.recv(1024*(2**10))
         print("receved:"+data.decode("utf-8"))

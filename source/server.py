@@ -21,7 +21,9 @@ def server():
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
         n=0
-        s.bind(('192.168.11.2', 4000))
+
+        #s.bind(('192.168.0.49', 4000))
+        s.bind(('192.168.11.133',4000))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         disaster=""#災害の種類
@@ -30,6 +32,7 @@ def server():
         s.listen(1)
         # connection するまで待つ
         startPos=HazapModules.Coordinates()
+        message=""
         while True:
             send="Invalid"
             # 誰かがアクセスしてきたら、コネクションとアドレスを入れる
@@ -39,7 +42,7 @@ def server():
                 while True:
                     # データを受け取る
                     data = conn.recv(1024*(2**5))
-                    send="Invalid"
+                    #send="Invalid"
                     if not data:
                         break
                     rec=data.decode()
@@ -54,24 +57,31 @@ def server():
                         n+=1
                         print(splited)
 
+                        conn.sendall(send.encode())
                     elif splited[0]=="Recruit" and startflg==1:
                         send="started"
+                        conn.sendall(send.encode())
                     elif splited[0]=="Cancel":
                         if len(splited)>1:
                             if (int(splited[1]) in CoordinateLogs):
                                 CoordinateLogs.pop(int(splited[1]))
                                 send="Canceled"
+                                conn.sendall(send.encode())
                     elif splited[0]=="Start":
+                        message=""
                         startflg = 1
                         disaster=splited[2]
                         disasterScale=splited[3]
                         print("serverstart")
-                        send="start!"
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
                         Earthquake.get_Dangerplaces(startPos)
+                        conn.sendall("DisasterStart:".encode())
                     elif splited[0]=="Allpeople":
-                        conn.sendall(("Allpeople:"+n).encode())
+                        conn.sendall(("Allpeople:"+str(n)).encode())
+                    elif splited[0]=="Message":
+                        message=splited[1]
+                        conn.sendall("OK".encode())
                     elif splited[0]=="Number" and startflg==1:
                         if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
@@ -80,8 +90,10 @@ def server():
                             print(splited)
                         else:
                             send="Failed"
+                        conn.sendall(send.encode())
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:
                         send="Waiting..."
+                        conn.sendall(send.encode())
                     elif splited[0]=="Wait" and startflg==1:
                         send="Start:"
                         with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
@@ -101,7 +113,7 @@ def server():
                             left+=sendSize
                             right+=sendSize
                         print("Sended") 
-                    elif splited[0]=="End":
+                    elif splited[0]=="End" and message!="":
                         endflg=1
                         startpoint=HazapModules.Coordinates()
                         startpoint.lat=float(CoordinateLogs[int(splited[1])][0][0])
@@ -112,7 +124,6 @@ def server():
                         
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         getplace.GenerateHazard(startpoint,endpoint)
-                        tmpimg = Image.open("../img/Generate.png").convert("P")
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
                         Bestroutelength=0
@@ -138,13 +149,17 @@ def server():
                             wes.close()
 
                         print("aiusfsfvg",Bestroutelength)
+
+                    
+                        tmpimg = Image.open("../img/route.png").convert("P")
                         with io.BytesIO() as output:
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
                         length=len(contents)
-                        sendsize=8192
+                        sendsize=4096
                         left=0
                         right=sendsize
+<<<<<<< HEAD
 
                         
                         time.sleep(0.5)
@@ -172,29 +187,33 @@ def server():
                         wes.close()
                         contents+=survival
                         print("length=",length)
-                        conn.sendall((str(length)+":"+str(len(survival))).encode())
+                        conn.sendall(("Result:80:"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
+                        time.sleep(1)
                         while True:
-                            time.sleep(0.5)
-                            if left>length+len(survival):
-
-                                send=conn.sendall(contents[left:right])
+                            time.sleep(1)
+                            if left>length:
                                 break
+                            #for i in range(len(contents[left:right])):
+                            #    print(contents[left+i],end="")
                             conn.sendall(contents[left:right])
                             left+=sendsize
                             right+=sendsize
 
-
-                        
-                        #os.remove("../img/Generate.png")
-                        #os.remove("../data/result.json")
-                        #os.remove("../data/dangerplaces.json")
-                        return 0
+                        print("ImageSended")
+                    elif splited[0]=="End" and message=="":
+                        conn.sendall("Waiting...".encode())
+                    elif splited[0]=="Coordinates":
+                        allplayer="Coordinates" 
+                        for i in range(n):
+                            allplayer+=":"
+                            allplayer+=(CoordinateLogs[i][len(CoordinateLogs[i])-1][0]+","+CoordinateLogs[i][len(CoordinateLogs[i])-1][1])
+                        conn.sendall(allplayer.encode())
                     elif splited[0]=="Image":
                         conn.sendall(contents)
                         continue
                     if(startflg==1):
                         count=getplace.Calcudens(Coordinates)
-                    conn.sendall(send.encode())
+                    #conn.sendall(send.encode())
                     print(CoordinateLogs)
                     
 
