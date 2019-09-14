@@ -10,7 +10,7 @@ def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得す�
     if(resultFlag):
         #これから取得
         with open("../data/result.json") as f:
-            resultJson=json.load(f,encoding="utf_8_sig")
+            resultJson=json.load(f)
         safty_places=resultJson["SaftyPlaces"]
     else:
         url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
@@ -23,7 +23,7 @@ def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得す�
             list_places.append(place)
         safty_places=Search_safty(list_places,start,goal)#取得した場所の中から安全な場所を取得
         with open("../data/result.json") as f:
-            resultJson=json.load(f,encoding="utf_8_sig")
+            resultJson=json.load(f)
         if(safty_places==None):
             resultJson["SaftyPlaces"]=None
         else:

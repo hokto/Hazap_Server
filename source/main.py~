@@ -44,4 +44,4 @@ def Result(start_pos,realRoute):#リザルト画面に必要な処理を行う�
     placePercentage=getplace.CarcuEva(real_goal)
     print("Place:"+str(placePercentage))
     rate=2/(100/routesPercentage+100/placePercentage)
-    return int(rate*100)
+    return rate
