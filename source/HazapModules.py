@@ -20,5 +20,5 @@ def TwoDimensionsSort(data,targetIdx,left,right):#二次元配列用ソート。
             TwoDimensionsSort(data,targetIdx,k+1,right)
     return data
 def Calculatedistance(pos1,pos2):
-        r=6378100
-        return math.sqrt((r*math.radians(abs(pos1.lon-pos2.lon)))**2+(r*math.radians(abs(pos1.lat-pos2.lat)))**2)
+    r=6378100
+    return math.sqrt((r*math.radians(abs(pos1.lon-pos2.lon)))**2+(r*math.radians(abs(pos1.lat-pos2.lat)))**2)

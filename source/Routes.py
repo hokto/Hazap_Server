@@ -5,11 +5,12 @@ import HazapModules
 import os
 from itertools import chain
 
+
 def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得する関数。
     APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     if(resultFlag):
         #これから取得
-        with open("../data/result.json") as f:
+        with open("../data/result.json",encoding="utf_8_sig") as f:
             resultJson=json.load(f,encoding="utf_8_sig")
         safty_places=resultJson["SaftyPlaces"]
     else:
@@ -22,14 +23,16 @@ def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得す�
             place=result["Feature"][i]["Geometry"]["Coordinates"]
             list_places.append(place)
         safty_places=Search_safty(list_places,start,goal)#取得した場所の中から安全な場所を取得
-        with open("../data/result.json") as f:
+        with open("../data/result.json",encoding="utf_8_sig") as f:
             resultJson=json.load(f,encoding="utf_8_sig")
+        resultJson["SaftyPlaces"]={}
         if(safty_places==None):
             resultJson["SaftyPlaces"]=None
         else:
-            for i in len(safty_places):
+            print("SaftyPlaces:",safty_places)
+            for i in range(len(safty_places)):
                 resultJson["SaftyPlaces"][i]=safty_places[i]
-        with open("../data/result.json","w") as f:
+        with open("../data/result.json","w",encoding="utf-8_sig") as f:
              json.dump(resultJson,f,ensure_ascii=False,indent=4)
     Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),realRoute)
 

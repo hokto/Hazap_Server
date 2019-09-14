@@ -1,0 +1,122 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ルート長ジェネレータ</title>
+<style type="text/css">
+html, body {
+    width:100%; height:100%;
+}
+html, body, div{
+    margin:0; padding:0;
+}
+div#label{
+    z-index:2;
+    padding:8px;
+    overflow:hidden;
+    color: #fff;
+    background-color: #000;
+    background-image: -webkit-gradient(
+        linear,
+        0% 0%,
+        0% 100%,
+        from(rgba(155, 155, 155, 0.1)),
+        to(rgba(255, 255, 255, 0.5)),
+        color-stop(.5,rgba(155, 155, 155, 0.2)),
+        color-stop(.5,rgba(255, 255, 255, 0.1))
+    );
+    border-radius: 8px;
+    opacity: .7;
+}
+div#title{
+    font-size:14pt;
+    font-weight:bold;
+    line-height:1.2em;
+    width:100%;
+    overflow:hidden;
+}
+div#cur, div#dst{
+    font-size:10pt;
+    font-weight:normal;
+    line-height:10pt;
+    overflow:hidden;
+}
+div#summary{
+    font-size:12pt;
+    font-weight:bold;
+    line-height:12pt;
+    overflow:hidden;
+}
+</style>
+<script src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+    var hoge;
+function print(object){
+    console.log(object);
+}
+function sleep(waitMsec) {
+  var startMsec = new Date();
+ 
+  // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
+  while (new Date() - startMsec < waitMsec);
+}
+
+
+window.onload = function() {
+
+  const sock = new WebSocket("ws://192.168.0.48:5000");
+  sock.addEventListener("open", e => {
+    console.log("connected");
+  });
+  sock.addEventListener("message", e => {
+    if(e.data.split(":")[0]=="requested value"){
+      var size=e.data.split(":").length-1;
+      print(size);
+      var data=new Array();
+      for (var i = 0; i<size; i++) {
+        data.push(new Y.LatLng(e.data.split(":")[i+1].split(",")[0], e.data.split(":")[i+1].split(",")[1]))
+      }
+      var map = new Y.Map('map', {
+        configure : {
+          scrollWheelZoom : true,
+        }
+      });
+      map.drawMap(data[0], 15, Y.LayerSetId.NORMAL);
+
+
+      var routeSearchLayer = new Y.RouteSearchLayer();
+      routeSearchLayer.bind('drawend', function(result) {
+        $('#summary').val(sock.send(String("value:"+result.TotalDistance)))
+      });
+
+      map.addLayer(routeSearchLayer);
+      routeSearchLayer.clearRoute();
+      routeSearchLayer.execute(data, {
+        enableRestrict: true,
+        useCar: false
+      });
+
+  }
+});
+  sock.addEventListener("close", e => {
+    console.log("closed");
+  });
+  sock.addEventListener("error", e => {
+    console.log("error!!");
+  });
+
+}
+</script>
+</head>
+<body>
+<div id="map" style="width:100%; height:100%;"></div>
+<div id="label" style="position:absolute; bottom:4px; right:4px; width:64%; height:64px">
+    <div id="title">ルート雨雲チェッカー</div>
+    <div id="cur">現在地 : </div>
+    <div id="dst">地図をタップして目的地を設定してください</div>
+    <div id="summary"></div>
+</div>
+</body>
+</html>　

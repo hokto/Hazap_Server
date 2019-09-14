@@ -68,7 +68,7 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
                     dangerPlaces[idx]["Step"]=placesHeight["Feature"][0]["Property"]["Building"][0]["Floor"]
                 dangerPlaces[idx]["ARV"]=list_ARV["features"][0]["properties"]["ARV"]
                 idx+=1
-            with open("../data/"+str(int(centerPos.lat*10**3))+str(int(centerPos.lon*10**3))+".json","w") as f:
+            with open("../data/"+str(int(centerPos.lat*10**3))+str(int(centerPos.lon*10**3)+".json"),"w") as f:
                 json.dump(dangerPlaces,f,ensure_ascii=False,indent=4)
     with open("../data/dangerplaces.json","w") as f:
              json.dump(dangerPlaces,f,ensure_ascii=False,indent=4)

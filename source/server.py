@@ -8,11 +8,14 @@ import main
 import json
 import numpy
 import os
-import  time
+import time
+from websocket import create_connection
+
 
 def server():
     contents=None
     startflg=0
+    endflg=0
     count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
@@ -34,6 +37,7 @@ def server():
             send="Invalid"
             # 誰かがアクセスしてきたら、コネクションとアドレスを入れる
             conn, addr = s.accept()
+            print("connected from:",addr)
             with conn:
                 while True:
                     # データを受け取る
@@ -76,7 +80,7 @@ def server():
                         Earthquake.get_Dangerplaces(startPos)
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
-                    elif splited[0]=="Allpeople":#全弾貨車が何人か伝える
+                    elif splited[0]=="Allpeople":#全参加者が何人か伝える
                         conn.sendall(("Allpeople:"+str(n)).encode())
                     elif splited[0]=="Message":#主催者からのメッセージが送られる
                         message=splited[1]
@@ -109,11 +113,11 @@ def server():
                         conn.sendall(send.encode())
                     elif splited[0]=="Wait" and startflg==1:#シミュレーションが開始されていた場合、災害ごとに必要な情報を送る
                         send="Start:"
-                        with open("../data/dangerplaces.json") as f:
+                        with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
                             jsonData=json.load(f,encoding="utf_8_sig")
                             sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
-                        sendSize=1024
+                        sendSize=4096
                         left=0
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
@@ -127,13 +131,44 @@ def server():
                             right+=sendSize
                         print("Sended") 
                     elif splited[0]=="End" and message!="":#主催者からのメッセージが送られていて、避難が終了していれば結果を送る
-                        rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
+                        rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]))
                         hoge=HazapModules.Coordinates()
                         print(Coordinates[int(splited[1])])
                         hoge.lat=float(Coordinates[int(splited[1])][0])
                         hoge.lon=float(Coordinates[int(splited[1])][1])
-                        #getplace.GenerateHazard(hoge)
                         tmpimg = Image.open("../img/route.png").convert("P")
+                        endflg=1
+                        startpoint=HazapModules.Coordinates()
+                        startpoint.lat=float(CoordinateLogs[int(splited[1])][0][0])
+                        startpoint.lon=float(CoordinateLogs[int(splited[1])][0][1])
+                        endpoint=HazapModules.Coordinates()
+                        endpoint.lat=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][0])
+                        endpoint.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][1])
+                        #getplace.GenerateHazard(startpoint,endpoint)
+                        places=json.load(open("../data/result.json",encoding="utf_8_sig"))
+                        Bestroutelength=0
+                        if places["SaftyPlaces"]== None:
+                            Bestroutelength=places["EvacuationPlaces"]["0"]["range"]
+                        else:
+                            wes = create_connection("ws://192.168.0.25:5000")
+                            sendstr="long:"+str(startpoint.lat)+","+str(startpoint.lon)
+
+                            for i in range(len(places["SaftyPlaces"])):
+                                sendstr+=":"+places["SaftyPlaces"][str(i)].split(",")[0]+","+places["SaftyPlaces"][str(i)].split(",")[1]
+                            dist=0
+                            sendstr+=places["EvacuationPlaces"]["0"]["coordinates"][0]+","+places["EvacuationPlaces"]["0"]["coordinates"][1]
+                            wes.send(sendstr)
+                            while True:
+                                result =  wes.recv()
+                                ravel=result.split(":")
+                                if ravel[0] == "value":
+                                    print(ravel[1])
+                                    dist=float(ravel[1])
+                                    break
+                            Bestroutelength=dist
+                            wes.close()
+
+                        print("aiusfsfvg",Bestroutelength)
                         with io.BytesIO() as output:
                             tmpimg.save(output,format="PNG")
                             contents = output.getvalue()#バイナリ取得
@@ -141,10 +176,32 @@ def server():
                         sendsize=4096
                         left=0
                         right=sendsize
-                        print("length=",length)
                         
+                        time.sleep(0.5)
+
+                        #ルートの長さを格納している変数
+                        dist=0
+                        #スタート地点とゴール地点とそこまでの経由地点の座標をなげて、正しい反応が返ってくるまでまつ。
+                        webserversend="long"
+                        coorsize=len(CoordinateLogs[int(splited[1])])
+                        for i in range(coorsize):
+                            webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
+                        print(webserversend)
+
+                        wes = create_connection("ws://192.168.0.25:5000")
+                        wes.send(webserversend)
+
+                        while True:
+                            result =  wes.recv()
+                            ravel=result.split(":")
+                            if ravel[0] == "value":
+                                print(ravel[1])
+                                dist=float(ravel[1])
+                                break
+                        survival=str(dist).encode()
+                        wes.close()
+                        print("length=",length)
                         conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
-                        time.sleep(1)
                         while True:
                             time.sleep(1)
                             if left>length:
