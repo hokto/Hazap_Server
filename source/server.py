@@ -64,12 +64,20 @@ def server():
                     elif splited[0]=="Cancel":#参加者を除外する
                         if len(splited)>1:
                             if (int(splited[1]) in CoordinateLogs):
-                                CoordinateLogs.pop(int(splited[1]))
+                                #CoordinateLogs.pop(int(splited[1]))  #IDが変わる可能性があるかも
+                                CoordinateLogs[splited[1]]=None #とりあえずログを消す
                                 send="Canceled"
                                 conn.sendall(send.encode())
                                 n-=1
                                 if(n==0):
-                                    os.remove("../data/result.json")
+                                    os.remove("../data/result.json")#ログなどの初期化
+                                    timeLogs=[]
+                                    distLogs=[]
+                                    CoordinateLogs={}
+                                    Coordinates={}
+                                    startflg=0
+
+
                     elif splited[0]=="Start":#シミュレーションをスタートする
                         message=""
                         startflg = 1
