@@ -23,7 +23,8 @@ def Xml_parse(interval):#xmlファイルをパースし、海岸線の座標を�
         for segments in Curve:
             for LineStringSegment in segments:
                 for coastplace in LineStringSegment:
-                    coast_list+=(coastplace.text.split("\n").pop())
+                    coast_list=(coastplace.text.split("\n"))
+                    coast_list.pop()
     pos_idx=0
     interval_idx=interval/50#50m間隔なので100mごとの座標は要素間では2要素間隔になる(100mは仮)
     while(pos_idx<len(coast_list)):
