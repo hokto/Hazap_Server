@@ -26,7 +26,7 @@ def OptimalEvacuation(start_pos,realRoute,resultFlag):#最適な避難場所の�
     Routes.Search_route(start_pos,optimal_goal,realRoute,resultFlag)#最適なルートを作成
     return places#評価の高かった場所のリストを返す
 
-def Result(start_pos,realRoute):#リザルト画面に必要な処理を行う関数。主に、経路作成や生存率の計算など
+def Result(start_pos,realRoute,hp):#リザルト画面に必要な処理を行う関数。主に、経路作成や生存率の計算など
     if(os.path.exists("../data/result.json")):
         ResultFlag=True
     else:
@@ -43,5 +43,5 @@ def Result(start_pos,realRoute):#リザルト画面に必要な処理を行う�
     print("Route:"+str(routesPercentage))
     placePercentage=getplace.CarcuEva(real_goal)
     print("Place:"+str(placePercentage))
-    rate=2/(100/routesPercentage+100/placePercentage)
-    return int(rate*100)
+    rate=(100/routesPercentage+100/placePercentage+100/hp)#ルート近似率、場所の評価、体力ゲージのみを用いた計算
+    return rate

@@ -15,7 +15,7 @@ def Cal_Arclength(a,b,c,r):#余弦定理を用いて角度を出し、l=rθよ�
     arclength=r*radian#ラジアン角、半径を用いて孤の長さを計算
     return arclength
 def Compare_route(start_pos,optimal_goal,real_goal):#ルート比較用関数
-    if(math.isclose(optimal_goal.lat,real_goal.lat,abs_tol=0.0001,rel_tol=0.0001) and math.isclose(optimal_goal.lon,real_goal.lon,abs_tol=0.0001,rel_tol=0.0001)):#実際のゴール、最適なゴールの座標が同じであれば100%
+    if(math.isclose(optimal_goal.lat,real_goal.lat,abs_tol=0.0001,rel_tol=0.0001) and math.isclose(optimal_goal.lon,real_goal.lon,abs_tol=0.001,rel_tol=0.001)):#実際のゴール、最適なゴールの座標が同じであれば100%
         return 100.0
     real_dx=(real_goal.lon-start_pos.lon)#実際のルートにおける緯度、経度の変位を求め、傾きを計算 
     real_dy=(real_goal.lat-start_pos.lat)

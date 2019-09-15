@@ -88,7 +88,8 @@ window.onload = function() {
 
       var routeSearchLayer = new Y.RouteSearchLayer();
       routeSearchLayer.bind('drawend', function(result) {
-        $('#summary').val(sock.send(String("value:"+result.TotalDistance)))
+        $('#summary').val(sock.send(String("value:"+result.TotalDistance+":"+result.TotalTime)))//value:Distance:Time
+        $('#summary').val(console.log(String("value:"+result.TotalDistance+":"+result.TotalTime)))//value:Distance:Time
       });
 
       map.addLayer(routeSearchLayer);

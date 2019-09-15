@@ -26,6 +26,7 @@ def server():
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         timeLogs=[]#現在地を取得した最終時間を記録するリスト
+        distLogs=[]#利用者が進んだ距離を保存するリスト
         disaster=""#災害の種類
         disasterScale=""#災害の規模
         # 1 接続
@@ -80,6 +81,7 @@ def server():
                         Earthquake.get_Dangerplaces(startPos)
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
+                        distLogs=[0]*n
                     elif splited[0]=="Allpeople":#全参加者が何人か伝える
                         conn.sendall(("Allpeople:"+str(n)).encode())
                     elif splited[0]=="Message":#主催者からのメッセージが送られる
@@ -92,14 +94,15 @@ def server():
                             send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
                             nowTime=time.time()
                             runFlg=0
+                            currentPos=HazapModules.Coordinates()
+                            currentPos.lat=float(splited[2].split(",")[0])
+                            currentPos.lon=float(splited[2].split(",")[1])
+                            beforePos=HazapModules.Coordinates()
+                            beforePos.lat=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-2][0])
+                            beforePos.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-2][1])
+                            dist=HazapModules.Calculatedistance(beforePos,currentPos)
+                            distLogs[int(splited[1])]+=dist
                             if(timeLogs[int(splited[1])]!=0):#走っているかどうかの判定をする
-                                currentPos=HazapModules.Coordinates()
-                                currentPos.lat=float(splited[2].split(",")[0])
-                                currentPos.lon=float(splited[2].split(",")[1])
-                                beforePos=HazapModules.Coordinates()
-                                beforePos.lat=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-2][0])
-                                beforePos.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-2][1])
-                                dist=HazapModules.Calculatedistance(beforePos,currentPos)
                                 if((dist/(nowTime-timeLogs[int(splited[1])]))>=(6.4*1000/3600)):#時速6.4kmよりも早ければ走ったと判定
                                     runFlg=1
                             timeLogs[int(splited[1])]=nowTime
@@ -180,7 +183,9 @@ def server():
                         time.sleep(0.5)
 
                         #ルートの長さを格納している変数
-                        dist=0
+                        optimaldist=0
+                        #最適な避難場所までの目安時間
+                        optimaltime=0
                         #スタート地点とゴール地点とそこまでの経由地点の座標をなげて、正しい反応が返ってくるまでまつ。
                         webserversend="long"
                         coorsize=len(CoordinateLogs[int(splited[1])])
@@ -196,11 +201,31 @@ def server():
                             ravel=result.split(":")
                             if ravel[0] == "value":
                                 print(ravel[1])
-                                dist=float(ravel[1])
+                                optimaldist=float(ravel[1])
+                                optimaltime=float(ravel[2])
                                 break
-                        survival=str(dist).encode()
+                        #survival=str(optimaldist).encode()
+                        if(optimaldist>=distLogs[int(splited[1])]):
+                            rate+=(100/100)
+                        elif(optimaldist==0):
+                            if(distLogs[int(splited[1])]>100):
+                                distLogs[int(splited[1])]=100
+                            rate+=(100/(100-distLogs[int(splited[1])]))
+                        else:
+                            rate+=(1/(optimaldist/distLogs[int(splited[1])]))
+                        optimaltime/=60
+                        resultTime=float(splited[3])
+                        if(optimaltime>=resultTime):
+                            rate+=(100/100)
+                        elif(optimaltime==0):
+                            if(resultTime>100):
+                                resultTime=100
+                            rate+=(100/(100-resultTime))
+                        else:
+                            rate+=(1/(optimaltime/resultTime))
                         wes.close()
                         print("length=",length)
+                        rate=int(5/rate*100)
                         conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
                         while True:
                             time.sleep(1)
