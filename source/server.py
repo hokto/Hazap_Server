@@ -10,20 +10,22 @@ import numpy
 import os
 import time
 from websocket import create_connection
+import Coastplace
 
 
 def server():
     contents=None
     startflg=0
     endflg=0
+    addres="192.168.11.8"
+    port=4000
     count={}
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
         n=0
 
-        #s.bind(('192.168.0.49', 4000))
-        s.bind(('192.168.11.133',4000))
+        s.bind((addres,port))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         disaster=""#災害の種類
@@ -41,7 +43,7 @@ def server():
             with conn:
                 while True:
                     # データを受け取る
-                    data = conn.recv(1024*(2**5))
+                    data = conn.recv(1024)
                     #send="Invalid"
                     if not data:
                         break
@@ -75,7 +77,10 @@ def server():
                         print("serverstart")
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
-                        Earthquake.get_Dangerplaces(startPos)
+                        if(disaster=="地震"):
+                            Earthquake.get_Dangerplaces(startPos)
+                        elif (disaster=="津波"):
+                            Coastplace.Coastplaces_get(100)
                         conn.sendall("DisasterStart:".encode())
                     elif splited[0]=="Allpeople":
                         conn.sendall(("Allpeople:"+str(n)).encode())
@@ -96,11 +101,17 @@ def server():
                         conn.sendall(send.encode())
                     elif splited[0]=="Wait" and startflg==1:
                         send="Start:"
-                        with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
-                            jsonData=json.load(f)
-                            sendData=json.dumps(jsonData,ensure_ascii=False).encode()
+                        
+                        if(disaster=="地震"):
+                            with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
+                                jsonData=json.load(f)
+                                sendData=json.dumps(jsonData,ensure_ascii=False).encode()
+                        elif (disaster=="津波"):
+                            with open("../data/coastplaces.json",encoding="utf_8_sig") as f:
+                                jsonData=json.load(f)
+                                sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
-                        sendSize=1024
+                        sendSize=1024*4
                         left=0
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
@@ -124,13 +135,12 @@ def server():
                         
                         main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         getplace.GenerateHazard(startpoint,endpoint)
-                        main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])))
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
                         Bestroutelength=0
                         if places["SaftyPlaces"]== None:
                             Bestroutelength=places["EvacuationPlaces"]["0"]["range"]
                         else:
-                            wes = create_connection("ws://192.168.11.2:5000")
+                            wes = create_connection("ws://"+addres+":"+str(port+1000))
                             sendstr="long:"+str(startpoint.lat)+","+str(startpoint.lon)
 
                             for i in range(len(places["SaftyPlaces"])):
@@ -148,7 +158,6 @@ def server():
                             Bestroutelength=dist
                             wes.close()
 
-                        print("aiusfsfvg",Bestroutelength)
 
                     
                         tmpimg = Image.open("../img/route.png").convert("P")
@@ -159,9 +168,7 @@ def server():
                         sendsize=4096
                         left=0
                         right=sendsize
-<<<<<<< HEAD
 
-                        
                         time.sleep(0.5)
 
                         #ルートの長さを格納している変数
@@ -170,31 +177,28 @@ def server():
                         webserversend="long"
                         coorsize=len(CoordinateLogs[int(splited[1])])
                         for i in range(coorsize):
+
                             webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
                         print(webserversend)
 
-                        wes = create_connection("ws://192.168.11.2:5000")
+                        wes = create_connection("ws://"+addres+":"+str(port+1000))
                         wes.send(webserversend)
 
                         while True:
                             result =  wes.recv()
                             ravel=result.split(":")
                             if ravel[0] == "value":
-                                print(ravel[1])
                                 dist=float(ravel[1])
                                 break
                         survival=str(dist).encode()
                         wes.close()
                         contents+=survival
-                        print("length=",length)
                         conn.sendall(("Result:80:"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
                         time.sleep(1)
                         while True:
                             time.sleep(1)
                             if left>length:
                                 break
-                            #for i in range(len(contents[left:right])):
-                            #    print(contents[left+i],end="")
                             conn.sendall(contents[left:right])
                             left+=sendsize
                             right+=sendsize

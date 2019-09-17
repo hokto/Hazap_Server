@@ -13,9 +13,10 @@ def send_msg_allclient(client, server,message):
   		data+=(":"+message.split(":")[i+1])
   	server.send_message_to_all("requested value"+data)
   elif message.split(":")[0]=="value":
+    print(message.split(":"))
     server.send_message_to_all("value:"+message.split(":")[1])
 
-server = WebsocketServer(5000, host='192.168.11.2')
+server = WebsocketServer(5000, host='192.168.11.8')
 server.set_fn_new_client(new_client)
 server.set_fn_message_received(send_msg_allclient)
 server.run_forever()

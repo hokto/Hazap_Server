@@ -18,7 +18,6 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
     while True:
         if subcount>0:
             distance=HazapModules.Calculatedistance(centerPos,minplace)
-            print(distance,subcount)
             subplaces_url="https://map.yahooapis.jp/search/local/V1/localSearch?appid={key}&lat={lat}&lon={lon}&sort=-dist&results=100&output=json&dist="+str(distance/1000)+"&distinct=false"
             subplaces_url=subplaces_url.format(key=APIKEY,lat=centerPos.lat,lon=centerPos.lon)
             subplaces=requests.get(subplaces_url)

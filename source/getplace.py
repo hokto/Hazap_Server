@@ -98,14 +98,13 @@ def searchplace(pos):
             sumstep[i]+=jsondata[i][k][2]
         jsondata[i]["step"]=sumstep[i]
         jsondata[i]["coordinates"]=data[i]
-        wes = create_connection("ws://192.168.11.2:5000")
+        wes = create_connection("ws://192.168.11.8:5000")
         wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
         dist=0
         while True:
             result =  wes.recv()
             ravel=result.split(":")
             if ravel[0] == "value":
-                print(ravel[1])
                 dist=float(ravel[1])
                 break
         wes.close()
@@ -136,7 +135,6 @@ def CarcuEva(Coordinates):
     data=json.loads(res.read().decode())
     if data["ResultInfo"]["Count"]==0:
         return 0
-    print(data)
     st=data["Feature"][0]["Property"]["Genre"][0]["Name"]
     value=0
     if st.find("避難")!=-1:
@@ -168,52 +166,52 @@ def Calcudens(Coordinates):
     return data
 
 def GenerateHazard(sta,end):
-    #指定した座標のハザードマップを生成するやつ
-    dis=HazapModules.Calculatedistance(sta,end)
-    radius=0
-    for i in range(2,100):
-        if(dis<i*1000):
-            radius=i
-            break
-    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
-    resultJson=json.load(f)
-    e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"1000"
-    for i in resultJson:
-        foo=resultJson[i]["Coordinates"].split(",")
-        foo[0],foo[1]=foo[1],foo[0]
-        concen=110*(1/float(resultJson[i]["ARV"]))
-        if 126<concen:
-            concen=126
-        stre=":0,0,0,127,1,255,0,0,"+str(100*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(10*int(resultJson[i]["Step"]))
-        e+=stre
-
-    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
-    resultJson=json.load(f)
-    mark=""
-    hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
-    postdata={
-    "output":"png",
-    "lat":str(sta.lat),
-    "lon":str(sta.lon),
-    "e":e,
-    "autoscale":"on",
-    "width":"1000",
-    "height":"1000"
-    }
-
-#    for i in hoge["EvacuationPlaces"]:
-#        postdata["pin"+str(int(i)+1)]=hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
-
-    
-    
-
-    #yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
-
-    with requests.post(url, data=postdata) as web_file:
-        data=web_file.text.encode()
-        with open("../img/test.html",mode="wb")as local_file:
-            local_file.write(data)
-    Routes.Download_route(yhurl,"../img/Generate.png")
+#    #指定した座標のハザードマップを生成するやつ
+#    dis=HazapModules.Calculatedistance(sta,end)
+#    radius=0
+#    for i in range(2,100):
+#        if(dis<i*1000):
+#            radius=i
+#            break
+#    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
+#    resultJson=json.load(f)
+#    e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"1000"
+#    for i in resultJson:
+#        foo=resultJson[i]["Coordinates"].split(",")
+#        foo[0],foo[1]=foo[1],foo[0]
+#        concen=110*(1/float(resultJson[i]["ARV"]))
+#        if 126<concen:
+#            concen=126
+#        stre=":0,0,0,127,1,255,0,0,"+str(100*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(10*int(resultJson[i]["Step"]))
+#        e+=stre
+#
+#    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
+#    resultJson=json.load(f)
+#    mark=""
+#    hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
+#    postdata={
+#    "output":"png",
+#    "lat":str(sta.lat),
+#    "lon":str(sta.lon),
+#    "e":e,
+#    "autoscale":"on",
+#    "width":"1000",
+#    "height":"1000"
+#    }
+#
+##    for i in hoge["EvacuationPlaces"]:
+##        postdata["pin"+str(int(i)+1)]=hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
+#
+#    
+#    
+#
+#    #yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
+#
+#    with requests.post(url, data=postdata) as web_file:
+#        data=web_file.text.encode()
+#        with open("../img/test.html",mode="wb")as local_file:
+#            local_file.write(data)
+#    Routes.Download_route(yhurl,"../img/Generate.png")
     return 0
 
 
