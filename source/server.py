@@ -21,8 +21,7 @@ def server():
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
         n=0
-        #s.bind(('192.168.0.49', 4000))
-        s.bind(('192.168.0.25',4000))
+        s.bind((HazapModules.addres,4000))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         timeLogs=[]#現在地を取得した最終時間を記録するリスト
@@ -153,7 +152,7 @@ def server():
                         if places["SaftyPlaces"]== None:
                             Bestroutelength=places["EvacuationPlaces"]["0"]["range"]
                         else:
-                            wes = create_connection("ws://192.168.0.25:5000")
+                            wes = create_connection("ws://"+HazapModules.addres+":5000")
                             sendstr="long:"+str(startpoint.lat)+","+str(startpoint.lon)
 
                             for i in range(len(places["SaftyPlaces"])):
@@ -193,7 +192,7 @@ def server():
                             webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
                         print(webserversend)
 
-                        wes = create_connection("ws://192.168.0.25:5000")
+                        wes = create_connection("ws://"+HazapModules.addres+":5000")
                         wes.send(webserversend)
 
                         while True:

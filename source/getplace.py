@@ -98,7 +98,7 @@ def searchplace(pos):
             sumstep[i]+=jsondata[i][k][2]
         jsondata[i]["step"]=sumstep[i]
         jsondata[i]["coordinates"]=data[i]
-        wes = create_connection("ws://192.168.0.25:5000")
+        wes = create_connection("ws://"+HazapModules.addres+":5000")
         wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
         dist=0
         while True:
