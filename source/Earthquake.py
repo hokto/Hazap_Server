@@ -41,7 +41,9 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
             print("success")
             before_place=""
             dangerPlaces={}
+            dangerPlaces["MinARV"]={}
             idx=0
+            minARV=[10**5]*3#ARV値を格納するリスト
             for i in range(count):
                 if(before_place==places["Feature"][i]["Geometry"]["Coordinates"]):
                     continue
@@ -67,7 +69,11 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
                 else:
                     dangerPlaces[idx]["Step"]=placesHeight["Feature"][0]["Property"]["Building"][0]["Floor"]
                 dangerPlaces[idx]["ARV"]=list_ARV["features"][0]["properties"]["ARV"]
+                if(not(float(dangerPlaces[idx]["ARV"]) in minARV) and minARV[2]>float(dangerPlaces[idx]["ARV"])):
+                    minARV[2]=float(dangerPlaces[idx]["ARV"])
+                    minARV.sort()
                 idx+=1
+            dangerPlaces["MinARV"]=",".join(map(str,minARV))
             with open("../data/"+str(int(centerPos.lat*10**3))+str(int(centerPos.lon*10**3))+".json","w") as f:
                 json.dump(dangerPlaces,f,ensure_ascii=False,indent=4)
     with open("../data/dangerplaces.json","w") as f:

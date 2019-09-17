@@ -98,7 +98,7 @@ def searchplace(pos):
             sumstep[i]+=jsondata[i][k][2]
         jsondata[i]["step"]=sumstep[i]
         jsondata[i]["coordinates"]=data[i]
-        wes = create_connection("ws://192.168.0.25:5000")
+        wes = create_connection("ws://"+HazapModules.IpAdress+":5000")
         wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
         dist=0
         while True:
@@ -132,6 +132,7 @@ def CarcuEva(Coordinates):
 
     hoge=data1["Feature"][0]["Geometry"]["Coordinates"].split(',')
     url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+hoge[1]+"&lon="+hoge[0]+"&dist=2"+sta["output"]+"&gc=0425&sort=geo"
+
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     if data["ResultInfo"]["Count"]==0:
@@ -217,11 +218,11 @@ def GenerateHazard(sta,end):
     return 0
 
 
-if __name__=="__main__":
-    hh=HazapModules.Coordinates()
-    hh.lat=31.732794
-    hh.lon=131.073456
-    hh1=HazapModules.Coordinates()
-    hh1.lat=31.732794
-    hh1.lon=131.073456
-    GenerateHazard(hh,hh1)
+#if __name__=="__main__":
+#    hh=HazapModules.Coordinates()
+#    hh.lat=31.732794
+#    hh.lon=131.073456
+#    hh1=HazapModules.Coordinates()
+#    hh1.lat=31.732794
+#    hh1.lon=131.073456
+#    GenerateHazard(hh,hh1)

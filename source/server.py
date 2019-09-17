@@ -22,7 +22,7 @@ def server():
         # IPアドレスとポートを指定
         n=0
         #s.bind(('192.168.0.49', 4000))
-        s.bind(('192.168.0.25',4000))
+        s.bind((HazapModules.IpAdress,4000))
         Coordinates={}#最新の位置情報を格納している辞書
         CoordinateLogs={}#最新の座標も含めてそれぞれの人の今までの座標を記録している辞書
         timeLogs=[]#現在地を取得した最終時間を記録するリスト
@@ -161,7 +161,7 @@ def server():
                         if places["SaftyPlaces"]== None:
                             Bestroutelength=places["EvacuationPlaces"]["0"]["range"]
                         else:
-                            wes = create_connection("ws://192.168.0.25:5000")
+                            wes = create_connection("ws://"+HazapModules.IpAdress+":5000")
                             sendstr="long:"+str(startpoint.lat)+","+str(startpoint.lon)
 
                             for i in range(len(places["SaftyPlaces"])):
@@ -201,7 +201,7 @@ def server():
                             webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
                         print(webserversend)
 
-                        wes = create_connection("ws://192.168.0.25:5000")
+                        wes = create_connection("ws://"+HazapModules.IpAdress+":5000")
                         wes.send(webserversend)
 
                         while True:
@@ -216,9 +216,8 @@ def server():
                         if(optimaldist>=distLogs[int(splited[1])]):
                             rate+=(100/100)
                         elif(optimaldist==0):
-                            if(distLogs[int(splited[1])]>100):
-                                distLogs[int(splited[1])]=100
-                            rate+=(100/(100-distLogs[int(splited[1])]))
+                            if(distLogs[int(splited[1])]<100):
+                                rate+=(100/100-distLogs[int(splited[1])])
                         else:
                             rate+=(1/(optimaldist/distLogs[int(splited[1])]))
                         optimaltime/=60
@@ -226,9 +225,8 @@ def server():
                         if(optimaltime>=resultTime):
                             rate+=(100/100)
                         elif(optimaltime==0):
-                            if(resultTime>100):
-                                resultTime=100
-                            rate+=(100/(100-resultTime))
+                            if(resultTime<100):
+                                rate+=(100/(100-resultTime))
                         else:
                             rate+=(1/(optimaltime/resultTime))
                         wes.close()
