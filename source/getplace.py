@@ -135,11 +135,13 @@ def CarcuEva(Coordinates):
 
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
-    if data["ResultInfo"]["Count"]==0:
+    targetPlace=data["Feature"][0]["Geometry"]["Coordinates"].split(",")
+    if(data["ResultInfo"]["Count"]==0 or not(math.isclose(float(hoge[1]),float(targetPlace[1]),abs_tol=0.0001,rel_tol=0.0001) and math.isclose(float(hoge[0]),float(targetPlace[0]),abs_tol=0.0001,rel_tol=0.0001))):
+        print("Matched!!!")
         return 0
-    print(data)
     st=data["Feature"][0]["Property"]["Genre"][0]["Name"]
     value=0
+    print(st)
     if st.find("避難")!=-1:
         value=100
     elif  st.find("学校")!=-1:
@@ -149,7 +151,7 @@ def CarcuEva(Coordinates):
     elif  st.find("ガソリンスタンド")!=-1:
         value=25
 
-
+    print("Debug")
     return value
 
 def Calcudens(Coordinates):
