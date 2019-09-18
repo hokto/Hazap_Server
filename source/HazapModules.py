@@ -1,7 +1,11 @@
 import math
+
+addres="192.168.0.24"#IPアドレス。ここを変えるだけで各開発環境に対応してみたい
+
 class Coordinates:#緯度、経度格納クラス
     lat=0.0
     lon=0.0
+
 def TwoDimensionsSort(data,targetIdx,left,right):#二次元配列用ソート。引数にそれぞれ、ソートしたいデータのリスト、ソートする対象となるデータが入っている要素番号、リストの先頭、リストの末尾を入れる。
     i=left+1
     k=right
@@ -22,4 +26,3 @@ def TwoDimensionsSort(data,targetIdx,left,right):#二次元配列用ソート。
 def Calculatedistance(pos1,pos2):
     r=6378100
     return math.sqrt((r*math.radians(abs(pos1.lon-pos2.lon)))**2+(r*math.radians(abs(pos1.lat-pos2.lat)))**2)
-IpAdress="192.168.0.24"
