@@ -4,6 +4,7 @@ import requests
 import os
 from lxml import etree
 import json
+import HazapModules
 
 
 def Coastplaces_get(interval):#海岸線取得用の関数
@@ -60,3 +61,27 @@ def Uncompress_zip(filename):#zipファイル解凍して指定したパスに�
     filepath="../data"
     zfile=zipfile.ZipFile(filename)
     zfile.extractall(filepath)
+
+def Fullpos(pos):
+    placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))
+    size=len(placelist)
+    pos2=HazapModules.Coordinates()
+
+    pos2.lat=float(placelist[str(0)].split(" ")[0])
+    pos2.lon=float(placelist[str(0)].split(" ")[1])
+    mindis=HazapModules.Calculatedistance(pos,pos2)
+    index=0
+    for i in range(1,size):
+            pos2.lat=float(placelist[str(i)].split(" ")[0])
+            pos2.lon=float(placelist[str(i)].split(" ")[1])
+            dis=HazapModules.Calculatedistance(pos,pos2)
+            if(mindis>dis):
+                mindis=dis
+                index=i
+    returnlist={}
+    count=0
+    for i in range(max(0,index-50),min(index+50,len(placelist))):
+        returnlist[str(count)]=placelist[str(i)]
+        count+=1
+    with open("../data/squeezed.json","w") as f:
+        json.dump(returnlist,f,ensure_ascii=False,indent=4)

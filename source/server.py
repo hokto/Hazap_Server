@@ -87,6 +87,7 @@ def server():
                             Earthquake.get_Dangerplaces(startPos)
                         elif (disaster=="津波"):
                             Coastplace.Coastplaces_get(100)
+                            Coastplace.Fullpos(startPos)
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -129,8 +130,9 @@ def server():
                                 jsonData=json.load(f)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         elif (disaster=="津波"):
-                            with open("../data/coastplaces.json",encoding="utf_8_sig") as f:
+                            with open("../data/squeezed.json",encoding="utf_8_sig") as f:
                                 jsonData=json.load(f)
+                                print(jsonData)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
                         sendSize=32768

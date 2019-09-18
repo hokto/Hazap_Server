@@ -9,7 +9,7 @@ import Earthquake
 from PIL import Image
 from websocket import create_connection
 import shutil
-
+import Coastplace
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
     sta = {
@@ -217,30 +217,11 @@ def GenerateHazard(sta,end):
     return 0
 
 
-def posBinary_search(pos,placelist):
-    sublist={}
-    center=int(size/2)
-    size=len(placelist)
-    distance=[]
-    for i in range(-1,2):
-        pos2=HazapModules.Coordinates()
-        pos2.lat=float(placelist[center+i].split(" ")[0])
-        pos2.lon=float(placelist[center+i].split(" ")[1])
-        distance.append(HazapModules.Calculatedistance(pos,pos2))
 
-    if(distance[0]<distance[1] and distance[1]<distance[2]):
-        return posBinary_search(pos,placelist[0:center+1])
-    elif (distance[2]<distance[1] and distance[1]<distance[0]):
-        return posBinary_search(pos,placelist[center-1:len(placelist)+1])
-    else:
-        return center
 
 
 if __name__=="__main__":
     hh=HazapModules.Coordinates()
-    hh.lat=31.732794
-    hh.lon=131.073456
-    hh1=HazapModules.Coordinates()
-    hh1.lat=31.732794
-    hh1.lon=131.073456
-    GenerateHazard(hh,hh1)
+    hh.lat=32.0341
+    hh.lon=131.501
+    print(Coastplace.Fullpos(hh))
