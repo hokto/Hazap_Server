@@ -27,8 +27,6 @@ def Xml_parse(interval):#xmlファイルをパースし、海岸線の座標を�
         for segments in Curve:
             for LineStringSegment in segments:
                 for coastplace in LineStringSegment:
-
-                    print(counthoge,coastplace.text.split("\n"))
                     counthoge+=1
                     coastplace.text.split("\n").pop()
                     coast_list+=coastplace.text.split("\n")

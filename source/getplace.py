@@ -98,11 +98,9 @@ def searchplace(pos):
             sumstep[i]+=jsondata[i][k][2]
         jsondata[i]["step"]=sumstep[i]
         jsondata[i]["coordinates"]=data[i]
-<<<<<<< HEAD
+        
         wes = create_connection("ws://"+HazapModules.addres+":5000")
-=======
-        wes = create_connection("ws://192.168.11.8:5000")
->>>>>>> 380101cb7ff83c893d23c647f103722213f074c1
+
         wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
         dist=0
         while True:
@@ -217,6 +215,25 @@ def GenerateHazard(sta,end):
 #            local_file.write(data)
 #    Routes.Download_route(yhurl,"../img/Generate.png")
     return 0
+
+
+def posBinary_search(pos,placelist):
+    sublist={}
+    center=int(size/2)
+    size=len(placelist)
+    distance=[]
+    for i in range(-1,2):
+        pos2=HazapModules.Coordinates()
+        pos2.lat=float(placelist[center+i].split(" ")[0])
+        pos2.lon=float(placelist[center+i].split(" ")[1])
+        distance.append(HazapModules.Calculatedistance(pos,pos2))
+
+    if(distance[0]<distance[1] and distance[1]<distance[2]):
+        return posBinary_search(pos,placelist[0:center+1])
+    elif (distance[2]<distance[1] and distance[1]<distance[0]):
+        return posBinary_search(pos,placelist[center-1:len(placelist)+1])
+    else:
+        return center
 
 
 if __name__=="__main__":

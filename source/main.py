@@ -43,8 +43,5 @@ def Result(start_pos,realRoute,hp):#リザルト画面に必要な処理を行�
     print("Route:"+str(routesPercentage))
     placePercentage=getplace.CarcuEva(real_goal)
     print("Place:"+str(placePercentage))
-<<<<<<< HEAD
     rate=(100/routesPercentage+100/placePercentage+100/hp)#ルート近似率、場所の評価、体力ゲージのみを用いた計算
     return rate
-=======
->>>>>>> 380101cb7ff83c893d23c647f103722213f074c1

@@ -48,8 +48,10 @@ def server():
                     #send="Invalid"
                     if not data:
                         break
+
                     rec=data.decode()
                     splited=rec.split(":")
+                    print(splited[0])
                     if(splited[0]=="Recruit" and startflg==0):#サーバに参加を伝える
                         send=str(n)
                         CoordinateLogs[n]=[]
@@ -131,13 +133,13 @@ def server():
                                 jsonData=json.load(f)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
-                        sendSize=1024*4
+                        sendSize=32768
                         left=0
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
                         while True:
-                            time.sleep(1)
+                            time.sleep(0.5)
                             if(left>length):
                                 break
                             conn.sendall(sendData[left:right])
