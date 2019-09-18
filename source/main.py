@@ -39,9 +39,15 @@ def Result(start_pos,realRoute,hp):#リザルト画面に必要な処理を行�
         optimal_goal.lat,optimal_goal.lon=float(places[0]["coordinates"][0]),float(places[0]["coordinates"][1])#最適な場所の座標
     real_goal=HazapModules.Coordinates()
     real_goal.lat,real_goal.lon=list(map(float,realRoute[len(realRoute)-1].split(",")))#実際の避難場所の座標
-    routesPercentage=Aliverate.Compare_route(start_pos,optimal_goal,real_goal)#ルート比較の割合
-    print("Route:"+str(routesPercentage))
+    routePercentage=Aliverate.Compare_route(start_pos,optimal_goal,real_goal)#ルート比較の割合
+    print("Route:"+str(routePercentage))
     placePercentage=getplace.CarcuEva(real_goal)
+    rate=0
     print("Place:"+str(placePercentage))
-    rate=(100/routesPercentage+100/placePercentage+100/hp)#ルート近似率、場所の評価、体力ゲージのみを用いた計算
+    if(routePercentage!=0):#避難評価の一部計算
+        rate+=(100/routePercentage)
+    if(placePercentage!=0):
+        rate+=(100/routePercentage)
+    if(hp!=0):
+        rate+=(100/hp)
     return rate

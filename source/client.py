@@ -2,10 +2,9 @@ import io
 #from PIL import Image
 import socket
 import numpy
-
+import HazapModules
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-   # s.connect(('192.168.0.49', 4000))
-    s.connect(('192.168.0.25',4000))
+    s.connect((HazapModules.addres,4000))
     # サーバにメッセージを送る
     print("Connected!")
     i=input()
