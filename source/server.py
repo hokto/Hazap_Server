@@ -229,24 +229,29 @@ def server():
 
                                 break
                         if(optimaldist>=distLogs[int(splited[1])]):
-                            rate+=(100/100)
+                            print("Dist:"+str(distLogs[int(splited[1])]))
+                            rate+=(100/100*0.2)
                         elif(optimaldist==0):
-                            if(distLogs[int(splited[1])]<100):
-                                rate+=(100/100-distLogs[int(splited[1])])
+                            if(distLogs[int(splited[1])]>100):
+                                distLogs[int(splited[1])]=100
+                            print("Dist:"+str(distLogs[int(splited[1])]))
+                            rate+=(100/(100-distLogs[int(splited[1])]+0.00001)*0.2)
                         else:
-                            rate+=(1/(optimaldist/distLogs[int(splited[1])]))
+                            rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.00001))*0.2)
                         optimaltime/=60
                         resultTime=float(splited[3])
                         if(optimaltime>=resultTime):
-                            rate+=(100/100)
+                            rate+=(100/100*0.2)
                         elif(optimaltime==0):
-                            if(resultTime<100):
-                                rate+=(100/(100-resultTime))
+                            if(resultTime>100):
+                                resultTime=100
+                            print("Time:"+str(resultTime))
+                            rate+=(100/(100-resultTime+0.00001)*0.2)
                         else:
-                            rate+=(1/(optimaltime/resultTime))
+                            rate+=(1/(optimaltime/(resultTime+0.00001))*0.2)
                         wes.close()
 
-                        rate=int(5/rate*100)
+                        rate=int(1/rate*100)
                         conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
 
                         while True:
