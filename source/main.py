@@ -41,7 +41,7 @@ def Result(start_pos,realRoute,hp):#リザルト画面に必要な処理を行�
     placePercentage=getplace.CarcuEva(real_goal)
     rate=0
     print("Place:"+str(placePercentage))
-    rate+=(100/(placePercentage+0.00001)*0.4)
+    rate+=(100/(placePercentage+0.01)*0.4)
     print("HP:"+str(hp))
-    rate+=(100/(hp+0.00001)*0.2)
+    rate+=(100/(hp+0.01)*0.2)
     return rate

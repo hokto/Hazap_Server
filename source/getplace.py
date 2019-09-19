@@ -66,7 +66,7 @@ def Reray(pos1,pos2,name):
             suburl="https://map.yahooapis.jp/inner/V1/building?lat="+foo[0]+"&lon="+foo[1]+"&appid="+sta["appid"]+sta["output"]
             subres=urllib.request.urlopen(suburl)
             subdata=json.loads(subres.read().decode())
-           ## print(subdata,"\n\n")
+           # print(subdata,"\n\n")
             if(subdata["ResultInfo"]["Count"]!=0):
                 name[i["Geometry"]["Coordinates"]]=int(subdata["Dictionary"]["Building"][0][0]["Floor"])
                 redata[i["Name"]].append(int(subdata["Dictionary"]["Building"][0][0]["Floor"]))
@@ -77,6 +77,11 @@ def Reray(pos1,pos2,name):
 
             redata[i["Name"]]=foo
             redata[i["Name"]].append(name[i["Geometry"]["Coordinates"]])
+        arvurl="http://www.j-shis.bosai.go.jp/map/api/sstrct/V3/meshinfo.geojson?position={current_pos}&epsg=4301" 
+        accessurl=arvurl.format(current_pos=(foo[1]+","+foo[0]))
+        result=requests.get(accessurl)
+        result=result.json()
+        redata[i["Name"]].append(float(result["features"][0]["properties"]["ARV"]))
     return redata
 
 def searchplace(pos):
@@ -93,26 +98,28 @@ def searchplace(pos):
         pos2.lat=data[i][0]
         pos2.lon=data[i][1]
         jsondata[i]=Reray(pos,pos2,name)
-        jsondata[i]
+        value=0
         for k in jsondata[i]:
-            sumstep[i]+=jsondata[i][k][2]
-        jsondata[i]["step"]=sumstep[i]
+            #sumstep[i]+=jsondata[i][k][2]
+            value+=(jsondata[i][k][2]*jsondata[i][k][3])
+        #jsondata[i]["step"]=sumstep[i]
         jsondata[i]["coordinates"]=data[i]
-        wes = create_connection("ws://"+HazapModules.addres+":5000")
-        wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
-        dist=0
-        while True:
-            result =  wes.recv()
-            ravel=result.split(":")
-            if ravel[0] == "value":
-                dist=float(ravel[1])
-                break
-        wes.close()
-        jsondata[i]["range"]=dist
-        if dist==0:
-            jsondata[i]["value"]=0
-        else:
-            jsondata[i]["value"]=sumstep[i]/dist
+        jsondata[i]["value"]=value
+        #wes = create_connection("ws://"+HazapModules.addres+":5000") 
+        #wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
+        #dist=0
+        #while True:
+        #    result =  wes.recv()
+        #    ravel=result.split(":")
+        #    if ravel[0] == "value":
+        #        dist=float(ravel[1])
+        #        break
+        #wes.close()
+        #jsondata[i]["range"]=dist
+        #if dist==0:
+        #    jsondata[i]["value"]=0
+        #else:
+        #    jsondata[i]["value"]=sumstep[i]/dist
 
     jsondata=HazapModules.TwoDimensionsSort(jsondata,"value",0,len(jsondata)-1)#stepsort
     return jsondata

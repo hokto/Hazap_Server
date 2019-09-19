@@ -1,7 +1,9 @@
 import math
+import socket
 
-addres="192.168.0.8"#IPアドレス。ここを変えるだけで各開発環境に対応してみたい
-
+host = socket.gethostname()
+addres = socket.gethostbyname(host)
+print("servers ip is "+addres)
 class Coordinates:#緯度、経度格納クラス
     lat=0.0
     lon=0.0

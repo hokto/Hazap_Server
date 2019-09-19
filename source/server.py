@@ -169,16 +169,19 @@ def server():
                         rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]))
                         getplace.GenerateHazard(startpoint,endpoint)
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
-                        Bestroutelength=0
+                        #ルートの長さを格納している変数
+                        optimaldist=0
+                        #最適な避難場所までの目安時間
+                        optimaltime=0
                         if places["SaftyPlaces"]== None:
-                            Bestroutelength=places["EvacuationPlaces"]["0"]["range"]
+                            optimaldist=places["EvacuationPlaces"]["0"]["range"]
+                            optimaltime=optimaldist/(5000/3600)
                         else:
                             wes = create_connection("ws://"+HazapModules.addres+":5000")
                             sendstr="long:"+str(startpoint.lat)+","+str(startpoint.lon)
 
                             for i in range(len(places["SaftyPlaces"])):
                                 sendstr+=":"+places["SaftyPlaces"][str(i)].split(",")[0]+","+places["SaftyPlaces"][str(i)].split(",")[1]
-                            dist=0
                             sendstr+=places["EvacuationPlaces"]["0"]["coordinates"][0]+","+places["EvacuationPlaces"]["0"]["coordinates"][1]
                             wes.send(sendstr)
                             while True:
@@ -186,9 +189,9 @@ def server():
                                 ravel=result.split(":")
                                 if ravel[0] == "value":
                                     print(ravel[1])
-                                    dist=float(ravel[1])
+                                    optimaldist=float(ravel[1])
+                                    optimaltime=float(ravel[2])
                                     break
-                            Bestroutelength=dist
                             wes.close()
 
 
@@ -204,30 +207,6 @@ def server():
 
                         time.sleep(0.5)
 
-                        #ルートの長さを格納している変数
-                        optimaldist=0
-                        #最適な避難場所までの目安時間
-                        optimaltime=0
-                        #スタート地点とゴール地点とそこまでの経由地点の座標をなげて、正しい反応が返ってくるまでまつ。
-                        webserversend="long"
-                        coorsize=len(CoordinateLogs[int(splited[1])])
-                        for i in range(coorsize):
-
-                            webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
-                        print(webserversend)
-
-                        wes = create_connection("ws://"+HazapModules.addres+":5000")
-                        wes.send(webserversend)
-
-                        while True:
-                            result =  wes.recv()
-                            ravel=result.split(":")
-                            if ravel[0] == "value":
-                                print(ravel[1])
-                                optimaldist=float(ravel[1])
-                                optimaltime=float(ravel[2])
-
-                                break
                         if(optimaldist>=distLogs[int(splited[1])]):
                             print("Dist:"+str(distLogs[int(splited[1])]))
                             rate+=(100/100*0.2)
@@ -235,20 +214,23 @@ def server():
                             if(distLogs[int(splited[1])]>100):
                                 distLogs[int(splited[1])]=100
                             print("Dist:"+str(distLogs[int(splited[1])]))
-                            rate+=(100/(100-distLogs[int(splited[1])]+0.00001)*0.2)
+                            rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
                         else:
-                            rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.00001))*0.2)
-                        optimaltime/=60
+                            rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
+                        optimaltime*=60.0
                         resultTime=float(splited[3])
+                        if(optimaltime==0 and optimaldist!=0):
+                            optimaltime=optimaldist/(5000/3600)
+                            print(optimaltime)
                         if(optimaltime>=resultTime):
                             rate+=(100/100*0.2)
                         elif(optimaltime==0):
                             if(resultTime>100):
                                 resultTime=100
                             print("Time:"+str(resultTime))
-                            rate+=(100/(100-resultTime+0.00001)*0.2)
+                            rate+=(100/(100-resultTime+0.01)*0.2)
                         else:
-                            rate+=(1/(optimaltime/(resultTime+0.00001))*0.2)
+                            rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
                         wes.close()
 
                         rate=int(1/rate*100)
