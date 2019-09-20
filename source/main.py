@@ -25,7 +25,7 @@ def OptimalEvacuation(start_pos,realRoute,resultFlag):#最適な避難場所の�
     Routes.Search_route(start_pos,optimal_goal,realRoute,resultFlag)#最適なルートを作成
     return places#評価の高かった場所のリストを返す
 
-def Result(start_pos,realRoute,hp):#リザルト画面に必要な処理を行う関数。主に、経路作成や生存率の計算など
+def Result(start_pos,realRoute,hp,disaster,disasterScale):#リザルト画面に必要な処理を行う関数。主に、経路作成や生存率の計算など
     if(os.path.exists("../data/result.json")):
         ResultFlag=True
     else:
@@ -38,7 +38,7 @@ def Result(start_pos,realRoute,hp):#リザルト画面に必要な処理を行�
         optimal_goal.lat,optimal_goal.lon=float(places[0]["coordinates"][0]),float(places[0]["coordinates"][1])#最適な場所の座標
     real_goal=HazapModules.Coordinates()
     real_goal.lat,real_goal.lon=list(map(float,realRoute[len(realRoute)-1].split(",")))#実際の避難場所の座標
-    placePercentage=getplace.CarcuEva(real_goal)
+    placePercentage=getplace.CarcuEva(real_goal,disaster,disasterScale)
     rate=0
     print("Place:"+str(placePercentage))
     rate+=(100/(placePercentage+0.01)*0.4)

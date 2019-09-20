@@ -51,7 +51,7 @@ def Search_safty(list_places,start,goal):#安全な場所を探索する関数�
     Sort_places(list_places,list_ARV,0,len(list_places)-1)#ARVが小さい順に取得した場所をソート
     min_val=list_ARV[0]
     safty_places=[]#ARVが小さい場所の緯度、経度を格納
-    for i in range(len(list_ARV)):#修正する可能性あり
+    for i in range(len(list_ARV)):
         if(not(min_val==list_ARV[i] or i<len(list_ARV)/2)):#最低でも半分の場所を格納
             break
         if(not(list_places[i] in safty_places)):

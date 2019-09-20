@@ -62,7 +62,7 @@ def Uncompress_zip(filename):#zipファイル解凍して指定したパスに�
     zfile=zipfile.ZipFile(filename)
     zfile.extractall(filepath)
 
-def Fullpos(pos):
+def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使うかどうか（一番近いところまでの海岸線の距離を取得するため)
     placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))
     size=len(placelist)
     pos2=HazapModules.Coordinates()
@@ -78,6 +78,8 @@ def Fullpos(pos):
             if(mindis>dis):
                 mindis=dis
                 index=i
+    if(evacuFlag):
+        return index 
     returnlist={}
     count=0
     for i in range(max(0,index-50),min(index+50,len(placelist))):

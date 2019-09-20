@@ -88,6 +88,8 @@ def server():
                         startflg = 1
                         disaster=splited[2]
                         disasterScale=splited[3]
+                        if(disaster=="津波"):
+                            disasterScale+=(":"+splited[4])
                         print("serverstart")
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
@@ -95,7 +97,7 @@ def server():
                             Earthquake.get_Dangerplaces(startPos)
                         elif (disaster=="津波"):
                             Coastplace.Coastplaces_get(100)
-                            Coastplace.Fullpos(startPos)
+                            Coastplace.Fullpos(startPos,False)
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -166,7 +168,7 @@ def server():
                         endpoint.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][1])
 
                         
-                        rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]))
+                        rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]),disaster,disasterScale)
                         getplace.GenerateHazard(startpoint,endpoint)
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
                         #ルートの長さを格納している変数
@@ -231,7 +233,6 @@ def server():
                             rate+=(100/(100-resultTime+0.01)*0.2)
                         else:
                             rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
-                        wes.close()
 
                         rate=int(1/rate*100)
                         conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
