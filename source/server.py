@@ -11,7 +11,7 @@ import os
 import time
 from websocket import create_connection
 import Coastplace
-
+import requests
 
 def server():
     contents=None
@@ -96,7 +96,12 @@ def server():
                         if(disaster=="地震"):
                             Earthquake.get_Dangerplaces(startPos)
                         elif (disaster=="津波"):
-                            Coastplace.Coastplaces_get(100)
+                            prefurl="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?{detail}&lat={lat}&lon={lon}"
+                            prefurl=prefurl.format(detail=HazapModules.APIPubWord,lat=startPos.lat,lon=startPos.lon)
+                            prefResult=requests.get(prefurl)
+                            prefResult=prefResult.json()
+                            print(prefResult)
+                            Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
                             Coastplace.Fullpos(startPos,False)
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化

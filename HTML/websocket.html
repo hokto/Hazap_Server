@@ -65,7 +65,7 @@ function sleep(waitMsec) {
 
 
 window.onload = function() {
-  const sock = new WebSocket("ws://192.168.0.24:5000");
+  const sock = new WebSocket("ws://192.168.0.48:5000");
   sock.addEventListener("open", e => {
     console.log("connected");
   });
@@ -111,12 +111,5 @@ window.onload = function() {
 </script>
 </head>
 <body>
-<div id="map" style="width:100%; height:100%;"></div>
-<div id="label" style="position:absolute; bottom:4px; right:4px; width:64%; height:64px">
-    <div id="title">ルート雨雲チェッカー</div>
-    <div id="cur">現在地 : </div>
-    <div id="dst">地図をタップして目的地を設定してください</div>
-    <div id="summary"></div>
-</div>
 </body>
 </html>　
