@@ -200,12 +200,10 @@ def Calcudens(Coordinates):
     data={}
     for i in range(n):
         data[i]=0
-
-
     for i in range(n):
         for k in range(n-i-1):
             distance=math.sqrt((r*math.radians(abs(float(Coordinates[i][1])-float(Coordinates[k+i+1][1]))))**2+(r*math.radians(abs(float(Coordinates[i][0])-float(Coordinates[k+i+1][0]))))**2)
-            if(distance<=150):
+            if(distance<=50):
                 data[i]+=1
                 data[i+k+1]+=1
     return data
