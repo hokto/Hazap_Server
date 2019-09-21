@@ -4,7 +4,7 @@ import HazapModules
 import os
 import json
 
-def OptimalEvacuation(start_pos,realRoute,resultFlag):#最適な避難場所の探索、及び最適な避難経路の探索、実際に避難した経路と最適な避難場所を同じ画像に出力
+def OptimalEvacuation(start_pos,realRoute,resultFlag,disaster,disasterScale):#最適な避難場所の探索、及び最適な避難経路の探索、実際に避難した経路と最適な避難場所を同じ画像に出力
     if(resultFlag):
         #そこから取得
         with open("../data/result.json",encoding="utf-8_sig") as f:
@@ -14,7 +14,7 @@ def OptimalEvacuation(start_pos,realRoute,resultFlag):#最適な避難場所の�
         optimal_goal=HazapModules.Coordinates()
         optimal_goal.lat,optimal_goal.lon=float(goal_pos[0]),float(goal_pos[1])
     else:
-        places=getplace.searchplace(start_pos)#最適な避難場所を取得
+        places=getplace.searchplace(start_pos,disaster,disasterScale)#最適な避難場所を取得
         resultJson={}
         resultJson["EvacuationPlaces"]=places
         with open("../data/result.json","w",encoding="utf-8_sig") as f:
@@ -30,7 +30,7 @@ def Result(start_pos,realRoute,hp,disaster,disasterScale):#リザルト画面に
         ResultFlag=True
     else:
         ResultFlag=False
-    places=OptimalEvacuation(start_pos,realRoute,ResultFlag)#経路作成と最適な場所を取得
+    places=OptimalEvacuation(start_pos,realRoute,ResultFlag,disaster,disasterScale)#経路作成と最適な場所を取得
     optimal_goal=HazapModules.Coordinates()
     if(ResultFlag):
         optimal_goal.lat,optimal_goal.lon=float(places["0"]["coordinates"][0]),float(places["0"]["coordinates"][1])#最適な場所の座標

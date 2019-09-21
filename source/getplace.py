@@ -83,7 +83,7 @@ def Reray(pos1,pos2,name):
         redata[i["Name"]].append(float(result["features"][0]["properties"]["ARV"]))
     return redata
 
-def searchplace(pos):
+def searchplace(pos,disaster,disasterScale):
     #この関数は座標を投げるとその地点からいい避難場所への道のりにある建物の階数、つまり高さを足していって低い順にソートして返す
     data=get_Coordinates(pos)
     jsondata={}
@@ -103,7 +103,8 @@ def searchplace(pos):
             value+=(jsondata[i][k][2]*jsondata[i][k][3])
         #jsondata[i]["step"]=sumstep[i]
         jsondata[i]["coordinates"]=data[i]
-        jsondata[i]["value"]=value
+        jsondata[i]["Evaluation"]=CarcuEva(pos2,disaster,disasterScale)
+        jsondata[i]["value"]=value-jsondata[i]["Evaluation"]
         wes = create_connection("ws://"+HazapModules.addres+":5000") 
         wes.send("long:"+str(pos.lat)+","+str(pos.lon)+":"+data[i][0]+","+data[i][1])
         dist=0
@@ -141,7 +142,17 @@ def CarcuEva(Coordinates,disaster,disasterScale):
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     targetPlace=data["Feature"][0]["Geometry"]["Coordinates"].split(",")
-    if(data["ResultInfo"]["Count"]==0 or not(math.isclose(float(Coordinates.lat),float(targetPlace[1]),rel_tol=0.001,abs_tol=0.001) and math.isclose(float(Coordinates.lon),float(targetPlace[0]),rel_tol=0.001,abs_tol=0.001))):#建物の座標が一切取れなかった、ゴール地点の建物が取得されなかった場合
+    addressurl="https://map.yahooapis.jp/geocode/V1/geoCoder?appid={apikey}&lat={lat}&lon={lon}&sort=dist&output=json"
+    address1url=addressurl.format(apikey=sta["appid"],lat=targetPlace[1],lon=targetPlace[0])
+    address1Result=requests.get(address1url)
+    address1Result=address1Result.json()#Feature->0->Name
+
+    address2url=addressurl.format(apikey=sta["appid"],lat=Coordinates.lat,lon=Coordinates.lon)
+    address2Result=requests.get(address2url)
+    address2Result=address2Result.json()
+
+    if(data["ResultInfo"]["Count"]==0 or address1Result["Feature"][0]["Name"]!=address2Result["Feature"][0]["Name"]):#建物の座標が一切取れなかった、ゴール地点の建物が取得されなかった場合
+        print("No places")
         return 0
     st=data["Feature"][0]["Property"]["Genre"][0]["Name"]
     value=0
@@ -159,7 +170,7 @@ def CarcuEva(Coordinates,disaster,disasterScale):
     sumStep=0
     for i in range(len(placeJson)-1):
         sumStep+=int(placeJson[str(i)]["Step"])
-        if(placeHeight==0 and math.isclose(round(Coordinates.lat,3),round(float(placeJson[str(i)]["Coordinates"].split(",")[1]),3),rel_tol=0.001,abs_tol=0.001) and math.isclose(round(Coordinates.lon,3),round(float(placeJson[str(i)]["Coordinates"].split(",")[0]),3),rel_tol=0.001,abs_tol=0.001)):
+        if(placeHeight==0 and math.isclose(round(float(Coordinates.lat),3),round(float(placeJson[str(i)]["Coordinates"].split(",")[1]),3),rel_tol=0.001,abs_tol=0.001) and math.isclose(round(float(Coordinates.lon),3),round(float(placeJson[str(i)]["Coordinates"].split(",")[0]),3),rel_tol=0.001,abs_tol=0.001)):
             placeHeight=int(placeJson[str(i)]["Step"])
     print("Height:",placeHeight)
     #また、地震の場合はARV地、津波の場合は、標高と海岸線までの距離を取得し、評価値変更
@@ -169,14 +180,12 @@ def CarcuEva(Coordinates,disaster,disasterScale):
         resultARV=requests.get(accessurl)
         resultARV=resultARV.json()
         dangerJson=None
-        print(resultARV)
         arv=float(resultARV["features"][0]["properties"]["ARV"])
         with open("../data/dangerplaces.json",encoding="utf_8_sig") as f:
             dangerJson=json.load(f)
         minARV=float(dangerJson["MinARV"].split(",")[0])
         value*=(minARV/arv)
         if(sumStep/(len(placeJson)-1)<placeHeight):
-            print(sumStep/(len(placeJson)-1))
             value*=((sumStep)/(len(placeJson)-1))/placeHeight
     elif(disaster=="津波"):
         #海抜（標高）を取得
@@ -193,7 +202,6 @@ def CarcuEva(Coordinates,disaster,disasterScale):
         coastS=(coastAltitude+float(disasterScale.split(":")[0]))*float(disasterScale.split(":")[1])
         hc=coastS/HazapModules.Calculatedistance(Coordinates,coastPos)
         hc-=altitude
-        print(hc)
         if(hc>placeHeight*5):
             value*=(placeHeight*5)/hc
     return value
