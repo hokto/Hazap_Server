@@ -140,7 +140,6 @@ def server():
                         elif (disaster=="津波"):
                             with open("../data/squeezed.json",encoding="utf_8_sig") as f:
                                 jsonData=json.load(f)
-                                print(jsonData)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
                         sendSize=32768

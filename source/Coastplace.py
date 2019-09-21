@@ -62,7 +62,9 @@ def Uncompress_zip(filename):#zipファイル解凍して指定したパスに�
     zfile=zipfile.ZipFile(filename)
     zfile.extractall(filepath)
 
+
 def Fullpos(pos):
+    asize=60
     placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))
     size=len(placelist)
     pos2=HazapModules.Coordinates()
@@ -78,10 +80,12 @@ def Fullpos(pos):
             if(mindis>dis):
                 mindis=dis
                 index=i
-    returnlist={}
+    returnlist={}#最終的に書き出すjsonのやつ
     count=0
-    for i in range(max(0,index-50),min(index+50,len(placelist))):
+    for i in range(max(0,index-asize),min(index+asize+1,len(placelist))):
         returnlist[str(count)]=placelist[str(i)]
         count+=1
+
+
     with open("../data/squeezed.json","w") as f:
         json.dump(returnlist,f,ensure_ascii=False,indent=4)
