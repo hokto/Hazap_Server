@@ -5,7 +5,7 @@ import socket
 host = socket.gethostname()
 addres = socket.gethostbyname(host)
 r=6378100
-#print("servers ip is "+addres)
+print("servers ip is "+addres)
 class Coordinates:#緯度、経度格納クラス
     lat=0.0
     lon=0.0

@@ -5,7 +5,6 @@ import math
 import copy
 import os
 
-
 def sumDisinList(coordinatelist):#全ての座標の間の距離の総和を返す。投げる座標の区切りは,であること
 	sumdis=0.0
 	count=0
@@ -25,6 +24,7 @@ def sumDisinList(coordinatelist):#全ての座標の間の距離の総和を返�
 	return sumdis
 
 def simulatetunami(placelist,h,x):
+	print("The simulator started running")
 	table={}
 	sumx=x
 	vol=(len(placelist)-1)*100*h*x#津波の体積V=(辞書の大きさ-1)*点と点の間隔*波の高さ*震源地から海岸までの距離。
@@ -74,7 +74,6 @@ def simulatetunami(placelist,h,x):
 	while True:
 		sub={}
 		for i in range(0,len(placelist),requestsize*4):
-			
 			suburl=base
 			#40個分の座標をsuburlに追加。もしflgpl[k]が4だったらそこは津波が到達できないところなので、直前のデータを入れる
 			for k in range(i,min(i+requestsize*4,len(placelist))):
@@ -93,75 +92,25 @@ def simulatetunami(placelist,h,x):
 
 			subdata=json.loads(urllib.request.urlopen(suburl.rstrip(",")).read().decode())
 			#print("\nlen=",len(subdata["Feature"]))
-			exepcount=0
+			exceptcount=0
 			k=i
 			while k<min(i+requestsize*4,len(placelist)):
 				#print("count=",count,",k=",k,",k%(requestsize*4)=",k%(requestsize*4),",flgpl[k]=",flgpl[k])
 				if(flgpl[k]==4):
 					sub[str(k)]=table[str(count-1)][str(k)]
-					exepcount+=1
-				elif(subdata["Feature"][k%(requestsize*4)-exepcount]["Property"]["Altitude"]>height):
+					exceptcount+=1
+				elif(subdata["Feature"][k%(requestsize*4)-exceptcount]["Property"]["Altitude"]>height):
 					flgpl[k]=4
 					sub[str(k)]=table[str(count-1)][str(k)]
 				else:
-					sub[str(k)]=subdata["Feature"][k%(requestsize*4)-exepcount]["Geometry"]["Coordinates"]
+					sub[str(k)]=subdata["Feature"][k%(requestsize*4)-exceptcount]["Geometry"]["Coordinates"]
 				k+=1
 		table[str(count)]=copy.deepcopy(sub)
 		count+=1
 		sumx+=metl#x1+x2
 		height=vol/(sumDisinList(sub)*sumx)#高さ=体積/(海岸線の長さ*(x1+x2))
-		print("height=",height,",sumx=",sumx,"metl=",metl,"sumDisinList=",sumDisinList(sub))
+		json.dump(table,open("../data/simulated.json","w"),ensure_ascii=False,indent=4)
 		if height<0.3:
 			break
 		metl=math.sqrt(9.8*height)
 	return table
-
-
-
-
-if __name__=="__main__":
-	jsonData=json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
-	data=simulatetunami(jsonData,50,100)
-	json.dump(data,open("../data/simulated.json","w"),ensure_ascii=False,indent=4)
-
-	#print(json.dumps(data,indent=4))
-
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-

@@ -11,6 +11,8 @@ import os
 import time
 from websocket import create_connection
 import Coastplace
+import simulate
+import threading
 
 
 def server():
@@ -96,6 +98,10 @@ def server():
                         elif (disaster=="津波"):
                             Coastplace.Coastplaces_get(100)
                             Coastplace.Fullpos(startPos)
+                            #別スレッドで津波のシミュレーションを開始
+                            #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
+                            thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
+                            thread.start()
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -211,7 +217,6 @@ def server():
                         webserversend="long"
                         coorsize=len(CoordinateLogs[int(splited[1])])
                         for i in range(coorsize):
-
                             webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
                         print(webserversend)
 
@@ -275,4 +280,7 @@ def server():
                     
 
 if __name__=="__main__":
-    server()
+    try:
+        server()
+    except KeyboardInterrupt:
+        print("server was stopped by keybord")
