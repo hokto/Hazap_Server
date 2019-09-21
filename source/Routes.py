@@ -7,15 +7,14 @@ from itertools import chain
 
 
 def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得する関数。
-    APIKEY="dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"
     if(resultFlag):
         #これから取得
         with open("../data/result.json",encoding="utf_8_sig") as f:
             resultJson=json.load(f,encoding="utf_8_sig")
         safty_places=resultJson["SaftyPlaces"]
     else:
-        url="https://map.yahooapis.jp/spatial/V1/shapeSearch?mode=circle&appid={key}&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100&output=json"
-        access_url=url.format(key=APIKEY,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
+        url="https://map.yahooapis.jp/spatial/V1/shapeSearch?{detail}&mode=circle&coordinates={start_lon},{start_lat} {start_lon},{start_lat} {goal_lon},{goal_lat} {goal_lon},{goal_lat}&sort=box&results=100"
+        access_url=url.format(detail=HazapModules.APIPubWord,start_lat=start.lat,start_lon=start.lon,goal_lat=goal.lat,goal_lon=goal.lon)#必要なデータの代入
         result=requests.get(access_url)#データをjsonで取得し、連想配列に変換
         result=result.json()
         list_places=[]#取得した場所の緯度、経度を格納
@@ -34,7 +33,7 @@ def Search_route(start,goal,realRoute,resultFlag):#最適ルートを取得す�
                 resultJson["SaftyPlaces"][i]=safty_places[i]
         with open("../data/result.json","w",encoding="utf-8_sig") as f:
              json.dump(resultJson,f,ensure_ascii=False,indent=4)
-    Making_route(APIKEY,str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),realRoute)
+    Making_route(str(start.lat)+","+str(start.lon),safty_places,str(goal.lat)+","+str(goal.lon),realRoute)
 
 def Search_safty(list_places,start,goal):#安全な場所を探索する関数。
     list_ARV=[]#ARV（最大増振率）を格納
@@ -109,13 +108,13 @@ def Sort_places(list_places,list_ARV,left,right):#ARVが小さい順に場所と
         Sort_places(list_places,list_ARV,k+1,right)
 
 
-def Making_route(APIKEY,start,list_via,optimal_goal,list_realRoute):#最適ルートと、実際に通ったルートの作成関数。
+def Making_route(start,list_via,optimal_goal,list_realRoute):#最適ルートと、実際に通ったルートの作成関数。
     if(list_via==None):#経由地点なしの場合
-        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}|start:on|goal:on|&route={start_place},{optimal_goal}|color:ff000099|start:off|goal:on"
-        access_url=url.format(apikey=APIKEY,start_place=start,optimal_goal=optimal_goal,RealRoute=",".join(list_realRoute))
+        url="https://map.yahooapis.jp/course/V1/routeMap?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&route={RealRoute}|start:on|goal:on|&route={start_place},{optimal_goal}|color:ff000099|start:off|goal:on"
+        access_url=url.format(start_place=start,optimal_goal=optimal_goal,RealRoute=",".join(list_realRoute))
     else:
-        url="https://map.yahooapis.jp/course/V1/routeMap?appid={apikey}&route={RealRoute}|start:on|goal:on&route={start_place},{via_places},{optimal_goal}|color:ff000099|start:off|goal:on"
-        access_url=url.format(apikey=APIKEY,start_place=start,via_places=",".join(list_via),optimal_goal=optimal_goal,RealRoute=",".join(list_realRoute))
+        url="https://map.yahooapis.jp/course/V1/routeMap?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&route={RealRoute}|start:on|goal:on&route={start_place},{via_places},{optimal_goal}|color:ff000099|start:off|goal:on"
+        access_url=url.format(start_place=start,via_places=",".join(list_via),optimal_goal=optimal_goal,RealRoute=",".join(list_realRoute))
     Download_route(access_url,"../img/route.png")
 
 

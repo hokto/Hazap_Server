@@ -8,9 +8,8 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
         with open("../data/"+str(int(centerPos.lat*10**3))+str(int(centerPos.lon*10**3))+".json",encoding="utf_8_sig") as f:
             dangerPlaces=json.load(f,encoding="utf_8_sig")
     else:
-            APIKEY="dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-"
-            places_url="https://map.yahooapis.jp/search/local/V1/localSearch?appid={key}&lat={lat}&lon={lon}&sort=-dist&results=100&output=json&dist=1&distinct=false"
-            places_url=places_url.format(key=APIKEY,lat=centerPos.lat,lon=centerPos.lon)
+            places_url="https://map.yahooapis.jp/search/local/V1/localSearch?{detail}&lat={lat}&lon={lon}&sort=-dist&results=100&dist=1&distinct=false"
+            places_url=places_url.format(detail=HazapModules.APIPubWord,lat=centerPos.lat,lon=centerPos.lon)
             places=requests.get(places_url)
             places=places.json()
             count=places["ResultInfo"]["Count"]
@@ -23,8 +22,8 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
                 if subcount>0:
                     distance=HazapModules.Calculatedistance(centerPos,minplace)
                     print(distance,subcount)
-                    subplaces_url="https://map.yahooapis.jp/search/local/V1/localSearch?appid={key}&lat={lat}&lon={lon}&sort=-dist&results=100&output=json&dist="+str(distance/1000)+"&distinct=false"
-                    subplaces_url=subplaces_url.format(key=APIKEY,lat=centerPos.lat,lon=centerPos.lon)
+                    subplaces_url="https://map.yahooapis.jp/search/local/V1/localSearch?{detail}&lat={lat}&lon={lon}&sort=-dist&results=100&dist="+str(distance/1000)+"&distinct=false"
+                    subplaces_url=subplaces_url.format(detail=HazapModules.APIPubWord,lat=centerPos.lat,lon=centerPos.lon)
                     subplaces=requests.get(subplaces_url)
                     subplaces=subplaces.json()
                     count+=subplaces["ResultInfo"]["Count"]
@@ -57,9 +56,9 @@ def get_Dangerplaces(centerPos):#地震の揺れやすさを表す指標(ARV値)
                 list_ARV=requests.get(arv_url)
                 list_ARV=list_ARV.json()
 
-                placesHeight_url="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat={lat}&lon={lon}&appid={key}&output=json"
+                placesHeight_url="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?{detail}&lat={lat}&lon={lon}"
                 lon,lat=places["Feature"][i]["Geometry"]["Coordinates"].split(",")
-                placesHeight_url=placesHeight_url.format(lat=lat,lon=lon,key=APIKEY)
+                placesHeight_url=placesHeight_url.format(lat=lat,lon=lon,detail=HazapModules.APIPubWord)
                 placesHeight=requests.get(placesHeight_url)
                 placesHeight=placesHeight.json()
                 before_place=places["Feature"][i]["Geometry"]["Coordinates"]

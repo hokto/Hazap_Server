@@ -12,15 +12,11 @@ import shutil
 import Coastplace
 def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
-    sta = {
-        "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
-        "output":"&output=json"
-        }
     redata=[]
     tellist=[]
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1"+sta["output"]+"&gc=0425&sort=geo"
-    url2="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1"+sta["output"]+"&gc=0423007&sort=geo"
-    url3="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1"+sta["output"]+"&gc=0305007&sort=geo"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1&gc=0425&sort=geo"
+    url2="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1&gc=0423007&sort=geo"
+    url3="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1&gc=0305007&sort=geo"
     res=urllib.request.urlopen(url)
     res2=urllib.request.urlopen(url2)
     res3=urllib.request.urlopen(url3)
@@ -49,12 +45,8 @@ def get_Coordinates(pos):
     return redata
 
 def Reray(pos1,pos2,name):
-    sta = {
-        "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
-        "output":"&output=json"
-        }
     redata={}
-    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?appid="+sta["appid"]+"&coordinates="+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos2.lon)+","+str(pos2.lat)+"&mode=line"+sta["output"]
+    url="https://map.yahooapis.jp/spatial/V1/shapeSearch?"+HazapModules.APIPubWord+"&coordinates="+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos1.lon)+","+str(pos1.lat)+"%20"+str(pos2.lon)+","+str(pos2.lat)+"&mode=line"
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     for i in data["Feature"]:
@@ -63,7 +55,7 @@ def Reray(pos1,pos2,name):
         if i["Geometry"]["Coordinates"] not in name:
             redata[i["Name"]]=foo
 
-            suburl="https://map.yahooapis.jp/inner/V1/building?lat="+foo[0]+"&lon="+foo[1]+"&appid="+sta["appid"]+sta["output"]
+            suburl="https://map.yahooapis.jp/inner/V1/building?"+HazapModules.APIPubWord+"&lat="+foo[0]+"&lon="+foo[1]
             subres=urllib.request.urlopen(suburl)
             subdata=json.loads(subres.read().decode())
             if(subdata["ResultInfo"]["Count"]!=0):
@@ -127,27 +119,23 @@ def searchplace(pos,disaster,disasterScale):
 #lat=緯度　lon=経度
 def CarcuEva(Coordinates,disaster,disasterScale):
     #座標を投げたらその座標の建物の種類の評価値を返します
-    sta = {
-        "appid": "dj00aiZpPWlGdHd2QlFKTDZZWiZzPWNvbnN1bWVyc2VjcmV0Jng9ODg-", 
-        "output":"&output=json"
-        }
-    url1="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?lat="+str(Coordinates.lat)+"&lon="+str(Coordinates.lon)+"&appid="+sta["appid"]+sta["output"]
+    url1="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?"+HazapModules.APIPubWord+"&lat="+str(Coordinates.lat)+"&lon="+str(Coordinates.lon)
     res1=urllib.request.urlopen(url1)
     data1=json.loads(res1.read().decode())
 
 
     hoge=data1["Feature"][0]["Geometry"]["Coordinates"].split(',')
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?appid="+sta["appid"]+"&lat="+hoge[1]+"&lon="+hoge[0]+"&dist=1"+sta["output"]+"&gc=0425,0406,0305007,0412021&sort=dist"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+hoge[1]+"&lon="+hoge[0]+"&dist=1&gc=0425,0406,0305007,0412021&sort=dist"
 
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     targetPlace=data["Feature"][0]["Geometry"]["Coordinates"].split(",")
-    addressurl="https://map.yahooapis.jp/geocode/V1/geoCoder?appid={apikey}&lat={lat}&lon={lon}&sort=dist&output=json"
-    address1url=addressurl.format(apikey=sta["appid"],lat=targetPlace[1],lon=targetPlace[0])
+    addressurl="https://map.yahooapis.jp/geocode/V1/geoCoder?{detail}&lat={lat}&lon={lon}&sort=dist"
+    address1url=addressurl.format(detail=HazapModules.APIPubWord,lat=targetPlace[1],lon=targetPlace[0])
     address1Result=requests.get(address1url)
     address1Result=address1Result.json()#Feature->0->Name
 
-    address2url=addressurl.format(apikey=sta["appid"],lat=Coordinates.lat,lon=Coordinates.lon)
+    address2url=addressurl.format(detail=HazapModules.APIPubWord,lat=Coordinates.lat,lon=Coordinates.lon)
     address2Result=requests.get(address2url)
     address2Result=address2Result.json()
 
@@ -193,8 +181,8 @@ def CarcuEva(Coordinates,disaster,disasterScale):
         coastJson=json.load(open("../data/coastplaces.json",encoding="utf_8_sig"))
         coastPos=HazapModules.Coordinates()
         coastPos.lat,coastPos.lon=float(coastJson[str(coastIdx)].split(" ")[0]),float(coastJson[str(coastIdx)].split(" ")[1])
-        altitudeurl="https://map.yahooapis.jp/alt/V1/getAltitude?appid={apikey}&coordinates={pos1},{pos2}&output=json"
-        altitudeurl=altitudeurl.format(apikey=sta["appid"],pos1=str(Coordinates.lon)+","+str(Coordinates.lat),pos2=str(coastPos.lon)+","+str(coastPos.lat))
+        altitudeurl="https://map.yahooapis.jp/alt/V1/getAltitude?{detail}&coordinates={pos1},{pos2}"
+        altitudeurl=altitudeurl.format(detail=HazapModules.APIPubWord,pos1=str(Coordinates.lon)+","+str(Coordinates.lat),pos2=str(coastPos.lon)+","+str(coastPos.lat))
         resultAltitude=requests.get(altitudeurl)
         resultAltitude=resultAltitude.json()
         altitude=resultAltitude["Feature"][0]["Property"]["Altitude"]
@@ -221,59 +209,3 @@ def Calcudens(Coordinates):
                 data[i]+=1
                 data[i+k+1]+=1
     return data
-
-def GenerateHazard(sta,end):
-#    #指定した座標のハザードマップを生成するやつ
-#    dis=HazapModules.Calculatedistance(sta,end)
-#    radius=0
-#    for i in range(2,100):
-#        if(dis<i*1000):
-#            radius=i
-#            break
-#    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
-#    resultJson=json.load(f)
-#    e="0,255,0,0,3,0,255,0,127,"+str(sta.lat)+","+str(sta.lon)+","+"1000"
-#    for i in resultJson:
-#        foo=resultJson[i]["Coordinates"].split(",")
-#        foo[0],foo[1]=foo[1],foo[0]
-#        concen=110*(1/float(resultJson[i]["ARV"]))
-#        if 126<concen:
-#            concen=126
-#        stre=":0,0,0,127,1,255,0,0,"+str(100*(1/float(resultJson[i]["ARV"])))+","+foo[0]+","+foo[1]+","+str(10*int(resultJson[i]["Step"]))
-#        e+=stre
-#
-#    f=open("../data/dangerplaces.json",encoding="utf-8_sig")
-#    resultJson=json.load(f)
-#    mark=""
-#    hoge=json.load(open("../data/result.json",encoding="utf-8_sig"))
-#    postdata={
-#    "output":"png",
-#    "lat":str(sta.lat),
-#    "lon":str(sta.lon),
-#    "e":e,
-#    "autoscale":"on",
-#    "width":"1000",
-#    "height":"1000"
-#    }
-#
-##    for i in hoge["EvacuationPlaces"]:
-##        postdata["pin"+str(int(i)+1)]=hoge["EvacuationPlaces"][i]["coordinates"][0]+","+hoge["EvacuationPlaces"][i]["coordinates"][1]
-#
-#    
-#    
-#
-#    #yhurl="https://map.yahooapis.jp/map/V1/static?appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-"+mark+"&e="+e+"&autoscale=on&width=1000&height=1000&output=png"
-#
-#    with requests.post(url, data=postdata) as web_file:
-#        data=web_file.text.encode()
-#        with open("../img/test.html",mode="wb")as local_file:
-#            local_file.write(data)
-#    Routes.Download_route(yhurl,"../img/Generate.png")
-    return 0
-
-
-#if __name__=="__main__":
-#    hh=HazapModules.Coordinates()
-#    hh.lat=32.0341
-#    hh.lon=131.501
-#    print(Coastplace.Fullpos(hh))

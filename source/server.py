@@ -169,7 +169,6 @@ def server():
 
                         
                         rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]),disaster,disasterScale)
-                        getplace.GenerateHazard(startpoint,endpoint)
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
                         #ルートの長さを格納している変数
                         optimaldist=0

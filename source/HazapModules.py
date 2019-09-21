@@ -4,6 +4,7 @@ import socket
 host = socket.gethostname()
 addres = socket.gethostbyname(host)
 print("servers ip is "+addres)
+APIPubWord="appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&output=json"
 class Coordinates:#緯度、経度格納クラス
     lat=0.0
     lon=0.0
