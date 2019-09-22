@@ -1,0 +1,1669 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ksj:Dataset gml:id="C13Dataset" xmlns:ksj="http://nlftp.mlit.go.jp/ksj/schemas/ksj-app" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nlftp.mlit.go.jp/ksj/schemas/ksj-app KsjAppSchema-C13-v1_1.xsd">
+<gml:description>国土数値情報 架橋（線） インスタンス文書</gml:description>
+<!-- データ提供範囲 -->
+<gml:boundedBy>
+	<gml:EnvelopeWithTimePeriod srsName="JGD2000 / (B, L)" frame="GC / JST">
+		<gml:lowerCorner>20.00000000 123.00000000</gml:lowerCorner>
+		<gml:upperCorner>46.00000000 154.00000000</gml:upperCorner>
+		<gml:beginPosition calendarEraName="西暦">1900</gml:beginPosition>
+		<gml:endPosition indeterminatePosition="unknown"/>
+	</gml:EnvelopeWithTimePeriod>
+</gml:boundedBy>
+<!-- 空間属性 -->
+<gml:Curve gml:id="cv_503077-000007">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.94008333 130.91436111
+33.94008333 130.91425000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503077-000009">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.96350000 130.95536111
+33.96008333 130.96200000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503176-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.98016667 131.76866667
+33.98075000 131.77066667
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503271-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.96161111 132.18525000
+33.95294444 132.18513889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513424-000004">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.22969444 134.58677778
+34.23002778 134.58852778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513424-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.19036111 134.61127778
+34.19411111 134.61291667
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513424-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.23202778 134.61691667
+34.23269444 134.61652778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503324-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.54411111 133.56613889
+33.54336111 133.56988889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503422-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.54744444 134.30055556
+33.54777778 134.30144444
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513320-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.21686111 133.05366667
+34.21494444 133.05691667
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513425-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.23586111 134.64152778
+34.24127778 134.65913889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513213-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.15566667 132.49386111
+34.15458333 132.48972222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513213-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.15383333 132.44347222
+34.15333333 132.44286111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513243-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.35705556 132.49711111
+34.34822222 132.49697222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503176-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.98875000 131.86327778
+33.98766667 131.85866667
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503250-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.83177778 132.11763889
+33.83036111 132.11713889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503262-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.86127778 132.36122222
+33.85861111 132.35922222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513141-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.39877778 131.19944444
+34.39719444 131.20005556
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503077-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.93900000 130.91550000
+33.93791667 130.91500000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_533322-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+35.55311111 133.25350000
+35.55319444 133.25400000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_533321-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+35.55111111 133.24361111
+35.54669444 133.24536111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_533321-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+35.55111111 133.24361111
+35.54669444 133.24536111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_533311-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+35.48027778 133.14550000
+35.48036111 133.14475000
+35.48027778 133.14475000
+35.48019444 133.14461111
+35.47836111 133.14361111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503077-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.94833333 130.87686111
+33.94866667 130.87636111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_533321-000004">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+35.53836111 133.16225000
+35.53836111 133.16275000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_543310-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+36.10638889 133.00561111
+36.10638889 133.00575000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503077-000004">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.95675000 130.90825000
+33.95516667 130.90700000
+33.95116667 130.90425000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_543322-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+36.22202778 133.34258333
+36.22202778 133.34272222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513104-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.02091667 131.58005556
+34.01925000 131.58130556
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_543322-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+36.20247222 133.32272222
+36.20038889 133.32422222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_523220-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.90158333 132.06338889
+34.90158333 132.06350000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513225-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.18575000 132.68208333
+34.18366667 132.68658333
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503032-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.66044444 130.31916667
+33.66144444 130.31655556
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513330-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.30775000 133.08016667
+34.30741667 133.08216667
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513341-000004">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.35850000 133.18263889
+34.35475000 133.17427778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513341-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.41016667 133.21563889
+34.40841667 133.21427778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513341-000002">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.37608333 133.17077778
+34.37616667 133.17252778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513365-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.53088889 133.66650000
+34.53013889 133.66186111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513342-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.35616667 133.28838889
+34.35608333 133.28888889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513377-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.60180556 133.98108333
+34.59613889 133.97997222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_523401-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.71930556 134.23280556
+34.71497222 134.23305556
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513204-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.06944444 132.54322222
+34.06711111 132.53861111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513224-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.19516667 132.53661111
+34.19508333 132.53797222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_493215-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+32.76616667 132.62922222
+32.76616667 132.62836111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_493216-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+32.77275000 132.83547222
+32.77366667 132.83572222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503313-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.43952778 133.43827778
+33.43936111 133.44177778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503314-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.50161111 133.56777778
+33.49894444 133.56802778
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_493217-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+32.78691667 132.99733333
+32.78675000 132.99644444
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503302-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.35786111 133.31227778
+33.35802778 133.31088889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_513354-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+34.47963889 133.51850000
+34.47847222 133.51675000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_493235-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+32.92630556 132.69447222
+32.92597222 132.69372222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503077-000011">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.96350000 130.95536111
+33.96008333 130.96200000
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503053-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.79058333 130.45927778
+33.79100000 130.45838889
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_503066-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+33.90133333 130.82000000
+33.90408333 130.81361111
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<gml:Curve gml:id="cv_493225-000000">
+	<gml:segments>
+		<gml:LineStringSegment>
+			<gml:posList>
+32.91850000 132.70211111
+32.91783333 132.70247222
+			</gml:posList>
+		</gml:LineStringSegment>
+	</gml:segments>
+</gml:Curve>
+<!-- 地物データ -->
+<ksj:Bridge gml:id="fi_1">
+	<ksj:location xlink:href="#cv_533321-000000"/>
+	<ksj:managementCode>31001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">31</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>境推道台橋（有料道路）</ksj:name>
+	<ksj:length>7093</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>20</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_1">
+			<gml:timePosition>1981</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_2">
+	<ksj:location xlink:href="#cv_533321-000002"/>
+	<ksj:managementCode>32001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">31</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>境推道台橋</ksj:name>
+	<ksj:length>7093</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>20</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_2">
+			<gml:timePosition>1972</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_3">
+	<ksj:location xlink:href="#cv_533322-000000"/>
+	<ksj:managementCode>32002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>福浦橋（ヵ関）</ksj:name>
+	<ksj:length>520</ksj:length>
+	<ksj:width>65</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_3">
+			<gml:timePosition>1972</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_4">
+	<ksj:location xlink:href="#cv_543322-000000"/>
+	<ksj:managementCode>32003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>福浦橋（西郷）</ksj:name>
+	<ksj:length>60</ksj:length>
+	<ksj:width>56</ksj:width>
+	<ksj:roadwayWidth>51</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_4">
+			<gml:timePosition>1962</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_5">
+	<ksj:location xlink:href="#cv_543310-000000"/>
+	<ksj:managementCode>32004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>船姻橋（宕前）</ksj:name>
+	<ksj:length>180</ksj:length>
+	<ksj:width>60</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_5">
+			<gml:timePosition>1969</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_6">
+	<ksj:location xlink:href="#cv_533321-000004"/>
+	<ksj:managementCode>32005</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>万原橋</ksj:name>
+	<ksj:length>400</ksj:length>
+	<ksj:width>75</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>0</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_6">
+			<gml:timePosition>1981</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_7">
+	<ksj:location xlink:href="#cv_533311-000000"/>
+	<ksj:managementCode>32006</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>台顎咲橋</ksj:name>
+	<ksj:length>2570</ksj:length>
+	<ksj:width>70</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>0</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_7">
+			<gml:timePosition>1978</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_8">
+	<ksj:location xlink:href="#cv_523220-000000"/>
+	<ksj:managementCode>32007</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>港橋</ksj:name>
+	<ksj:length>240</ksj:length>
+	<ksj:width>70</ksj:width>
+	<ksj:roadwayWidth>65</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_8">
+			<gml:timePosition>1962</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_9">
+	<ksj:location xlink:href="#cv_543322-000002"/>
+	<ksj:managementCode>32008</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">32</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>西郷台橋</ksj:name>
+	<ksj:length>2710</ksj:length>
+	<ksj:width>60</ksj:width>
+	<ksj:roadwayWidth>50</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_9">
+			<gml:timePosition>1977</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_10">
+	<ksj:location xlink:href="#cv_513354-000000"/>
+	<ksj:managementCode>33001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>神宕台橋</ksj:name>
+	<ksj:length>1700</ksj:length>
+	<ksj:width>75</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_10">
+			<gml:timePosition>1969</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_11">
+	<ksj:location xlink:href="#cv_513377-000000"/>
+	<ksj:managementCode>33002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>侍宕湾台橋</ksj:name>
+	<ksj:length>9310</ksj:length>
+	<ksj:width>105</ksj:width>
+	<ksj:roadwayWidth>65</ksj:roadwayWidth>
+	<ksj:pavementWidth>25</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_11">
+			<gml:timePosition>1983</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_12">
+	<ksj:location xlink:href="#cv_523401-000000"/>
+	<ksj:managementCode>33003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>片鞘台橋</ksj:name>
+	<ksj:length>5200</ksj:length>
+	<ksj:width>85</ksj:width>
+	<ksj:roadwayWidth>70</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_12">
+			<gml:timePosition>1974</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_13">
+	<ksj:location xlink:href="#cv_513365-000000"/>
+	<ksj:managementCode>33004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">33</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>玉宕台橋</ksj:name>
+	<ksj:length>4560</ksj:length>
+	<ksj:width>108</ksj:width>
+	<ksj:roadwayWidth>65</ksj:roadwayWidth>
+	<ksj:pavementWidth>33</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_13">
+			<gml:timePosition>1977</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_14">
+	<ksj:location xlink:href="#cv_513342-000000"/>
+	<ksj:managementCode>34001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>睦橋</ksj:name>
+	<ksj:length>2190</ksj:length>
+	<ksj:width>88</ksj:width>
+	<ksj:roadwayWidth>63</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_14">
+			<gml:timePosition>1979</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_15">
+	<ksj:location xlink:href="#cv_513341-000000"/>
+	<ksj:managementCode>34002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>備道台橋</ksj:name>
+	<ksj:length>3860</ksj:length>
+	<ksj:width>104</ksj:width>
+	<ksj:roadwayWidth>75</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_15">
+			<gml:timePosition>1968</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_16">
+	<ksj:location xlink:href="#cv_513341-000002"/>
+	<ksj:managementCode>34003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>宕台橋</ksj:name>
+	<ksj:length>1400</ksj:length>
+	<ksj:width>55</ksj:width>
+	<ksj:roadwayWidth>45</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_16">
+			<gml:timePosition>1968</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_17">
+	<ksj:location xlink:href="#cv_513330-000000"/>
+	<ksj:managementCode>34004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>香根台橋</ksj:name>
+	<ksj:length>2050</ksj:length>
+	<ksj:width>55</ksj:width>
+	<ksj:roadwayWidth>50</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_17">
+			<gml:timePosition>1970</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_18">
+	<ksj:location xlink:href="#cv_513341-000004"/>
+	<ksj:managementCode>34005</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>員宕台橋</ksj:name>
+	<ksj:length>12700</ksj:length>
+	<ksj:width>200</ksj:width>
+	<ksj:roadwayWidth>140</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>5</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_18">
+			<gml:timePosition>1975</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_19">
+	<ksj:location xlink:href="#cv_513225-000000"/>
+	<ksj:managementCode>34006</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>竃刈台橋</ksj:name>
+	<ksj:length>4800</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_19">
+			<gml:timePosition>1979</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_20">
+	<ksj:location xlink:href="#cv_513224-000000"/>
+	<ksj:managementCode>34007</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>音戸台橋</ksj:name>
+	<ksj:length>1720</ksj:length>
+	<ksj:width>65</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_20">
+			<gml:timePosition>1961</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_21">
+	<ksj:location xlink:href="#cv_513204-000000"/>
+	<ksj:managementCode>34008</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>鹿宕台橋</ksj:name>
+	<ksj:length>3400</ksj:length>
+	<ksj:width>50</ksj:width>
+	<ksj:roadwayWidth>44</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_21">
+			<gml:timePosition>1975</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_22">
+	<ksj:location xlink:href="#cv_513213-000000"/>
+	<ksj:managementCode>34009</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>瀬台橋</ksj:name>
+	<ksj:length>6230</ksj:length>
+	<ksj:width>95</ksj:width>
+	<ksj:roadwayWidth>65</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_22">
+			<gml:timePosition>1973</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_23">
+	<ksj:location xlink:href="#cv_513213-000002"/>
+	<ksj:managementCode>34010</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>沖耶宕橋</ksj:name>
+	<ksj:length>240</ksj:length>
+	<ksj:width>40</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_23">
+			<gml:timePosition>1971</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_24">
+	<ksj:location xlink:href="#cv_513243-000000"/>
+	<ksj:managementCode>34011</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">34</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>広宕台橋</ksj:name>
+	<ksj:length>10200</ksj:length>
+	<ksj:width>170</ksj:width>
+	<ksj:roadwayWidth>130</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>40</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_24">
+			<gml:timePosition>1974</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_25">
+	<ksj:location xlink:href="#cv_503176-000000"/>
+	<ksj:managementCode>35001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>笠戸台橋</ksj:name>
+	<ksj:length>4760</ksj:length>
+	<ksj:width>87</ksj:width>
+	<ksj:roadwayWidth>70</ksj:roadwayWidth>
+	<ksj:pavementWidth>14</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>3</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_25">
+			<gml:timePosition>1970</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_26">
+	<ksj:location xlink:href="#cv_503250-000000"/>
+	<ksj:managementCode>35002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>鞘関台橋</ksj:name>
+	<ksj:length>2200</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>15</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_26">
+			<gml:timePosition>1969</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_27">
+	<ksj:location xlink:href="#cv_503262-000000"/>
+	<ksj:managementCode>35003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>沖家室台橋</ksj:name>
+	<ksj:length>3800</ksj:length>
+	<ksj:width>50</ksj:width>
+	<ksj:roadwayWidth>40</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_27">
+			<gml:timePosition>1983</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_28">
+	<ksj:location xlink:href="#cv_513141-000000"/>
+	<ksj:managementCode>35004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>青顎台橋</ksj:name>
+	<ksj:length>3160</ksj:length>
+	<ksj:width>60</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_28">
+			<gml:timePosition>1965</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_29">
+	<ksj:location xlink:href="#cv_503077-000000"/>
+	<ksj:managementCode>35005</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>関彦橋</ksj:name>
+	<ksj:length>2323</ksj:length>
+	<ksj:width>122</ksj:width>
+	<ksj:roadwayWidth>100</ksj:roadwayWidth>
+	<ksj:pavementWidth>12</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_29">
+			<gml:timePosition>1957</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_30">
+	<ksj:location xlink:href="#cv_503077-000002"/>
+	<ksj:managementCode>35006</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>昭和橋</ksj:name>
+	<ksj:length>350</ksj:length>
+	<ksj:width>100</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>25</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_30">
+			<gml:timePosition>1982</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_31">
+	<ksj:location xlink:href="#cv_513104-000000"/>
+	<ksj:managementCode>35007</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>錦橋</ksj:name>
+	<ksj:length>467</ksj:length>
+	<ksj:width>65</ksj:width>
+	<ksj:roadwayWidth>65</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_31">
+			<gml:timePosition>1969</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_32">
+	<ksj:location xlink:href="#cv_503077-000004"/>
+	<ksj:managementCode>35008</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>彦宕台橋</ksj:name>
+	<ksj:length>5000</ksj:length>
+	<ksj:width>85</ksj:width>
+	<ksj:roadwayWidth>70</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>15</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_32">
+			<gml:timePosition>1975</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_33">
+	<ksj:location xlink:href="#cv_503176-000002"/>
+	<ksj:managementCode>35009</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>小瀬戸橋</ksj:name>
+	<ksj:length>700</ksj:length>
+	<ksj:width>60</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_33">
+			<gml:timePosition>1967</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_34">
+	<ksj:location xlink:href="#cv_503271-000000"/>
+	<ksj:managementCode>35010</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>台宕台橋</ksj:name>
+	<ksj:length>0</ksj:length>
+	<ksj:width>0</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>0</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_34">
+			<gml:timePosition>1976</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_35">
+	<ksj:location xlink:href="#cv_503077-000007"/>
+	<ksj:managementCode>35011</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>推紋橋</ksj:name>
+	<ksj:length>0</ksj:length>
+	<ksj:width>0</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>0</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_35">
+			<gml:timePosition>1983</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_36">
+	<ksj:location xlink:href="#cv_503077-000009"/>
+	<ksj:managementCode>35012</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>関紋橋</ksj:name>
+	<ksj:length>10680</ksj:length>
+	<ksj:width>260</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_36">
+			<gml:timePosition>1973</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_37">
+	<ksj:location xlink:href="#cv_513424-000000"/>
+	<ksj:managementCode>36001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>小鳴紋橋</ksj:name>
+	<ksj:length>4414</ksj:length>
+	<ksj:width>78</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>18</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_37">
+			<gml:timePosition>1961</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_38">
+	<ksj:location xlink:href="#cv_513424-000002"/>
+	<ksj:managementCode>36002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>堀橋</ksj:name>
+	<ksj:length>1555</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>20</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_38">
+			<gml:timePosition>1971</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_39">
+	<ksj:location xlink:href="#cv_513424-000004"/>
+	<ksj:managementCode>36003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>小鳴紋新橋</ksj:name>
+	<ksj:length>3080</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>20</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_39">
+			<gml:timePosition>1971</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_40">
+	<ksj:location xlink:href="#cv_513425-000000"/>
+	<ksj:managementCode>36004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">36</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>台鳴紋橋</ksj:name>
+	<ksj:length>16290</ksj:length>
+	<ksj:width>340</ksj:width>
+	<ksj:roadwayWidth>300</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>5</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_40">
+			<gml:timePosition>1985</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_41">
+	<ksj:location xlink:href="#cv_513320-000000"/>
+	<ksj:managementCode>38001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">38</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">38</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>台三宕橋</ksj:name>
+	<ksj:length>3280</ksj:length>
+	<ksj:width>273</ksj:width>
+	<ksj:roadwayWidth>180</ksj:roadwayWidth>
+	<ksj:pavementWidth>50</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_41">
+			<gml:timePosition>1979</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_42">
+	<ksj:location xlink:href="#cv_503422-000000"/>
+	<ksj:managementCode>39001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>甲浦台橋</ksj:name>
+	<ksj:length>1960</ksj:length>
+	<ksj:width>90</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>20</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>1</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_42">
+			<gml:timePosition>1972</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_43">
+	<ksj:location xlink:href="#cv_503324-000000"/>
+	<ksj:managementCode>39002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>新青靖橋</ksj:name>
+	<ksj:length>3460</ksj:length>
+	<ksj:width>160</ksj:width>
+	<ksj:roadwayWidth>120</ksj:roadwayWidth>
+	<ksj:pavementWidth>30</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_43">
+			<gml:timePosition>1967</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_44">
+	<ksj:location xlink:href="#cv_503314-000000"/>
+	<ksj:managementCode>39003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>浦戸台橋</ksj:name>
+	<ksj:length>9150</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>15</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_44">
+			<gml:timePosition>1972</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_45">
+	<ksj:location xlink:href="#cv_503313-000000"/>
+	<ksj:managementCode>39004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>宇佐台橋</ksj:name>
+	<ksj:length>6450</ksj:length>
+	<ksj:width>85</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>15</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_45">
+			<gml:timePosition>1973</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_46">
+	<ksj:location xlink:href="#cv_503302-000000"/>
+	<ksj:managementCode>39005</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>着槊宕台橋</ksj:name>
+	<ksj:length>1380</ksj:length>
+	<ksj:width>52</ksj:width>
+	<ksj:roadwayWidth>30</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>22</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_46">
+			<gml:timePosition>1982</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_47">
+	<ksj:location xlink:href="#cv_493217-000000"/>
+	<ksj:managementCode>39006</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>新窪津橋</ksj:name>
+	<ksj:length>590</ksj:length>
+	<ksj:width>80</ksj:width>
+	<ksj:roadwayWidth>55</ksj:roadwayWidth>
+	<ksj:pavementWidth>20</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_47">
+			<gml:timePosition>1976</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_48">
+	<ksj:location xlink:href="#cv_493216-000000"/>
+	<ksj:managementCode>39007</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>片箔台橋</ksj:name>
+	<ksj:length>1800</ksj:length>
+	<ksj:width>98</ksj:width>
+	<ksj:roadwayWidth>60</ksj:roadwayWidth>
+	<ksj:pavementWidth>13</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>25</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_48">
+			<gml:timePosition>1984</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_49">
+	<ksj:location xlink:href="#cv_493215-000000"/>
+	<ksj:managementCode>39008</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>拍宕橋</ksj:name>
+	<ksj:length>900</ksj:length>
+	<ksj:width>45</ksj:width>
+	<ksj:roadwayWidth>40</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_49">
+			<gml:timePosition>1967</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_50">
+	<ksj:location xlink:href="#cv_493225-000000"/>
+	<ksj:managementCode>39009</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>台宕橋</ksj:name>
+	<ksj:length>316</ksj:length>
+	<ksj:width>93</ksj:width>
+	<ksj:roadwayWidth>68</ksj:roadwayWidth>
+	<ksj:pavementWidth>20</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>5</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_50">
+			<gml:timePosition>1976</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_51">
+	<ksj:location xlink:href="#cv_493235-000000"/>
+	<ksj:managementCode>39010</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">39</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>宕台橋</ksj:name>
+	<ksj:length>959</ksj:length>
+	<ksj:width>107</ksj:width>
+	<ksj:roadwayWidth>77</ksj:roadwayWidth>
+	<ksj:pavementWidth>20</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>10</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_51">
+			<gml:timePosition>1985</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_52">
+	<ksj:location xlink:href="#cv_503077-000011"/>
+	<ksj:managementCode>40001</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">35</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>関紋橋</ksj:name>
+	<ksj:length>10680</ksj:length>
+	<ksj:width>260</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_52">
+			<gml:timePosition>1973</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_53">
+	<ksj:location xlink:href="#cv_503053-000000"/>
+	<ksj:managementCode>40002</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>津屋咲橋</ksj:name>
+	<ksj:length>900</ksj:length>
+	<ksj:width>126</ksj:width>
+	<ksj:roadwayWidth>76</ksj:roadwayWidth>
+	<ksj:pavementWidth>50</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>2</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_53">
+			<gml:timePosition>1977</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_54">
+	<ksj:location xlink:href="#cv_503066-000000"/>
+	<ksj:managementCode>40003</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>錫戸台橋</ksj:name>
+	<ksj:length>17340</ksj:length>
+	<ksj:width>150</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>6</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_54">
+			<gml:timePosition>1962</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+<ksj:Bridge gml:id="fi_55">
+	<ksj:location xlink:href="#cv_503032-000000"/>
+	<ksj:managementCode>40004</ksj:managementCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:relatedPrefectureCode codeSpace="PrefectureCode.xml">40</ksj:relatedPrefectureCode>
+	<ksj:identificationCode>0</ksj:identificationCode>
+	<ksj:name>志蛾宕橋</ksj:name>
+	<ksj:length>2055</ksj:length>
+	<ksj:width>45</ksj:width>
+	<ksj:roadwayWidth>0</ksj:roadwayWidth>
+	<ksj:pavementWidth>0</ksj:pavementWidth>
+	<ksj:roadShoulderWidth>0</ksj:roadShoulderWidth>
+	<ksj:presenceOfRailway>0</ksj:presenceOfRailway>
+	<ksj:administratorType>3</ksj:administratorType>
+	<ksj:completionYear>
+		<gml:TimeInstant gml:id="ti_55">
+			<gml:timePosition>1930</gml:timePosition>
+		</gml:TimeInstant>
+	</ksj:completionYear>
+</ksj:Bridge>
+</ksj:Dataset>

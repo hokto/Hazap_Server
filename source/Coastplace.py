@@ -15,7 +15,7 @@ def Coastplaces_get(interval,prefCode):#海岸線取得用の関数
     tree=etree.fromstring(result.content)
     for i in tree.iter():
         if(i.tag=="zipFileUrl"):
-            Download_zip(i.text)
+            HazapModules.Download_zip(i.text)
     coastDict=Xml_parse(interval,prefCode)
     with open("../data/coastplaces.json","w") as f:
         json.dump(coastDict,f,ensure_ascii=False,indent=4)
@@ -47,23 +47,8 @@ def Xml_parse(interval,prefCode):#xmlファイルをパースし、海岸線の�
         pos_idx+=interval_idx
         i+=1
     return dict
-def Download_zip(text):#zipファイルをダウンロードしてくる関数
-    filename=text.split("/")[-1]
-    result=requests.get(text)
-    with open(filename,"wb")as f:
-        for chunk in result.iter_content(chunk_size=1024):
-            if(chunk):
-                f.write(chunk)
-                f.flush()
-        Uncompress_zip(filename)
-    os.remove(filename)#zipファイル削除
-
-def Uncompress_zip(filename):#zipファイル解凍して指定したパスに保存する関数
-    filepath="../data"
-    zfile=zipfile.ZipFile(filename)
-    zfile.extractall(filepath)
-
 def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使うかどうか（一番近いところまでの海岸線の距離を取得するため)
+    asize=60
     placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))
     size=len(placelist)
     pos2=HazapModules.Coordinates()
@@ -81,10 +66,13 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
                 index=i
     if(evacuFlag):
         return index 
-    returnlist={}
+    returnlist={}#最終的に書き出すjsonのやつ
     count=0
-    for i in range(max(0,index-50),min(index+50,len(placelist))):
+    for i in range(max(0,index-asize),min(index+asize+1,len(placelist))):
         returnlist[str(count)]=placelist[str(i)]
         count+=1
+
+
     with open("../data/squeezed.json","w") as f:
         json.dump(returnlist,f,ensure_ascii=False,indent=4)
+Coastplaces_get(50,"45")

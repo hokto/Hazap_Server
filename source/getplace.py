@@ -114,6 +114,7 @@ def searchplace(pos,disaster,disasterScale):
         #    jsondata[i]["value"]=sumstep[i]/dist
 
     jsondata=HazapModules.TwoDimensionsSort(jsondata,"value",0,len(jsondata)-1)#stepsort
+    print(jsondata)
     return jsondata
 
 #lat=緯度　lon=経度
