@@ -11,6 +11,9 @@ import os
 import time
 from websocket import create_connection
 import Coastplace
+import requests
+import simulate
+import threading
 
 
 def server():
@@ -88,14 +91,25 @@ def server():
                         startflg = 1
                         disaster=splited[2]
                         disasterScale=splited[3]
+                        if(disaster=="津波"):
+                            disasterScale+=(":"+splited[4])
                         print("serverstart")
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
                         if(disaster=="地震"):
                             Earthquake.get_Dangerplaces(startPos)
                         elif (disaster=="津波"):
-                            Coastplace.Coastplaces_get(100)
-                            Coastplace.Fullpos(startPos)
+                            prefurl="https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder?{detail}&lat={lat}&lon={lon}"
+                            prefurl=prefurl.format(detail=HazapModules.APIPubWord,lat=startPos.lat,lon=startPos.lon)
+                            prefResult=requests.get(prefurl)
+                            prefResult=prefResult.json()
+                            print(prefResult)
+                            Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
+                            Coastplace.Fullpos(startPos,False)
+                            #別スレッドで津波のシミュレーションを開始
+                            #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
+                            thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
+                            thread.start()
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -140,7 +154,6 @@ def server():
                         elif (disaster=="津波"):
                             with open("../data/squeezed.json",encoding="utf_8_sig") as f:
                                 jsonData=json.load(f)
-                                print(jsonData)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
                         sendSize=32768
@@ -166,19 +179,21 @@ def server():
                         endpoint.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][1])
 
                         
-                        rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]))
-                        getplace.GenerateHazard(startpoint,endpoint)
+                        rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]),disaster,disasterScale)
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
-                        Bestroutelength=0
+                        #ルートの長さを格納している変数
+                        optimaldist=0
+                        #最適な避難場所までの目安時間
+                        optimaltime=0
                         if places["SaftyPlaces"]== None:
-                            Bestroutelength=places["EvacuationPlaces"]["0"]["range"]
+                            optimaldist=places["EvacuationPlaces"]["0"]["range"]
+                            optimaltime=optimaldist/(5000/3600)
                         else:
                             wes = create_connection("ws://"+HazapModules.addres+":5000")
                             sendstr="long:"+str(startpoint.lat)+","+str(startpoint.lon)
 
                             for i in range(len(places["SaftyPlaces"])):
                                 sendstr+=":"+places["SaftyPlaces"][str(i)].split(",")[0]+","+places["SaftyPlaces"][str(i)].split(",")[1]
-                            dist=0
                             sendstr+=places["EvacuationPlaces"]["0"]["coordinates"][0]+","+places["EvacuationPlaces"]["0"]["coordinates"][1]
                             wes.send(sendstr)
                             while True:
@@ -186,9 +201,9 @@ def server():
                                 ravel=result.split(":")
                                 if ravel[0] == "value":
                                     print(ravel[1])
-                                    dist=float(ravel[1])
+                                    optimaldist=float(ravel[1])
+                                    optimaltime=float(ravel[2])
                                     break
-                            Bestroutelength=dist
                             wes.close()
 
 
@@ -204,49 +219,32 @@ def server():
 
                         time.sleep(0.5)
 
-                        #ルートの長さを格納している変数
-                        optimaldist=0
-                        #最適な避難場所までの目安時間
-                        optimaltime=0
-                        #スタート地点とゴール地点とそこまでの経由地点の座標をなげて、正しい反応が返ってくるまでまつ。
-                        webserversend="long"
-                        coorsize=len(CoordinateLogs[int(splited[1])])
-                        for i in range(coorsize):
-
-                            webserversend+=":"+CoordinateLogs[int(splited[1])][i][0]+","+CoordinateLogs[int(splited[1])][i][1]
-                        print(webserversend)
-
-                        wes = create_connection("ws://"+HazapModules.addres+":5000")
-                        wes.send(webserversend)
-
-                        while True:
-                            result =  wes.recv()
-                            ravel=result.split(":")
-                            if ravel[0] == "value":
-                                print(ravel[1])
-                                optimaldist=float(ravel[1])
-                                optimaltime=float(ravel[2])
-
-                                break
                         if(optimaldist>=distLogs[int(splited[1])]):
-                            rate+=(100/100)
+                            print("Dist:"+str(distLogs[int(splited[1])]))
+                            rate+=(100/100*0.2)
                         elif(optimaldist==0):
-                            if(distLogs[int(splited[1])]<100):
-                                rate+=(100/100-distLogs[int(splited[1])])
+                            if(distLogs[int(splited[1])]>100):
+                                distLogs[int(splited[1])]=100
+                            print("Dist:"+str(distLogs[int(splited[1])]))
+                            rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
                         else:
-                            rate+=(1/(optimaldist/distLogs[int(splited[1])]))
-                        optimaltime/=60
+                            rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
+                        optimaltime*=60.0
                         resultTime=float(splited[3])
+                        if(optimaltime==0 and optimaldist!=0):
+                            optimaltime=optimaldist/(5000/3600)
+                            print(optimaltime)
                         if(optimaltime>=resultTime):
-                            rate+=(100/100)
+                            rate+=(100/100*0.2)
                         elif(optimaltime==0):
-                            if(resultTime<100):
-                                rate+=(100/(100-resultTime))
+                            if(resultTime>100):
+                                resultTime=100
+                            print("Time:"+str(resultTime))
+                            rate+=(100/(100-resultTime+0.01)*0.2)
                         else:
-                            rate+=(1/(optimaltime/resultTime))
-                        wes.close()
+                            rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
 
-                        rate=int(5/rate*100)
+                        rate=int(1/rate*100)
                         conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
 
                         while True:
@@ -276,4 +274,7 @@ def server():
                     
 
 if __name__=="__main__":
-    server()
+    try:
+        server()
+    except KeyboardInterrupt:
+        print("server was stopped by keybord")
