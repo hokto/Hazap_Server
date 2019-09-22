@@ -75,4 +75,3 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
 
     with open("../data/squeezed.json","w") as f:
         json.dump(returnlist,f,ensure_ascii=False,indent=4)
-Coastplaces_get(50,"45")
