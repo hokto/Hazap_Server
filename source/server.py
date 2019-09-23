@@ -104,12 +104,13 @@ def server():
                             prefResult=requests.get(prefurl)
                             prefResult=prefResult.json()
                             print(prefResult)
-                            Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
-                            Coastplace.Fullpos(startPos,False)
+                            #Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
+                            #Coastplace.Fullpos(startPos,False)
                             #別スレッドで津波のシミュレーションを開始
                             #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
-                            thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
-                            thread.start()
+                            #thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
+                            #thread.start()
+                            #simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -152,7 +153,7 @@ def server():
                                 jsonData=json.load(f)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         elif (disaster=="津波"):
-                            with open("../data/squeezed.json",encoding="utf_8_sig") as f:
+                            with open("../data/simulated.json",encoding="utf_8_sig") as f:
                                 jsonData=json.load(f)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
@@ -220,28 +221,30 @@ def server():
                         time.sleep(0.5)
 
                         if(optimaldist>=distLogs[int(splited[1])]):
-                            print("Dist:"+str(distLogs[int(splited[1])]))
                             rate+=(100/100*0.2)
+                            print("Dist:",1)
                         elif(optimaldist==0):
                             if(distLogs[int(splited[1])]>100):
                                 distLogs[int(splited[1])]=100
-                            print("Dist:"+str(distLogs[int(splited[1])]))
+                            print("Dist:",(100-distLogs[int(splited[1])]+0.01))
                             rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
                         else:
+                            print("Dist:",(optimaldist/(distLogs[int(splited[1])]+0.01)))
                             rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
                         optimaltime*=60.0
                         resultTime=float(splited[3])
                         if(optimaltime==0 and optimaldist!=0):
                             optimaltime=optimaldist/(5000/3600)
-                            print(optimaltime)
                         if(optimaltime>=resultTime):
+                            print("Time:",1)
                             rate+=(100/100*0.2)
                         elif(optimaltime==0):
                             if(resultTime>100):
                                 resultTime=100
-                            print("Time:"+str(resultTime))
+                            print("Time:",100-resultTime+0.01)
                             rate+=(100/(100-resultTime+0.01)*0.2)
                         else:
+                            print("Time:",optimaltime/(resultTime+0.01))
                             rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
 
                         rate=int(1/rate*100)
