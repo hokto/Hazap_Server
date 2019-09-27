@@ -104,13 +104,13 @@ def server():
                             prefResult=requests.get(prefurl)
                             prefResult=prefResult.json()
                             print(prefResult)
-                            #Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
-                            #Coastplace.Fullpos(startPos,False)
+                            Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
+                            Coastplace.Fullpos(startPos,False)
                             #別スレッドで津波のシミュレーションを開始
                             #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
                             #thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
                             #thread.start()
-                            #simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
+                            simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -221,34 +221,43 @@ def server():
                         time.sleep(0.5)
 
                         if(optimaldist>=distLogs[int(splited[1])]):
-                            rate+=(100/100*0.2)
+                            #rate+=(100/100*0.2)
+                            rate+=str(100)+":"
                             print("Dist:",1)
                         elif(optimaldist==0):
                             if(distLogs[int(splited[1])]>100):
                                 distLogs[int(splited[1])]=100
-                            print("Dist:",(100-distLogs[int(splited[1])]+0.01))
-                            rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
+                            print("Dist:",(100-distLogs[int(splited[1])]*100))
+                            rate+=str(100-distLogs[int(splited[1])])+":"
+                            #rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
                         else:
-                            print("Dist:",(optimaldist/(distLogs[int(splited[1])]+0.01)))
-                            rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
+                            print("Dist:",(optimaldist/(distLogs[int(splited[1])])*100))
+                            rate+=str(optimaldist/(distLogs[int(splited[1])])*100)
+                            #rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
                         optimaltime*=60.0
                         resultTime=float(splited[3])
                         if(optimaltime==0 and optimaldist!=0):
                             optimaltime=optimaldist/(5000/3600)
                         if(optimaltime>=resultTime):
-                            print("Time:",1)
-                            rate+=(100/100*0.2)
+                            print("Time:",100)
+                            rate+=str(100)
+                            #rate+=(100/100*0.2)
                         elif(optimaltime==0):
                             if(resultTime>100):
                                 resultTime=100
-                            print("Time:",100-resultTime+0.01)
-                            rate+=(100/(100-resultTime+0.01)*0.2)
+                            print("Time:",100-resultTime)
+                            rate+=str(100-resultTime)
+                            #rate+=(100/(100-resultTime+0.01)*0.2)
                         else:
-                            print("Time:",optimaltime/(resultTime+0.01))
-                            rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
+                            print("Time:",optimaltime/(resultTime)*100)
+                            rate+=str(optimal/(resultTime)*100)
+                            #rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
 
-                        rate=int(1/rate*100)
-                        conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
+                        #rate=int(1/rate*100)
+                        params=rate.split(":")
+                        evacuValue=int(100/(100/(float(params[0])+0.01)*0.4+100/(float(params[1])+0.01)*0.2+100/(float(params[2])+0.01)*0.2+100/(float(params[3])+0.01)*0.2))
+                        print("Eva:",evacuValue)
+                        conn.sendall(("Result:"+str(evacuValue)+":"+str(length)+":"+message+":"+rate).encode())#Result:Aliverate:byteLength
 
                         while True:
                             time.sleep(1)

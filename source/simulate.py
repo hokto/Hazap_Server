@@ -91,13 +91,13 @@ def simulatetunami(placelist,h,x):
 			k=i
 			while k<min(i+requestsize*4,len(placelist)):
 				if(flgpl[k]==4):
-					sub[str(k)]=table[str(count-1)][str(k)]
+					sub[str(k)]=copy.deepcopy(table[str(count-1)][str(k)])
 					exceptcount+=1
 				elif(subdata["Feature"][k%(requestsize*4)-exceptcount]["Property"]["Altitude"]>height):
 					flgpl[k]=4
-					sub[str(k)]=table[str(count-1)][str(k)]
+					sub[str(k)]=copy.deepcopy(table[str(count-1)][str(k)])
 				else:
-					sub[str(k)]=subdata["Feature"][k%(requestsize*4)-exceptcount]["Geometry"]["Coordinates"]
+					sub[str(k)]=copy.deepcopy(subdata["Feature"][k%(requestsize*4)-exceptcount]["Geometry"]["Coordinates"])
 				k+=1
 		table[str(count)]=copy.deepcopy(sub)#tableに記録
 		count+=1
