@@ -22,6 +22,7 @@ def server():
     endflg=0
     port=4000
     count={}
+    placesCoorsinates=None
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
@@ -84,8 +85,6 @@ def server():
                                     CoordinateLogs={}
                                     Coordinates={}
                                     startflg=0
-
-
                     elif splited[0]=="Start":#シミュレーションをスタートする
                         message=""
                         startflg = 1
@@ -96,6 +95,7 @@ def server():
                         print("serverstart")
                         #(主催者からStartが送られれば開始場所からのシミュレーションを開始
                         startPos.lat,startPos.lon=map(float,splited[1].split(","))
+                        placesCoorsinates=getplace.get_Coordinates(startPos)
                         if(disaster=="地震"):
                             Earthquake.get_Dangerplaces(startPos)
                         elif (disaster=="津波"):
@@ -119,7 +119,20 @@ def server():
                         message=splited[1]
                         conn.sendall("OK".encode())
                     elif splited[0]=="Number" and startflg==1:#シミュレーションが開始されていれば参加人数と周囲にいる人数を送る
-                        if int(splited[1]) in CoordinateLogs:
+                        distflag=False
+                        pos1=HazapModules.Coordinates()
+                        pos1.lat=float(splited[2].split(",")[0])
+                        pos1.lon=float(splited[2].split(",")[1])
+                        for i in placesCoorsinates:
+                            pos2=HazapModules.Coordinates()
+                            pos2.lat=float(i[0])
+                            pos2.lon=float(i[1])
+                            dist=HazapModules.Calculatedistance(pos1,pos2)
+                            if dist<107:
+                                send="Around:"+"0"+",N:"+str(n)
+                                distflag=True
+                                break
+                        if int(splited[1]) in CoordinateLogs and distflag==False:
                             Coordinates[int(splited[1])]=splited[2].split(",")
                             CoordinateLogs[int(splited[1])].append(splited[2].split(","))
                             send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
@@ -139,7 +152,7 @@ def server():
                             timeLogs[int(splited[1])]=nowTime
                             send+=":"+str(runFlg)
                             print(timeLogs)
-                        else:
+                        elif distflag==False:
                             send="Failed"
                         conn.sendall(send.encode())
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:#シミュレーションが開始されていない場合
@@ -168,7 +181,6 @@ def server():
                             conn.sendall(sendData[left:right])
                             left+=sendSize
                             right+=sendSize
-
                     elif splited[0]=="End" and message!="":
                         endflg=1
                         startpoint=HazapModules.Coordinates()
@@ -177,8 +189,6 @@ def server():
                         endpoint=HazapModules.Coordinates()
                         endpoint.lat=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][0])
                         endpoint.lon=float(CoordinateLogs[int(splited[1])][len(CoordinateLogs[int(splited[1])])-1][1])
-
-                        
                         rate=main.Result(startPos,list(map(lambda data:",".join(data),CoordinateLogs[int(splited[1])])),int(splited[2]),disaster,disasterScale)
                         places=json.load(open("../data/result.json",encoding="utf-8_sig"))
                         #ルートの長さを格納している変数

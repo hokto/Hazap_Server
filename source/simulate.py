@@ -62,7 +62,7 @@ def simulatetunami(placelist,h,x):
 					maxdir=d%4
 			flgpl[k]=maxdir
 		
-	#フラグ設定完了。これより、ループ処理に参る。
+	#フラグ設定完了!。これより、ループ処理に参る。
 
 
 	while True:
