@@ -67,14 +67,12 @@ def simulatetunami(placelist,h,x):
 
 	while True:
 		sub={}
-		print("count=",count,"height=",height,"sumdis=",sumdis,"metl=",metl,"sumx=",sumx,"vol=",sumdis*height*sumx)
 		for i in range(0,len(placelist),requestsize*4):
 			suburl=base
 			#40個分の座標をsuburlに追加。もしflgpl[k]が4だったらそこは津波が到達できないところなので、直前のデータを入れる
 			for k in range(i,min(i+requestsize*4,len(placelist))):
 				index=0
 				if(flgpl[k]==4):
-					sub[str(k)]=table[str(count-1)][str(k)]
 					continue
 				elif(flgpl[k]==0):
 					suburl+=str(float(table[str(count-1)][str(k)].split(",")[0]))+","+str(float(table[str(count-1)][str(k)].split(",")[1])+changle)+","#上
