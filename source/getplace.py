@@ -14,34 +14,18 @@ def get_Coordinates(pos):
     #この関数は緯度,経度を投げればその地点からの避難場所を返してくれる
     redata=[]
     tellist=[]
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1&gc=0425&sort=geo"
-    url2="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1&gc=0423007&sort=geo"
-    url3="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=1&gc=0305007&sort=geo"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+str(pos.lat)+"&lon="+str(pos.lon)+"&dist=3&gc=0425,0423007,0305007&sort=geo"
     res=urllib.request.urlopen(url)
-    res2=urllib.request.urlopen(url2)
-    res3=urllib.request.urlopen(url3)
     data=json.loads(res.read().decode())
-    data2=json.loads(res2.read().decode())
-    data3=json.loads(res3.read().decode())
     #この下の処理で座標をリストにまとめてreturn
     if(data["ResultInfo"]["Count"]!=0):
         for i in data["Feature"]:
             if(tellist.count(i["Property"]["Tel1"])==0):
                 tellist.append(i["Property"]["Tel1"])
                 redata.append(i["Geometry"]["Coordinates"].split(','))
-    if(data2["ResultInfo"]["Count"]!=0):
-        for i in data2["Feature"]:
-            if(tellist.count(i["Property"]["Tel1"])==0):
-                tellist.append(i["Property"]["Tel1"])
-                redata.append(i["Geometry"]["Coordinates"].split(','))
-    if(data3["ResultInfo"]["Count"]!=0):
-        for i in data3["Feature"]:
-            if(tellist.count(i["Property"]["Tel1"])==0):
-                tellist.append(i["Property"]["Tel1"])
-                redata.append(i["Geometry"]["Coordinates"].split(','))
+
     for i in range(len(redata)):
         redata[i][0],redata[i][1]=redata[i][1],redata[i][0]
-
     return redata
 
 def Reray(pos1,pos2,name):
@@ -202,6 +186,7 @@ def CarcuEva(Coordinates,disaster,disasterScale):
     return value
 
 def Calcudens(Coordinates):
+    #混雑度判定
     r=6378100#これは地球の半径で、単位はメートル
     n=len(Coordinates)
     data={}
