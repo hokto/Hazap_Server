@@ -3,8 +3,10 @@ import io
 import socket
 import numpy
 import HazapModules
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
     s.connect((HazapModules.addres,4000))
+    #s.connect(("192.168.0.13",4000))
+
     # サーバにメッセージを送る
     print("Connected!")
     i=input()
