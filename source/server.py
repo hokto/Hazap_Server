@@ -14,7 +14,7 @@ import Coastplace
 import requests
 import simulate
 import threading
-
+import webbrowser
 
 def server():
     contents=None
@@ -23,6 +23,7 @@ def server():
     port=4000
     count={}
     placesCoorsinates=None
+    webbrowser.open_new(os.path.abspath("../HTML/websocket.html"))
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
@@ -130,13 +131,15 @@ def server():
                             pos2.lon=float(i[1])
                             dist=HazapModules.Calculatedistance(pos1,pos2)
                             if dist<107:
-                                send="Around:"+"0"+",N:"+str(n)
                                 distflag=True
                                 break
-                        if int(splited[1]) in CoordinateLogs and distflag==False:
+                        if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
                             CoordinateLogs[int(splited[1])].append(splited[2].split(","))
-                            send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
+                            if(distflag==True):
+                                send="Around:0,N:"+str(n)
+                            else:
+                                send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
                             nowTime=time.time()
                             runFlg=0
                             currentPos=HazapModules.Coordinates()
@@ -153,8 +156,6 @@ def server():
                             timeLogs[int(splited[1])]=nowTime
                             send+=":"+str(runFlg)
                             print(timeLogs)
-                        elif distflag==False:
-                            send="Failed"
                         conn.sendall(send.encode())
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:#シミュレーションが開始されていない場合
                         send="Waiting..."
@@ -242,7 +243,7 @@ def server():
                             #rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
                         else:
                             print("Dist:",(optimaldist/(distLogs[int(splited[1])])*100))
-                            rate+=str(optimaldist/(distLogs[int(splited[1])])*100)
+                            rate+=str(optimaldist/(distLogs[int(splited[1])])*100)+":"
                             #rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
                         optimaltime*=60.0
                         resultTime=float(splited[3])
