@@ -14,7 +14,7 @@ import Coastplace
 import requests
 import simulate
 import threading
-
+import webbrowser
 
 def server():
     contents=None
@@ -23,6 +23,7 @@ def server():
     port=4000
     count={}
     placesCoorsinates=None
+    webbrowser.open_new(os.path.abspath("../HTML/websocket.html"))
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
         # IPアドレスとポートを指定
@@ -108,8 +109,9 @@ def server():
                             Coastplace.Fullpos(startPos,False)
                             #別スレッドで津波のシミュレーションを開始
                             #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
-                            thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
-                            thread.start()
+                            #thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
+                            #thread.start()
+                            simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -129,13 +131,15 @@ def server():
                             pos2.lon=float(i[1])
                             dist=HazapModules.Calculatedistance(pos1,pos2)
                             if dist<107:
-                                send="Around:"+"0"+",N:"+str(n)
                                 distflag=True
                                 break
-                        if int(splited[1]) in CoordinateLogs and distflag==False:
+                        if int(splited[1]) in CoordinateLogs:
                             Coordinates[int(splited[1])]=splited[2].split(",")
                             CoordinateLogs[int(splited[1])].append(splited[2].split(","))
-                            send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
+                            if(distflag==True):
+                                send="Around:0,N:"+str(n)
+                            else:
+                                send="Around:"+str(count[int(splited[1])])+",N:"+str(n)
                             nowTime=time.time()
                             runFlg=0
                             currentPos=HazapModules.Coordinates()
@@ -152,8 +156,6 @@ def server():
                             timeLogs[int(splited[1])]=nowTime
                             send+=":"+str(runFlg)
                             print(timeLogs)
-                        elif distflag==False:
-                            send="Failed"
                         conn.sendall(send.encode())
                     elif (splited[0]=="Number" or splited[0]=="Wait") and startflg==0:#シミュレーションが開始されていない場合
                         send="Waiting..."
@@ -165,7 +167,7 @@ def server():
                                 jsonData=json.load(f)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         elif (disaster=="津波"):
-                            with open("../data/squeezed.json",encoding="utf_8_sig") as f:
+                            with open("../data/simulated.json",encoding="utf_8_sig") as f:
                                 jsonData=json.load(f)
                                 sendData=json.dumps(jsonData,ensure_ascii=False).encode()
                         length=len(sendData)
@@ -230,32 +232,43 @@ def server():
                         time.sleep(0.5)
 
                         if(optimaldist>=distLogs[int(splited[1])]):
-                            print("Dist:"+str(distLogs[int(splited[1])]))
-                            rate+=(100/100*0.2)
+                            #rate+=(100/100*0.2)
+                            rate+=str(100)+":"
+                            print("Dist:",1)
                         elif(optimaldist==0):
                             if(distLogs[int(splited[1])]>100):
                                 distLogs[int(splited[1])]=100
-                            print("Dist:"+str(distLogs[int(splited[1])]))
-                            rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
+                            print("Dist:",(100-distLogs[int(splited[1])]*100))
+                            rate+=str(100-distLogs[int(splited[1])])+":"
+                            #rate+=(100/(100-distLogs[int(splited[1])]+0.01)*0.2)
                         else:
-                            rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
+                            print("Dist:",(optimaldist/(distLogs[int(splited[1])])*100))
+                            rate+=str(optimaldist/(distLogs[int(splited[1])])*100)+":"
+                            #rate+=(1/(optimaldist/(distLogs[int(splited[1])]+0.01))*0.2)
                         optimaltime*=60.0
                         resultTime=float(splited[3])
                         if(optimaltime==0 and optimaldist!=0):
                             optimaltime=optimaldist/(5000/3600)
-                            print(optimaltime)
                         if(optimaltime>=resultTime):
-                            rate+=(100/100*0.2)
+                            print("Time:",100)
+                            rate+=str(100)
+                            #rate+=(100/100*0.2)
                         elif(optimaltime==0):
                             if(resultTime>100):
                                 resultTime=100
-                            print("Time:"+str(resultTime))
-                            rate+=(100/(100-resultTime+0.01)*0.2)
+                            print("Time:",100-resultTime)
+                            rate+=str(100-resultTime)
+                            #rate+=(100/(100-resultTime+0.01)*0.2)
                         else:
-                            rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
+                            print("Time:",optimaltime/(resultTime)*100)
+                            rate+=str(optimal/(resultTime)*100)
+                            #rate+=(1/(optimaltime/(resultTime+0.01))*0.2)
 
-                        rate=int(1/rate*100)
-                        conn.sendall(("Result:"+str(rate)+":"+str(length)+":"+message).encode())#Result:Aliverate:byteLength
+                        #rate=int(1/rate*100)
+                        params=rate.split(":")
+                        evacuValue=int(100/(100/(float(params[0])+0.01)*0.4+100/(float(params[1])+0.01)*0.2+100/(float(params[2])+0.01)*0.2+100/(float(params[3])+0.01)*0.2))
+                        print("Eva:",evacuValue)
+                        conn.sendall(("Result:"+str(evacuValue)+":"+str(length)+":"+message+":"+rate).encode())#Result:Aliverate:byteLength
 
                         while True:
                             time.sleep(1)

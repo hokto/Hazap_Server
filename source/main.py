@@ -38,10 +38,18 @@ def Result(start_pos,realRoute,hp,disaster,disasterScale):#リザルト画面に
         optimal_goal.lat,optimal_goal.lon=float(places[0]["coordinates"][0]),float(places[0]["coordinates"][1])#最適な場所の座標
     real_goal=HazapModules.Coordinates()
     real_goal.lat,real_goal.lon=list(map(float,realRoute[len(realRoute)-1].split(",")))#実際の避難場所の座標
-    placePercentage=getplace.CarcuEva(real_goal,disaster,disasterScale)
-    rate=0
+    optimalEva=getplace.CarcuEva(optimal_goal,disaster,disasterScale)
+    realEva=getplace.CarcuEva(real_goal,disaster,disasterScale)
+    rate=""
+    placePercentage=0
+    if(optimalEva<realEva):
+        placePercentage=100
+    else:
+        placePercentage=(realEva/optimalEva)*100
     print("Place:"+str(placePercentage))
-    rate+=(100/(placePercentage+0.01)*0.4)
+    rate+=str(placePercentage)+":"
+    #rate+=(100/(placePercentage+0.01)*0.4)
     print("HP:"+str(hp))
-    rate+=(100/(hp+0.01)*0.2)
+    rate+=str(hp)+":"
+    #rate+=(100/(hp+0.01)*0.2)
     return rate

@@ -5,8 +5,10 @@ from lxml import etree
 import json
 import os.path
 import zipfile
+import ipget
 host = socket.gethostname()
 addres = socket.gethostbyname(host)
+#addres="202.213.1.127"
 r=6378100
 print("servers ip is "+addres)
 APIPubWord="appid=dj00aiZpPWNIMG5nZEpkSXk3OSZzPWNvbnN1bWVyc2VjcmV0Jng9ZDk-&output=json"

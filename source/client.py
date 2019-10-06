@@ -15,7 +15,6 @@ strings=[
 for i in range(len(strings)):
     time.sleep(1)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-
         s.connect((HazapModules.addres,4000))
         s.sendall(strings[i].encode("utf-8"))
         data = s.recv(2**7)

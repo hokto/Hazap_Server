@@ -98,7 +98,6 @@ def searchplace(pos,disaster,disasterScale):
         #    jsondata[i]["value"]=sumstep[i]/dist
 
     jsondata=HazapModules.TwoDimensionsSort(jsondata,"value",0,len(jsondata)-1)#stepsort
-    print(jsondata)
     return jsondata
 
 #lat=緯度　lon=経度
@@ -110,33 +109,40 @@ def CarcuEva(Coordinates,disaster,disasterScale):
 
 
     hoge=data1["Feature"][0]["Geometry"]["Coordinates"].split(',')
-    url="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+hoge[1]+"&lon="+hoge[0]+"&dist=1&gc=0425,0406,0305007,0412021&sort=dist"
+    url="https://map.yahooapis.jp/search/local/V1/localSearch?"+HazapModules.APIPubWord+"&lat="+hoge[1]+"&lon="+hoge[0]+"&dist=1&gc=0425,0406,0305007,0412021&sort=dist&al=4&ar=ge"
 
     res=urllib.request.urlopen(url)
     data=json.loads(res.read().decode())
     targetPlace=data["Feature"][0]["Geometry"]["Coordinates"].split(",")
-    addressurl="https://map.yahooapis.jp/geocode/V1/geoCoder?{detail}&lat={lat}&lon={lon}&sort=dist"
+    addressurl="https://map.yahooapis.jp/geocode/V1/geoCoder?{detail}&lat={lat}&lon={lon}&sort=dist&al=4&ar=ge"
     address1url=addressurl.format(detail=HazapModules.APIPubWord,lat=targetPlace[1],lon=targetPlace[0])
     address1Result=requests.get(address1url)
     address1Result=address1Result.json()#Feature->0->Name
-
     address2url=addressurl.format(detail=HazapModules.APIPubWord,lat=Coordinates.lat,lon=Coordinates.lon)
     address2Result=requests.get(address2url)
     address2Result=address2Result.json()
-
-    if(data["ResultInfo"]["Count"]==0 or address1Result["Feature"][0]["Name"]!=address2Result["Feature"][0]["Name"]):#建物の座標が一切取れなかった、ゴール地点の建物が取得されなかった場合
-        print("No places")
+    if(data["ResultInfo"]["Count"]==0 or address1Result["Feature"][0]["Property"]["Address"]!=address2Result["Feature"][0]["Property"]["Address"]):#建物の座標が一切取れなかった、ゴール地点の建物が取得されなかった場合
         return 0
-    st=data["Feature"][0]["Property"]["Genre"][0]["Name"]
+    #Telを比較していき、同じであればそちらでも評価値を取得して、高かった方を正しい評価値とする
     value=0
-    if st.find("避難")!=-1:
-        value=100
-    elif  st.find("学校")!=-1:
-        value=75
-    elif  st.find("公園")!=-1:
-        value=50
-    elif  st.find("ガソリンスタンド")!=-1:
-        value=25
+    st=""
+    for i in range(data["ResultInfo"]["Count"]):
+        print("TEL:",data["Feature"][i]["Property"]["Tel1"])   
+        if(st!="" and data["Feature"][i]["Property"]["Tel1"]!=data["Feature"][i-1]["Property"]["Tel1"]):
+            break
+        st=data["Feature"][i]["Property"]["Genre"][0]["Name"]
+        if st.find("避難")!=-1:
+            if(value<100):
+                value=100
+        elif  st.find("学校")!=-1:
+            if(value<100):
+                value=100
+        elif  st.find("公園")!=-1:
+            if(value<75):
+                value=75
+        elif  st.find("ガソリンスタンド")!=-1:
+            if(value<75):
+                value=75
     #建物の高さを取得し、評価値を変更
     placeJson=json.load(open("../data/dangerplaces.json",encoding="utf_8_sig"))
     placeHeight=0
@@ -145,7 +151,6 @@ def CarcuEva(Coordinates,disaster,disasterScale):
         sumStep+=int(placeJson[str(i)]["Step"])
         if(placeHeight==0 and math.isclose(round(float(Coordinates.lat),3),round(float(placeJson[str(i)]["Coordinates"].split(",")[1]),3),rel_tol=0.001,abs_tol=0.001) and math.isclose(round(float(Coordinates.lon),3),round(float(placeJson[str(i)]["Coordinates"].split(",")[0]),3),rel_tol=0.001,abs_tol=0.001)):
             placeHeight=int(placeJson[str(i)]["Step"])
-    print("Height:",placeHeight)
     #また、地震の場合はARV地、津波の場合は、標高と海岸線までの距離を取得し、評価値変更
     if(disaster=="地震"):
         arvurl="http://www.j-shis.bosai.go.jp/map/api/sstrct/V3/meshinfo.geojson?position={current_pos}&epsg=4301" 
@@ -159,6 +164,7 @@ def CarcuEva(Coordinates,disaster,disasterScale):
         minARV=float(dangerJson["MinARV"].split(",")[0])
         value*=(minARV/arv)
         if(sumStep/(len(placeJson)-1)<placeHeight):
+            print("Height:",placeHeight)
             value*=((sumStep)/(len(placeJson)-1))/placeHeight
     elif(disaster=="津波"):
         #海抜（標高）を取得
