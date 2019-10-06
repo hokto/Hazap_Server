@@ -135,14 +135,14 @@ def CarcuEva(Coordinates,disaster,disasterScale):
             if(value<100):
                 value=100
         elif  st.find("学校")!=-1:
+            if(value<100):
+                value=100
+        elif  st.find("公園")!=-1:
             if(value<75):
                 value=75
-        elif  st.find("公園")!=-1:
-            if(value<50):
-                value=50
         elif  st.find("ガソリンスタンド")!=-1:
-            if(value<25):
-                value=25
+            if(value<75):
+                value=75
     #建物の高さを取得し、評価値を変更
     placeJson=json.load(open("../data/dangerplaces.json",encoding="utf_8_sig"))
     placeHeight=0
