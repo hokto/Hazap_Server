@@ -36,6 +36,7 @@ def server():
         distLogs=[]#利用者が進んだ距離を保存するリスト
         disaster=""#災害の種類
         disasterScale=""#災害の規模
+        ipList=[]
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -58,14 +59,17 @@ def server():
                     splited=rec.split(":")
                     print(splited[0])
                     if(splited[0]=="Recruit" and startflg==0):#サーバに参加を伝える
-                        send=str(n)
-                        CoordinateLogs[n]=[]
-                        pl=splited[1].split(",")
-                        CoordinateLogs[n].append(pl)
-                        Coordinates[n]=splited[1].split(",")
-                        send="number:"+str(n)
-                        n+=1
-                        print(splited)
+                        if(not(addr[0] in ipList)):
+                            send=str(n)
+                            CoordinateLogs[n]=[]
+                            pl=splited[1].split(",")
+                            CoordinateLogs[n].append(pl)
+                            Coordinates[n]=splited[1].split(",")
+                            send="number:"+str(n)
+                            n+=1
+                            print(addr[0])
+                            ipList.append(addr[0])
+                            print(splited)
                         conn.sendall(send.encode())
                     elif splited[0]=="Recruit" and startflg==1:#すでにスタートしていた場合、参加を拒否する
 
