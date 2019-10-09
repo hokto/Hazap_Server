@@ -47,6 +47,7 @@ def Xml_parse(interval,prefCode):#xmlファイルをパースし、海岸線の�
         pos_idx+=interval_idx
         i+=1
     return dict
+
 def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使うかどうか（一番近いところまでの海岸線の距離を取得するため)
     asize=60
     placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))#全ての座標が入っているリスト
@@ -57,7 +58,7 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
     pos2.lon=float(placelist[str(0)].split(" ")[1])
     mindis=HazapModules.Calculatedistance(pos,pos2)
     index=0
-    for i in range(1,size):
+    for i in range(1,):
         pos2.lat=float(placelist[str(i)].split(" ")[0])
         pos2.lon=float(placelist[str(i)].split(" ")[1])
         dis=HazapModules.Calculatedistance(pos,pos2)
@@ -69,18 +70,24 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
     returnlist={}#最終的に書き出すjsonのやつ
     #この時点で現在地から一番近い座標のインデックスが判明してるからそれをもとに一番近い海岸線の座標を+-60方向に探索
     count=0
-    returnlist[str(asize)]=placelist[str(index)]
+    sublist={}
+    sublist[str(asize)]=placelist[str(index)]
     for i in range(2*asize+1):
         if i==index:
             continue
     searchedlist=[False for i in range(len(placelist))]
-    Reclist(placelist,returnlist,asize+1,asize,searchedlist)
-    Reclist(placelist,returnlist,asize-1,asize,searchedlist)
+    Reclist(placelist,sublist,asize-1,asize,searchedlist)
+    Reclist(placelist,sublist,asize+1,asize,searchedlist)
 #    for i in range(max(0,index-asize),min(index+asize+1,len(placelist))):
 #        returnlist[str(count)]=placelist[str(i)]
 #        count+=1    
+    for i in range(len(sublist)):
+        returnlist[str(i)]=sublist[str(i)]
+    sorted(returnlist.items(), key=lambda x: x[0])
     with open("../data/squeezed.json","w") as f:
         json.dump(returnlist,f,ensure_ascii=False,indent=4)
+    with open("../../log.json","w") as f:
+        json.dump(searchedlist,f,ensure_ascii=False,indent=4)
 
 
 def Reclist(placelist,returnlist,nowindex,asize,searchedlist):#一番近いところを全探索して書き込んでいく関数
@@ -100,7 +107,7 @@ def Reclist(placelist,returnlist,nowindex,asize,searchedlist):#一番近いと�
             pos2.lat=float(placelist[str(i)].split(" ")[0])
             pos2.lon=float(placelist[str(i)].split(" ")[1])
             distance=HazapModules.Calculatedistance(pos1,pos2)
-            if distance==0:
+            if distance<10:
                 continue
             elif mindis>distance and searchedlist[i]==False:
                 mindis=distance
@@ -114,14 +121,17 @@ def Reclist(placelist,returnlist,nowindex,asize,searchedlist):#一番近いと�
         pos1=HazapModules.Coordinates()
         pos1.lat=float(returnlist[str(nowindex+1)].split(" ")[0])
         pos1.lon=float(returnlist[str(nowindex+1)].split(" ")[1])
-        mindis=1000000000.0
-        minindex=None
-        for i in range(len(placelist)):
+        pos2=HazapModules.Coordinates()
+        pos2.lat=float(placelist["0"].split(" ")[0])
+        pos2.lon=float(placelist["0"].split(" ")[1])
+        mindis=HazapModules.Calculatedistance(pos1,pos2)
+        minindex=0
+        for i in range(1,len(placelist)-1):
             pos2=HazapModules.Coordinates()
             pos2.lat=float(placelist[str(i)].split(" ")[0])
             pos2.lon=float(placelist[str(i)].split(" ")[1])
             distance=HazapModules.Calculatedistance(pos1,pos2)
-            if distance==0:
+            if distance<10:
                 continue
             elif mindis>distance and searchedlist[i]==False:
                 mindis=distance
@@ -134,6 +144,10 @@ def Reclist(placelist,returnlist,nowindex,asize,searchedlist):#一番近いと�
 
 if __name__=="__main__":
     pos=HazapModules.Coordinates()
-    pos.lat=31.472826
-    pos.lon=131.153097
-    Fullpos(pos,False)
+    pos.lat=32.03426306
+    pos.lon=131.50147778
+    pos1=HazapModules.Coordinates()
+    pos1.lat=32.03412250
+    pos1.lon=131.50141139
+    print(HazapModules.Calculatedistance(pos,pos1))
+    #Fullpos(pos,False)
