@@ -6,7 +6,7 @@ from lxml import etree
 import json
 import HazapModules
 import requests
-
+import math
 
 def Coastplaces_get(interval,prefCode):#海岸線取得用の関数
     url="http://nlftp.mlit.go.jp/ksj/api/1.0b/index.php/app/getKSJURL.xml?appId={key}&lang={lang}&dataformat=1&identifier=C23&prefCode={pref}&fiscalyear={year}"
@@ -47,9 +47,15 @@ def Xml_parse(interval,prefCode):#xmlファイルをパースし、海岸線の�
         pos_idx+=interval_idx
         i+=1
     return dict
+def CoordinateSort(coor):#座標ソート（反回転ソート）
+    print(coor)
+    return (math.atan2(float(coor.split(" ")[0])-minLat,float(coor.split(" ")[1])-minLon)+2*math.pi)%(2*math.pi)
 def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使うかどうか（一番近いところまでの海岸線の距離を取得するため)
     asize=60
     placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))
+    minLat=sum(float(placelist[coor].split(" ")[0]) for coor in placelist)/len(placelist)
+    minLon=sum(float(placelist[coor].split(" ")[1]) for coor in placelist)/len(placelist)
+    placelist=sorted(placelist.items(),key=CoordinateSort)
     size=len(placelist)
     pos2=HazapModules.Coordinates()
 
@@ -71,7 +77,6 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
     for i in range(max(0,index-asize),min(index+asize+1,len(placelist))):
         returnlist[str(count)]=placelist[str(i)]
         count+=1
-
 
     with open("../data/squeezed.json","w") as f:
         json.dump(returnlist,f,ensure_ascii=False,indent=4)
