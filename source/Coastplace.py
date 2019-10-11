@@ -54,9 +54,10 @@ def Xml_parse(interval,prefCode):#xmlファイルをパースし、海岸線の�
         pos_idx+=interval_idx
         i+=1
     return dict
+
 def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使うかどうか（一番近いところまでの海岸線の距離を取得するため)
     asize=60
-    placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))
+    placelist=json.load(open("../data/coastplaces.json",encoding="utf-8_sig"))#全ての座標が入っているリスト
     size=len(placelist)
     pos2=HazapModules.Coordinates()
 
@@ -64,16 +65,17 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
     pos2.lon=float(placelist[str(0)].split(" ")[1])
     mindis=HazapModules.Calculatedistance(pos,pos2)
     index=0
-    for i in range(1,size):
-            pos2.lat=float(placelist[str(i)].split(" ")[0])
-            pos2.lon=float(placelist[str(i)].split(" ")[1])
-            dis=HazapModules.Calculatedistance(pos,pos2)
-            if(mindis>dis):
-                mindis=dis
-                index=i
+    for i in range(1,):
+        pos2.lat=float(placelist[str(i)].split(" ")[0])
+        pos2.lon=float(placelist[str(i)].split(" ")[1])
+        dis=HazapModules.Calculatedistance(pos,pos2)
+        if(mindis>dis):
+            mindis=dis
+            index=i
     if(evacuFlag):
         return index 
     returnlist={}#最終的に書き出すjsonのやつ
+    #この時点で現在地から一番近い座標のインデックスが判明してるからそれをもとに一番近い海岸線の座標を+-60方向に探索
     count=0
     searchedlist=[False for i in range(len(placelist))]
     sublist={}
@@ -137,5 +139,66 @@ def Reclist(placelist,returnlist,nowindex,asize,searchedlist):#一番近いと�
             return 0
         return Reclist(placelist,returnlist,nowindex-1,asize,searchedlist)
 
-    with open("../data/squeezed.json","w") as f:
-        json.dump(returnlist,f,ensure_ascii=False,indent=4)
+
+
+def Reclist(placelist,returnlist,nowindex,asize,searchedlist):#一番近いところを全探索して書き込んでいく関数
+    #returnlist[str(asize)]=placelist[str(index)]
+    print("nowindex",nowindex,"asize",asize)
+    if nowindex>asize:
+        pos1=HazapModules.Coordinates()
+        pos1.lat=float(returnlist[str(nowindex-1)].split(" ")[0])
+        pos1.lon=float(returnlist[str(nowindex-1)].split(" ")[1])
+        pos2=HazapModules.Coordinates()
+        pos2.lat=float(placelist["0"].split(" ")[0])
+        pos2.lon=float(placelist["0"].split(" ")[1])
+        mindis=HazapModules.Calculatedistance(pos1,pos2)
+        minindex=0
+        for i in range(1,len(placelist)-1):
+            pos2=HazapModules.Coordinates()
+            pos2.lat=float(placelist[str(i)].split(" ")[0])
+            pos2.lon=float(placelist[str(i)].split(" ")[1])
+            distance=HazapModules.Calculatedistance(pos1,pos2)
+            if distance<10:
+                continue
+            elif mindis>distance and searchedlist[i]==False:
+                mindis=distance
+                minindex=i
+        returnlist[str(nowindex)]=placelist[str(minindex)]
+        searchedlist[minindex]=True
+        if asize*2==nowindex:
+            return 0
+        return Reclist(placelist,returnlist,nowindex+1,asize,searchedlist)
+    else:
+        pos1=HazapModules.Coordinates()
+        pos1.lat=float(returnlist[str(nowindex+1)].split(" ")[0])
+        pos1.lon=float(returnlist[str(nowindex+1)].split(" ")[1])
+        pos2=HazapModules.Coordinates()
+        pos2.lat=float(placelist["0"].split(" ")[0])
+        pos2.lon=float(placelist["0"].split(" ")[1])
+        mindis=HazapModules.Calculatedistance(pos1,pos2)
+        minindex=0
+        for i in range(1,len(placelist)-1):
+            pos2=HazapModules.Coordinates()
+            pos2.lat=float(placelist[str(i)].split(" ")[0])
+            pos2.lon=float(placelist[str(i)].split(" ")[1])
+            distance=HazapModules.Calculatedistance(pos1,pos2)
+            if distance<10:
+                continue
+            elif mindis>distance and searchedlist[i]==False:
+                mindis=distance
+                minindex=i
+        returnlist[str(nowindex)]=placelist[str(minindex)]
+        searchedlist[minindex]=True
+        if nowindex==0:
+            return 0
+        return Reclist(placelist,returnlist,nowindex-1,asize,searchedlist)
+
+if __name__=="__main__":
+    pos=HazapModules.Coordinates()
+    pos.lat=32.03426306
+    pos.lon=131.50147778
+    pos1=HazapModules.Coordinates()
+    pos1.lat=32.03412250
+    pos1.lon=131.50141139
+    print(HazapModules.Calculatedistance(pos,pos1))
+    #Fullpos(pos,False)
