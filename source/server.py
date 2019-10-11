@@ -104,7 +104,6 @@ def server():
                             prefurl=prefurl.format(detail=HazapModules.APIPubWord,lat=startPos.lat,lon=startPos.lon)
                             prefResult=requests.get(prefurl)
                             prefResult=prefResult.json()
-                            print(prefResult)
                             Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
                             Coastplace.Fullpos(startPos,False)
                             #別スレッドで津波のシミュレーションを開始
