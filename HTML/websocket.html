@@ -65,7 +65,7 @@ function sleep(waitMsec) {
 
 
 window.onload = function() {
-  const sock = new WebSocket("ws://10.22.10.239:5000");
+  const sock = new WebSocket("ws://192.168.137.1:5000");
   sock.addEventListener("open", e => {
     console.log("connected");
   });
