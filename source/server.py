@@ -36,6 +36,7 @@ def server():
         distLogs=[]#利用者が進んだ距離を保存するリスト
         disaster=""#災害の種類
         disasterScale=""#災害の規模
+        ipList=[]
         # 1 接続
         s.listen(1)
         # connection するまで待つ
@@ -58,14 +59,17 @@ def server():
                     splited=rec.split(":")
                     print(splited[0])
                     if(splited[0]=="Recruit" and startflg==0):#サーバに参加を伝える
-                        send=str(n)
-                        CoordinateLogs[n]=[]
-                        pl=splited[1].split(",")
-                        CoordinateLogs[n].append(pl)
-                        Coordinates[n]=splited[1].split(",")
-                        send="number:"+str(n)
-                        n+=1
-                        print(splited)
+                        if(not(addr[0] in ipList)):
+                            send=str(n)
+                            CoordinateLogs[n]=[]
+                            pl=splited[1].split(",")
+                            CoordinateLogs[n].append(pl)
+                            Coordinates[n]=splited[1].split(",")
+                            send="number:"+str(n)
+                            n+=1
+                            print(addr[0])
+                            ipList.append(addr[0])
+                            print(splited)
                         conn.sendall(send.encode())
                     elif splited[0]=="Recruit" and startflg==1:#すでにスタートしていた場合、参加を拒否する
 
@@ -89,6 +93,7 @@ def server():
                     elif splited[0]=="Start":#シミュレーションをスタートする
                         message=""
                         startflg = 1
+                        ipList=[]
                         disaster=splited[2]
                         disasterScale=splited[3]
                         if(disaster=="津波"):
@@ -104,7 +109,6 @@ def server():
                             prefurl=prefurl.format(detail=HazapModules.APIPubWord,lat=startPos.lat,lon=startPos.lon)
                             prefResult=requests.get(prefurl)
                             prefResult=prefResult.json()
-                            print(prefResult)
                             Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
                             Coastplace.Fullpos(startPos,False)
                             #別スレッドで津波のシミュレーションを開始
@@ -176,6 +180,7 @@ def server():
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
+                        print("sending data...")
                         while True:
                             time.sleep(0.5)
                             if(left>length):
@@ -297,7 +302,4 @@ def server():
                     
 
 if __name__=="__main__":
-    try:
-        server()
-    except KeyboardInterrupt:
-        print("server was stopped by keybord")
+    server()
