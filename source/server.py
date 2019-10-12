@@ -93,6 +93,7 @@ def server():
                     elif splited[0]=="Start":#シミュレーションをスタートする
                         message=""
                         startflg = 1
+                        ipList=[]
                         disaster=splited[2]
                         disasterScale=splited[3]
                         if(disaster=="津波"):
@@ -108,7 +109,6 @@ def server():
                             prefurl=prefurl.format(detail=HazapModules.APIPubWord,lat=startPos.lat,lon=startPos.lon)
                             prefResult=requests.get(prefurl)
                             prefResult=prefResult.json()
-                            print(prefResult)
                             Coastplace.Coastplaces_get(100,prefResult["Feature"][0]["Property"]["AddressElement"][0]["Code"])
                             Coastplace.Fullpos(startPos,False)
                             #別スレッドで津波のシミュレーションを開始
@@ -180,6 +180,7 @@ def server():
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
+                        print("sending data...")
                         while True:
                             time.sleep(0.5)
                             if(left>length):
@@ -301,7 +302,4 @@ def server():
                     
 
 if __name__=="__main__":
-    try:
-        server()
-    except KeyboardInterrupt:
-        print("server was stopped by keybord")
+    server()
