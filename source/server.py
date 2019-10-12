@@ -110,7 +110,7 @@ def server():
                             #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
                             #thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
                             #thread.start()
-                            #simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
+                            simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n

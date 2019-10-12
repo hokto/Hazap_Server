@@ -64,7 +64,7 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
     pos2.lon=float(placelist[str(0)].split(" ")[1])
     mindis=HazapModules.Calculatedistance(pos,pos2)
     index=0
-    for i in range(1,):
+    for i in range(1,size):
         pos2.lat=float(placelist[str(i)].split(" ")[0])
         pos2.lon=float(placelist[str(i)].split(" ")[1])
         dis=HazapModules.Calculatedistance(pos,pos2)
@@ -75,15 +75,10 @@ def Fullpos(pos,evacuFlag):#pos:探索したい座標 evacuFlag:Carcuevaで使�
         return index 
     returnlist={}#最終的に書き出すjsonのやつ
     count=0
-    searchedlist=[False for i in range(len(placelist))]
-    searchedlist[index]=True
-    sublist={}
-    sublist[str(asize)]=placelist[str(index)]
-    Reclist(placelist,sublist,asize-1,asize,searchedlist)
-    Reclist(placelist,sublist,asize+1,asize,searchedlist)
-    print(json.dumps(sublist,indent=2))
-    for i in range(len(sublist)):
-        returnlist[str(i)]=sublist[str(i)]
+    for i in range(max(index-asize,0),min(index+asize,size)):
+        returnlist[str(count)]=placelist[str(i)]
+        count+=1
+
     with open("../data/squeezed.json","w") as f:
         json.dump(returnlist,f,ensure_ascii=False,indent=4)
 
