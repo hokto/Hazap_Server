@@ -110,7 +110,7 @@ def server():
                             #json.load(open("../data/squeezed.json",encoding="utf_8_sig"))
                             #thread = threading.Thread(target=simulate.simulatetunami, args=([json.load(open("../data/squeezed.json",encoding="utf_8_sig")),100,100]))
                             #thread.start()
-                            simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
+                            #simulate.simulatetunami(json.load(open("../data/squeezed.json",encoding="utf_8_sig")),float(splited[3]),float(splited[4]))
                         conn.sendall("DisasterStart:".encode())
                         timeLogs=[0]*n#0で初期化
                         distLogs=[0]*n
@@ -175,6 +175,7 @@ def server():
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
+                        print("sending data...")
                         while True:
                             time.sleep(0.5)
                             if(left>length):
@@ -296,7 +297,4 @@ def server():
                     
 
 if __name__=="__main__":
-    try:
-        server()
-    except KeyboardInterrupt:
-        print("server was stopped by keybord")
+    server()
