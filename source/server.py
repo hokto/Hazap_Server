@@ -93,6 +93,7 @@ def server():
                     elif splited[0]=="Start":#シミュレーションをスタートする
                         message=""
                         startflg = 1
+                        ipList=[]
                         disaster=splited[2]
                         disasterScale=splited[3]
                         if(disaster=="津波"):
@@ -179,6 +180,7 @@ def server():
                         right=sendSize
                         conn.sendall(("Start:"+str(length)+":"+disaster+":"+disasterScale).encode("utf-8"))#プレイヤーにjsonファイルのデータの長さ、災害の種類、規模の大きさを送る
                         time.sleep(1)
+                        print("sending data...")
                         while True:
                             time.sleep(0.5)
                             if(left>length):
@@ -300,7 +302,4 @@ def server():
                     
 
 if __name__=="__main__":
-    try:
-        server()
-    except KeyboardInterrupt:
-        print("server was stopped by keybord")
+    server()
